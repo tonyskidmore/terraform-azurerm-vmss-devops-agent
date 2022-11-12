@@ -1,0 +1,14 @@
+---
+
+skip-check:
+  # "Ensure Azure linux scale set does not use basic authentication(Use SSH Key Instead)"
+  # recommended to use SSH, but module does support password auth too
+  - CKV_AZURE_49
+  # "Ensure that Virtual machine does not enable password authentication"
+  # as above
+  - CKV_AZURE_149
+  # "Ensure that Virtual machine scale sets have encryption at host enabled"
+  # this has to be enabled on the Azure subscription so not making this mandatory in the module, ref:
+  # Use the Azure CLI to enable end-to-end encryption using encryption at host
+  # https://docs.microsoft.com/en-us/azure/virtual-machines/linux/disks-enable-host-based-encryption-cli
+  - CKV_AZURE_97

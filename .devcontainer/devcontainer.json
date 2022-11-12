@@ -1,0 +1,34 @@
+{
+	"image": "ghcr.io/tonyskidmore/devcontainers-terraform:latest",
+	"features": {
+			"ghcr.io/devcontainers/features/docker-in-docker:1": {
+				"version": "latest"
+			},
+			"ghcr.io/devcontainers/features/docker-from-docker:1": {
+				"version": "latest"
+			}
+	},
+	"remoteUser": "vscode",
+	// .pre-commit-<uuid> creates a unique cache directory in $HOME/.pre-commit for each project
+	// specify a new uuid per project e.g. using uuidgen
+	"mounts": [
+		"source=${localEnv:HOME}/.pre-commit-b171db20-fb52-4e39-9e0d-f155a05abd69,target=/home/vscode/.pre-commit,type=bind,consistency=cached",
+		"source=${localEnv:HOME}/.ssh,target=/home/vscode/.ssh,type=bind,consistency=cached"
+	],
+	"remoteEnv": {
+		"PRE_COMMIT_HOME": "/home/vscode/.pre-commit"
+	},
+	"postCreateCommand": "bash ./.devcontainer/init.sh",
+	"customizations": {
+		// Configure properties specific to VS Code.
+		"vscode": {
+			"extensions": [
+				"hashicorp.terraform",
+				"ms-azuretools.vscode-azureterraform",
+				"shardulm94.trailing-spaces",
+				"streetsidesoftware.code-spell-checker",
+				"wwm.better-align"
+			]
+		}
+	}
+}
