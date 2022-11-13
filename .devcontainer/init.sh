@@ -7,4 +7,5 @@ then
   sudo chown vscode:vscode "$HOME/.pre-commit"
   pre-commit install
   pre-commit install-hooks
+  terrascan init
 fi
