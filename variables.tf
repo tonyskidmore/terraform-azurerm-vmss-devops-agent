@@ -145,10 +145,16 @@ variable "vmss_admin_username" {
   default     = "adminuser"
 }
 
-variable "vmss_custom_data" {
+variable "vmss_custom_data_data" {
   type        = string
   description = "The base64 encoded data to use as custom data for the VMSS instances"
   default     = null
+}
+
+variable "vmss_custom_data_script" {
+  type        = string
+  description = "The path to the script that will be base64 encoded custom data for the VMSS instances"
+  default     = "scripts/cloud-init/cloud-init"
 }
 
 # TODO: this should be named vmss_disk_size_gb, rename in breaking changes update

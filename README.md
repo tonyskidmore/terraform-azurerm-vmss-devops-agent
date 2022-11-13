@@ -1,6 +1,61 @@
 # terraform-azurerm-vmss-devops-agent
 Terraform Azure DevOps virtual machine scale set agent module
 
+
+## Overview
+
+This Terraform module will create an Azure Virtual Machine Scale Set and an associated Azure virtual machine scale set agent pool in Azure DevOps.
+
+It is an abstraction over two child modules:
+
+* [Terraform azurerm Virtual Machine Scale Set module](https://registry.terraform.io/modules/tonyskidmore/vmss/azurerm/latest)
+* [Terraform Azure DevOps Scale Set Agent module](https://registry.terraform.io/modules/tonyskidmore/azure-devops-elasticpool/shell/latest)
+
+The child modules can be used separately if required.
+
+This brings the functionality together in an all in one module with a number of examples that demonstrate how the module can be used.
+The default behaviour is that the VMSS instances will be configured as Docker hosts, but that can be disabled if desired by setting the
+`vmss_custom_data_script` variable to `null`.  Alternatively, supplying a base64 encoded value for `vmss_custom_data_data`, which overrides the `vmss_custom_data_script` variable.
+
+
+## Requirements
+
+Currently, due to the fact that creating an [Agent Pool - Azure virtual machine scale set][scale-agents] is currently [blocked][blocking-issue]
+because the SDK used by the [Azure DevOps Terraform Provider][terraform-provider-azuredevops],
+does not support the required functionality this module uses the [Terraform shell provider][shell-provider] as a workaround.  Therefore, it inherits most of the requirements of the [Terraform Azure DevOps Scale Set Agent module](https://registry.terraform.io/modules/tonyskidmore/azure-devops-elasticpool/shell/latest) module, namely:
+
+* An Azure subscription.
+  _Note:_ you can get started with a [Azure free account][azure-free]
+
+* An [Azure DevOps][azdo] [Organization][azdo-org].
+  _Note:_ you can sign up for free in the preceding link.
+
+* An [Azure][azdo-connect-azure] service connection to the subscription where your Azure Virtual Machine Scale Set is located.
+
+* An [Azure DevOps][azdo-project] project.
+
+* An Azure DevOps [Personal Access Token][azdo-pat](PAT) created with at least Agent Pools (Read & manage) and Service Connections (Read & query) permissions (some examples will need more extensive permissions)
+
+* A Linux based system is required to execute this Terraform module, with the following commands installed:
+  - cat
+  - curl
+  - sed
+  - jq
+
+The PAT needs be passed to the Terraform configuration by any standard mechanism, for example:
+
+````bash
+
+ export AZURE_DEVOPS_EXT_PAT="ckusfcc8ope2soot1yuovmdvlgtfgj9nio2orfwyvv5jsgcnwwga"
+export TF_VAR_ado_ext_pat="$AZURE_DEVOPS_EXT_PAT"
+
+````
+
+_Note:_ The PAT is used for the initial creation of the agent pool and for subsequent Terraform operations.  Therefore, it would be advisable to create/use a service account for this rather than a standard user account.
+
+## Getting started
+
+
 <!-- BEGIN_TF_DOCS -->
 
 
@@ -39,6 +94,7 @@ resource "azurerm_subnet" "agents" {
 }
 
 module "terraform-azurerm-vmss-devops-agent" {
+  # TODO: update module path
   # source                   = "tonyskidmore/vmss-devops-agent/azurerm"
   # version                  = "0.1.0"
   source                   = "../../"
@@ -79,7 +135,8 @@ No resources.
 | <a name="input_tags"></a> [tags](#input\_tags) | Tags to apply to Azure Virtual Machine Scale | `map(string)` | `{}` | no |
 | <a name="input_vmss_admin_password"></a> [vmss\_admin\_password](#input\_vmss\_admin\_password) | Azure Virtual Machine Scale Set instance administrator password | `string` | `null` | no |
 | <a name="input_vmss_admin_username"></a> [vmss\_admin\_username](#input\_vmss\_admin\_username) | Azure Virtual Machine Scale Set instance administrator name | `string` | `"adminuser"` | no |
-| <a name="input_vmss_custom_data"></a> [vmss\_custom\_data](#input\_vmss\_custom\_data) | The base64 encoded data to use as custom data for the VMSS instances | `string` | `null` | no |
+| <a name="input_vmss_custom_data_data"></a> [vmss\_custom\_data\_data](#input\_vmss\_custom\_data\_data) | The base64 encoded data to use as custom data for the VMSS instances | `string` | `null` | no |
+| <a name="input_vmss_custom_data_script"></a> [vmss\_custom\_data\_script](#input\_vmss\_custom\_data\_script) | The path to the script that will be base64 encoded custom data for the VMSS instances | `string` | `"scripts/cloud-init/cloud-init"` | no |
 | <a name="input_vmss_disk_size_gb"></a> [vmss\_disk\_size\_gb](#input\_vmss\_disk\_size\_gb) | The Size of the Internal OS Disk in GB, if you wish to vary from the size used in the image this Virtual Machine Scale Set is sourced from | `number` | `null` | no |
 | <a name="input_vmss_encryption_at_host_enabled"></a> [vmss\_encryption\_at\_host\_enabled](#input\_vmss\_encryption\_at\_host\_enabled) | Should all of the disks (including the temp disk) attached to this Virtual Machine be encrypted by enabling Encryption at Host? | `bool` | `false` | no |
 | <a name="input_vmss_identity_ids"></a> [vmss\_identity\_ids](#input\_vmss\_identity\_ids) | Specifies a list of User Assigned Managed Identity IDs to be assigned to this Linux Virtual Machine Scale Set | `list(string)` | `null` | no |

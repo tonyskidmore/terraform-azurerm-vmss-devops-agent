@@ -5,10 +5,11 @@ module "vmss" {
   vmss_resource_group_name = var.vmss_resource_group_name
   vmss_subnet_id           = var.vmss_subnet_id
   # variables with predefined defaults
-  tags                                        = var.tags
-  vmss_admin_password                         = var.vmss_admin_password
-  vmss_admin_username                         = var.vmss_admin_username
-  vmss_custom_data                            = var.vmss_custom_data
+  tags                = var.tags
+  vmss_admin_password = var.vmss_admin_password
+  vmss_admin_username = var.vmss_admin_username
+  # TODO: fix this
+  vmss_custom_data                            = local.vmss_custom_data
   vmss_disk_size_gb                           = var.vmss_disk_size_gb
   vmss_encryption_at_host_enabled             = var.vmss_encryption_at_host_enabled
   vmss_identity_ids                           = var.vmss_identity_ids

@@ -1,21 +1,21 @@
 # Azure Virtual Machine Scale Set
 
 Example of creating an Azure VMSS and associated Azure DevOps agent pool.
-In this case we are using the most basic configuration of supplying an administrator password
-to keep the example simple.
+In this case we are using the most basic configuration, supplying an administrator password
+to keep the example as simple as possible.
 
-Example steps to test the module:
+Example steps to test the module locally (for example in Windows Subsystem for Linux):
 
 ````bash
 
-# authenticate Terraform to Azure
+# authenticate Terraform to Azure - replace values with your tenant, subscription and service principal values
  export ARM_SUBSCRIPTION_ID=00000000-0000-0000-0000-000000000000
  export ARM_TENANT_ID=00000000-0000-0000-0000-000000000000
  export ARM_CLIENT_ID=00000000-0000-0000-0000-000000000000
  export ARM_CLIENT_SECRET=AAABjkwhs7862782626_BsGGjkskj_MaGv
 
 # authenticate to Azure DevOps with Personal Access Token
- export AZURE_DEVOPS_EXT_PAT="ckusfcc8ope2soot1yuovmdvlgtfgj9nio2orfwyvv5jsgcnwwga"
+ export AZDO_PERSONAL_ACCESS_TOKEN="ckusfcc8ope2soot1yuovmdvlgtfgj9nio2orfwyvv5jsgcnwwga"
 export TF_VAR_ado_ext_pat="$AZURE_DEVOPS_EXT_PAT"
 
 git clone https://github.com/tonyskidmore/terraform-azurerm-vmss-devops-agent.git
@@ -26,6 +26,8 @@ terraform plan -out tfplan
 terraform apply tfplan
 
 ````
+
+To use this example update the `terraform.tfvars` file to match your Azure requirements and your Azure DevOps setup.
 
 <!-- BEGIN_TF_DOCS -->
 
@@ -102,6 +104,7 @@ resource "azurerm_subnet" "agents" {
 }
 
 module "terraform-azurerm-vmss-devops-agent" {
+  # TODO: update module path
   # source                   = "tonyskidmore/vmss-devops-agent/azurerm"
   # version                  = "0.1.0"
   source                   = "../../"

@@ -1,0 +1,32 @@
+---
+
+name: "container-test"
+
+trigger: none
+
+variables:
+  containerImage: "ghcr.io/tonyskidmore/azure-tools:latest"
+
+pool:
+  name: 'vmss-agent-pool-linux-001'
+
+
+resources:
+  containers:
+    - container: azure-tools
+      image: '${{ variables.containerImage }}'
+      options: "--user 0:0 --name azure-tools"
+
+jobs:
+  - job: test
+    displayName: "Test Container Job"
+    continueOnError: false
+    container: azure-tools
+
+    steps:
+
+      - checkout: self
+
+      - script: |
+          terraform version
+        displayName: Check terraform version
