@@ -5,10 +5,9 @@ module "vmss" {
   vmss_resource_group_name = var.vmss_resource_group_name
   vmss_subnet_id           = var.vmss_subnet_id
   # variables with predefined defaults
-  tags                = var.tags
-  vmss_admin_password = var.vmss_admin_password
-  vmss_admin_username = var.vmss_admin_username
-  # TODO: fix this
+  tags                                        = var.tags
+  vmss_admin_password                         = var.vmss_admin_password
+  vmss_admin_username                         = var.vmss_admin_username
   vmss_custom_data                            = local.vmss_custom_data
   vmss_disk_size_gb                           = var.vmss_disk_size_gb
   vmss_encryption_at_host_enabled             = var.vmss_encryption_at_host_enabled
@@ -39,7 +38,8 @@ module "vmss" {
 
 module "azure-devops-elasticpool" {
   source  = "tonyskidmore/azure-devops-elasticpool/shell"
-  version = "0.3.0"
+  version = "0.4.0"
+  # source = "./modules/terraform-shell-azure-devops-elasticpool"
   # required variables
   # ado_ext_pat            = var.ado_ext_pat
   ado_org                = var.ado_org

@@ -8,9 +8,7 @@ tfplan
 */__pycache__/
 *.pyc
 
-# virtual-environment content
-packer-log.txt
-virtual-environments/
+modules/
 
 # ADO pool generated JSON
 params.json
