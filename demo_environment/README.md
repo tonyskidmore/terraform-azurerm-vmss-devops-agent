@@ -3,6 +3,14 @@
 This example creates an Azure DevOps project that can be used for the other examples.
 Certain environment variables need to be defined prior to running the example.
 
+Azure
+Subscription
+Contributor + User Access Administrator
+or Owner
+
+Azure DevOps
+Personal Access Token - Full Access
+
 ````bash
 
 # authenticate Terraform to Azure - replace values with your tenant, subscription and service principal values
@@ -12,8 +20,9 @@ Certain environment variables need to be defined prior to running the example.
  export ARM_CLIENT_SECRET=AAABjkwhs7862782626_BsGGjkskj_MaGv
 
  export AZDO_PERSONAL_ACCESS_TOKEN="your PAT here" # full access
-export AZDO_ORG_SERVICE_URL="https://dev.azure.com/tonyskidmore"
+export AZDO_ORG_SERVICE_URL="https://dev.azure.com/tonyskidmore" # your organization
 
+export TF_VAR_ado_ext_pat="$AZDO_PERSONAL_ACCESS_TOKEN"
 export TF_VAR_serviceprincipalid="$ARM_CLIENT_ID"
 export TF_VAR_serviceprincipalkey="$ARM_CLIENT_SECRET"
 export TF_VAR_azurerm_spn_tenantid="$ARM_TENANT_ID"
