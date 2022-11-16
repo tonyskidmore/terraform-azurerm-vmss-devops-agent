@@ -3,31 +3,42 @@ resource "azuredevops_project" "project" {
   description = "VMMS agent demo project"
 }
 
+# resource "azuredevops_git_repository" "repository" {
+#   project_id     = azuredevops_project.project.id
+#   name           = "vmss-demo"
+#   default_branch = "refs/heads/main"
+#   initialization {
+#     init_type = "Clean"
+#   }
+#   lifecycle {
+#     ignore_changes = [
+#       # Ignore changes to initialization to support importing existing repositories
+#       # Given that a repo now exists, either imported into terraform state or created by terraform,
+#       # we don't care for the configuration of initialization against the existing resource
+#       initialization,
+#     ]
+#   }
+# }
+
 resource "azuredevops_git_repository" "repository" {
   project_id     = azuredevops_project.project.id
-  name           = "vmss-demo"
+  name           = "Example Import Repository"
   default_branch = "refs/heads/main"
   initialization {
-    init_type = "Clean"
-  }
-  lifecycle {
-    ignore_changes = [
-      # Ignore changes to initialization to support importing existing repositories
-      # Given that a repo now exists, either imported into terraform state or created by terraform,
-      # we don't care for the configuration of initialization against the existing resource
-      initialization,
-    ]
+    init_type   = "Import"
+    source_type = "Git"
+    source_url  = "https://github.com/tonyskidmore/azure-pipelines-yaml.git"
   }
 }
 
-resource "azuredevops_git_repository_file" "pipeline" {
-  repository_id       = azuredevops_git_repository.repository.id
-  file                = "azure-pipelines.yml"
-  content             = file("./azure-pipelines.yml")
-  branch              = "refs/heads/main"
-  commit_message      = "First commit"
-  overwrite_on_create = false
-}
+# resource "azuredevops_git_repository_file" "pipeline" {
+#   repository_id       = azuredevops_git_repository.repository.id
+#   file                = "azure-pipelines.yml"
+#   content             = file("./azure-pipelines.yml")
+#   branch              = "refs/heads/main"
+#   commit_message      = "First commit"
+#   overwrite_on_create = false
+# }
 
 resource "azuredevops_build_definition" "build_definition" {
   project_id = azuredevops_project.project.id

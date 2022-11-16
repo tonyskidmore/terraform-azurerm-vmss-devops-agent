@@ -299,7 +299,7 @@ variable "vmss_source_image_version" {
 variable "vmss_sku" {
   type        = string
   description = "Azure Virtual Machine Scale Set SKU"
-  default     = "Standard_B2s"
+  default     = "Standard_B1s"
 }
 
 variable "vmss_ssh_public_key" {
