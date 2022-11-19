@@ -1,55 +1,39 @@
-resource "azuredevops_project" "project" {
-  name        = "demo-vmss"
-  description = "VMMS agent demo project"
+resource "random_string" "random" {
+  length      = 6
+  min_numeric = 6
 }
 
-# resource "azuredevops_git_repository" "repository" {
-#   project_id     = azuredevops_project.project.id
-#   name           = "vmss-demo"
-#   default_branch = "refs/heads/main"
-#   initialization {
-#     init_type = "Clean"
-#   }
-#   lifecycle {
-#     ignore_changes = [
-#       # Ignore changes to initialization to support importing existing repositories
-#       # Given that a repo now exists, either imported into terraform state or created by terraform,
-#       # we don't care for the configuration of initialization against the existing resource
-#       initialization,
-#     ]
-#   }
-# }
+resource "azuredevops_project" "project" {
+  name        = var.ado_project_name
+  description = var.ado_project_description
+}
 
 resource "azuredevops_git_repository" "repository" {
-  project_id     = azuredevops_project.project.id
-  name           = "Example Import Repository"
+  for_each   = var.git_repos
+  project_id = azuredevops_project.project.id
+  name       = each.value.name
+  # default_branch = each.value.default_branch
   default_branch = "refs/heads/main"
   initialization {
-    init_type   = "Import"
-    source_type = "Git"
-    source_url  = "https://github.com/tonyskidmore/azure-pipelines-yaml.git"
+    init_type   = each.value.initialization.init_type
+    source_type = each.value.initialization.source_type
+    source_url  = each.value.initialization.source_url
   }
 }
 
-# resource "azuredevops_git_repository_file" "pipeline" {
-#   repository_id       = azuredevops_git_repository.repository.id
-#   file                = "azure-pipelines.yml"
-#   content             = file("./azure-pipelines.yml")
-#   branch              = "refs/heads/main"
-#   commit_message      = "First commit"
-#   overwrite_on_create = false
-# }
-
 resource "azuredevops_build_definition" "build_definition" {
+  for_each = var.build_definitions
+
   project_id = azuredevops_project.project.id
-  name       = "demo-vmss-pipeline"
+  name       = each.key
   path       = "\\"
 
   repository {
-    repo_type   = "TfsGit"
-    repo_id     = azuredevops_git_repository.repository.id
-    branch_name = azuredevops_git_repository.repository.default_branch
-    yml_path    = "azure-pipelines.yml"
+    repo_type = "TfsGit"
+    repo_id   = azuredevops_git_repository.repository[each.value.repo_ref].id
+    # branch_name = azuredevops_git_repository.repository[each.value.repo_ref].default_branch
+    branch_name = "refs/heads/main"
+    yml_path    = each.value.yml_path
   }
 }
 
@@ -64,4 +48,17 @@ resource "azuredevops_serviceendpoint_azurerm" "sub" {
   azurerm_spn_tenantid      = var.azurerm_spn_tenantid
   azurerm_subscription_id   = var.azurerm_subscription_id
   azurerm_subscription_name = var.azurerm_subscription_name
+}
+
+resource "azuredevops_variable_group" "vars" {
+  project_id   = azuredevops_project.project.id
+  name         = "build"
+  description  = "Build variables"
+  allow_access = true
+
+  variable {
+    name  = "build_index"
+    value = random_string.random.result
+  }
+
 }
