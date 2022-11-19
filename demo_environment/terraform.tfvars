@@ -8,7 +8,7 @@ build_definitions = {
 
 git_repos = {
   "repo1" = {
-    name = "001-admin-password",
+    name = "pipelines",
     # default_branch = "refs/heads/main",
     initialization = {
       init_type   = "Import",

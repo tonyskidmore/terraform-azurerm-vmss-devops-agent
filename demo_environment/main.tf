@@ -25,7 +25,7 @@ resource "azuredevops_build_definition" "build_definition" {
   for_each = var.build_definitions
 
   project_id = azuredevops_project.project.id
-  name       = each.key
+  name       = each.value.name
   path       = "\\"
 
   repository {
