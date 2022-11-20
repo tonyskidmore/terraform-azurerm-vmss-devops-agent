@@ -20,7 +20,7 @@ variable "ado_service_connection" {
 
 variable "ado_pool_name" {
   type        = string
-  description = "Name of the Vnet that the target subnet is a member of"
+  description = "Azure DevOps agent pool name"
 }
 
 variable "vmss_name" {

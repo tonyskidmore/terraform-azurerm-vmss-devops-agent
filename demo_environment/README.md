@@ -22,6 +22,7 @@ Personal Access Token - Full Access
  export AZDO_PERSONAL_ACCESS_TOKEN="your PAT here" # full access
 export AZDO_ORG_SERVICE_URL="https://dev.azure.com/tonyskidmore" # your organization
 
+export TF_VAR_ado_org="$AZDO_ORG_SERVICE_URL"
 export TF_VAR_ado_ext_pat="$AZDO_PERSONAL_ACCESS_TOKEN"
 export TF_VAR_serviceprincipalid="$ARM_CLIENT_ID"
 export TF_VAR_serviceprincipalkey="$ARM_CLIENT_SECRET"
