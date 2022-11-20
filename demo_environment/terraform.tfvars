@@ -20,10 +20,10 @@ git_repos = {
   }
 }
 
-location = "uksouth"
-nsg_name = "nsg-demo-azure-devops-vmss"
+location            = "uksouth"
+nsg_name            = "nsg-demo-azure-devops-vmss"
 resource_group_name = "rg-demo-azure-devops-vmss"
-vmss_name = "vmss-demo-bootstrap"
+vmss_name           = "vmss-demo-bootstrap"
 # TODO: change this to key vault + ssh key
 vmss_admin_password          = "Sup3rS3cr3tP@55w0rd!"
 vmss_vnet_name               = "vnet-demo-azure-devops-vmss"

@@ -54,11 +54,12 @@ To use this example update the `terraform.tfvars` file to match your Azure requi
 |------|-------------|------|---------|:--------:|
 | ado\_ext\_pat | Azure DevOps Personal Access Token | `string` | n/a | yes |
 | ado\_org | Azure DevOps organization | `string` | n/a | yes |
-| ado\_pool\_name | Name of the Vnet that the target subnet is a member of | `string` | n/a | yes |
+| ado\_pool\_name | Azure DevOps agent pool name | `string` | n/a | yes |
 | ado\_project | Azure DevOps organization | `string` | n/a | yes |
 | ado\_service\_connection | Azure DevOps organiservice connection name | `string` | n/a | yes |
 | tags | Map of the tags to use for the resources that are deployed | `map(string)` | <pre>{<br>  "environment": "test",<br>  "project": "vmss"<br>}</pre> | no |
 | vmss\_admin\_password | Password to allocate to the admin user account | `string` | n/a | yes |
+| vmss\_location | Azure region | `string` | n/a | yes |
 | vmss\_name | Name of the Virtual Machine Scale Set to create | `string` | n/a | yes |
 | vmss\_resource\_group\_name | Existing resource group name of where the VMSS will be created | `string` | n/a | yes |
 | vmss\_subnet\_address\_prefixes | Subnet address prefixes | `list(string)` | n/a | yes |
@@ -84,21 +85,9 @@ provider "shell" {
   }
 }
 
-data "azurerm_resource_group" "vmss" {
-  name = var.vmss_resource_group_name
-}
-
-resource "azurerm_virtual_network" "vmss" {
-  name                = var.vmss_vnet_name
-  resource_group_name = data.azurerm_resource_group.vmss.name
-  address_space       = var.vmss_vnet_address_space
-  location            = data.azurerm_resource_group.vmss.location
-  tags                = var.tags
-}
-
-resource "azurerm_subnet" "agents" {
+data "azurerm_subnet" "agents" {
   name                 = var.vmss_subnet_name
-  resource_group_name  = data.azurerm_resource_group.vmss.name
+  resource_group_name  = azurerm_resource_group.vmss.name
   address_prefixes     = var.vmss_subnet_address_prefixes
   virtual_network_name = azurerm_virtual_network.vmss.name
 }
@@ -115,7 +104,7 @@ module "terraform-azurerm-vmss-devops-agent" {
   vmss_admin_password      = var.vmss_admin_password
   vmss_name                = var.vmss_name
   vmss_resource_group_name = var.vmss_resource_group_name
-  vmss_subnet_id           = azurerm_subnet.agents.id
+  vmss_subnet_id           = data.zurerm_subnet.agents.id
 }
 ```
 <!-- END_TF_DOCS -->

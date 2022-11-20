@@ -38,7 +38,7 @@ module "vmss" {
 
 module "azure-devops-elasticpool" {
   source  = "tonyskidmore/azure-devops-elasticpool/shell"
-  version = "0.4.0"
+  version = "0.4.1"
   # source = "./modules/terraform-shell-azure-devops-elasticpool"
   # required variables
   # ado_ext_pat            = var.ado_ext_pat

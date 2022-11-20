@@ -17,3 +17,8 @@ output "resource_group_name" {
   value       = azurerm_resource_group.demo-vmss.name
   description = "Azure storage resource group name"
 }
+
+output "git_repo_id" {
+  value       = azuredevops_git_repository.repository["repo1"].id
+  description = "Azure storage resource group name"
+}
