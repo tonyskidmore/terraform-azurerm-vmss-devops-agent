@@ -1,0 +1,79 @@
+---
+
+permissions:
+  statuses: write
+
+name: Lint Code Base
+
+on:
+  schedule:
+    - cron: "00 20 * * 0"
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    name: Lint Code Base
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+        with:
+          # Full git history is needed to get a proper list
+          # of changed files within `super-linter`
+          fetch-depth: 0
+
+        # https://github.com/marketplace/actions/super-linter
+      - name: Lint Code Base
+        uses: github/super-linter@v4
+        env:
+          VALIDATE_ALL_CODEBASE: true
+          VALIDATE_JSCPD: false
+          DEFAULT_BRANCH: main
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  precommit:
+    name: pre-commit
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+        with:
+          # Full git history is needed to get a proper list
+          # of changed files within `super-linter`
+          fetch-depth: 0
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+          cache: 'pip' # caching pip dependencies
+
+      - name: Install Python packages
+        run: pip install -r requirements.txt
+      - name: Setup TFLint
+        uses: terraform-linters/setup-tflint@v2
+        with:
+          tflint_version: latest
+
+      - name: Patch .pre-commit-config.yaml
+        run: |
+          sed -i '/terraform-docs/,+4d' \
+            "$GITHUB_WORKSPACE/.pre-commit-config.yaml"
+          sed -i '/- id: end-of-file-fixer/d' \
+            "$GITHUB_WORKSPACE/.pre-commit-config.yaml"
+
+      - name: Pre-commit check all files
+        run: |
+          pre-commit install
+          pre-commit install-hooks
+          tflint --init
+          tflint --version
+          pre-commit run --all-files

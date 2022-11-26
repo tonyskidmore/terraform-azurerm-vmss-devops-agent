@@ -1,3 +1,18 @@
+# VS code configuration
+.vscode/
+.env
+
+# terraform plan -out tfplan
+tfplan
+
+*/__pycache__/
+*.pyc
+
+modules/
+
+# ADO pool generated JSON
+params.json
+
 # Local .terraform directories
 **/.terraform/*
 
@@ -5,8 +20,14 @@
 *.tfstate
 *.tfstate.*
 
+# plan file
+tfplan
+
 # Crash log files
 crash.log
+
+# tracelogs
+trace.log
 
 # Ignore any .tfvars files that are generated automatically for each Terraform run. Most
 # .tfvars files are managed as part of configuration and so should be included in
@@ -27,3 +48,8 @@ override.tf.json
 
 # Include tfplan files to ignore the plan output of command: terraform plan -out=tfplan
 # example: *tfplan*
+
+docker/application
+docker/idrsa
+
+.terraform.lock.hcl
