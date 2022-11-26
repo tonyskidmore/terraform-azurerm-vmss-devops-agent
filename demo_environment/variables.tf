@@ -125,4 +125,3 @@ variable "vmss_name" {
   type        = string
   description = "Name of the Virtual Machine Scale Set to create"
 }
-

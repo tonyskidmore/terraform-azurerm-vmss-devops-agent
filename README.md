@@ -76,9 +76,8 @@ provider "shell" {
 
 data "azurerm_subnet" "agents" {
   name                 = var.vmss_subnet_name
-  resource_group_name  = azurerm_resource_group.vmss.name
-  address_prefixes     = var.vmss_subnet_address_prefixes
-  virtual_network_name = azurerm_virtual_network.vmss.name
+  resource_group_name  = var.vmss_resource_group_name
+  virtual_network_name = var.vmss_vnet_name
 }
 
 module "terraform-azurerm-vmss-devops-agent" {
@@ -93,7 +92,8 @@ module "terraform-azurerm-vmss-devops-agent" {
   vmss_admin_password      = var.vmss_admin_password
   vmss_name                = var.vmss_name
   vmss_resource_group_name = var.vmss_resource_group_name
-  vmss_subnet_id           = data.zurerm_subnet.agents.id
+  vmss_subnet_id           = data.azurerm_subnet.agents.id
+  tags                     = var.tags
 }
 
 ```
