@@ -65,6 +65,7 @@ variable "azurerm_subscription_name" {
 variable "build_definitions" {
   type = map(object({
     name     = string
+    path     = string
     repo_ref = string
     yml_path = string
   }))

@@ -3,8 +3,15 @@ ado_pool_name = "vmss-bootstrap-pool"
 build_definitions = {
   "pipeline1" = {
     "name" : "000-bootstrap-test",
+    "path" : "\\bootstrap",
     "repo_ref" : "repo2",
-    "yml_path" : "demo-vmss/000-bootstrap.yml"
+    "yml_path" : "demo-vmss/000-bootstrap-test.yml"
+  }
+  "pipeline2" = {
+    "name" : "000-bootstrap-update",
+    "path" : "\\bootstrap",
+    "repo_ref" : "repo2",
+    "yml_path" : "demo-vmss/000-bootstrap-update.yml"
   }
 }
 

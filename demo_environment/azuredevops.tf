@@ -26,13 +26,14 @@ resource "azuredevops_build_definition" "build_definition" {
 
   project_id = azuredevops_project.project.id
   name       = each.value.name
-  path       = "\\"
+  path       = each.value.path
 
   repository {
     repo_type = "TfsGit"
     repo_id   = azuredevops_git_repository.repository[each.value.repo_ref].id
     # branch_name = azuredevops_git_repository.repository[each.value.repo_ref].default_branch
-    branch_name = "refs/heads/main"
+    # TODO: "refs/heads/main"
+    branch_name = "refs/heads/examples"
     yml_path    = each.value.yml_path
   }
 }
