@@ -62,4 +62,9 @@ resource "azuredevops_variable_group" "vars" {
     value = random_string.build_index.result
   }
 
+  variable {
+    name  = "project"
+    value = var.ado_project_name
+  }
+
 }
