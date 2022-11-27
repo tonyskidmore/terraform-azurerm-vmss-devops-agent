@@ -51,6 +51,16 @@ resource "azuredevops_serviceendpoint_azurerm" "sub" {
   azurerm_subscription_name = var.azurerm_subscription_name
 }
 
+resource "azuredevops_environment" "demo" {
+  project_id  = azuredevops_project.project.id
+  name        = "demo"
+  description = "Demo environment"
+}
+
+# https://github.com/microsoft/terraform-provider-azuredevops/issues/451
+# https://github.com/Mastercard/terraform-provider-restapi
+# https://stackoverflow.com/questions/72557511/how-to-add-update-approvers-for-environments-through-rest-api-on-azure-devops
+
 resource "azuredevops_variable_group" "vars" {
   project_id   = azuredevops_project.project.id
   name         = "build"
