@@ -67,4 +67,32 @@ resource "azuredevops_variable_group" "vars" {
     value = var.ado_project_name
   }
 
+  variable {
+    name  = "org"
+    value = var.ado_org
+  }
+
+  variable {
+    name         = "serviceprincipalid"
+    secret_value = var.serviceprincipalid
+    is_secret    = true
+  }
+
+  variable {
+    name         = "serviceprincipalkey"
+    secret_value = var.serviceprincipalkey
+    is_secret    = true
+  }
+
+  variable {
+    name         = "azurerm_spn_tenantid"
+    secret_value = var.azurerm_spn_tenantid
+    is_secret    = true
+  }
+
+  variable {
+    name         = "azurerm_subscription_id"
+    secret_value = var.azurerm_subscription_id
+    is_secret    = true
+  }
 }
