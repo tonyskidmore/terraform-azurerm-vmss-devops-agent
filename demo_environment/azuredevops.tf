@@ -38,6 +38,27 @@ resource "azuredevops_build_definition" "build_definition" {
   }
 }
 
+#resource "null_resource" "pipeline-perm-plan-speculative" {
+#  triggers = {
+#    id = azuredevops_build_definition.build_definition["pipeline2"].id
+#  }
+#
+#  provisioner "local-exec" {
+#    command = <<EOF
+#id=${azuredevops_build_definition.build_definition["pipeline2"].id}
+#payload="{ \"pipelines\": [{ \"id\": $id, \"authorized\": true }]}"
+#echo $id
+#echo $payload
+#curl \
+#  -u :$AZDO_PERSONAL_ACCESS_TOKEN \
+#  -H "Content-Type: application/json" \
+#  --request PATCH \
+#  --data "$payload" \
+#  $AZDO_ORG_SERVICE_URL/${azuredevops_project.project.project_name}/_apis/pipelines/pipelinePermissions/repository/${azuredevops_git_repository.pipeline.project_id}.${azuredevops_git_repository.pipeline.id}?api-version=5.1-preview.1 | jq .
+#EOF
+#  }
+#}
+
 resource "azuredevops_serviceendpoint_azurerm" "sub" {
   project_id            = azuredevops_project.project.id
   service_endpoint_name = var.service_endpoint_name

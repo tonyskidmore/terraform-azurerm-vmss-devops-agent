@@ -5,13 +5,14 @@ set -o pipefail
 # functions
 
 # TODO: "path": "/demo_environment/backend.tf"
+# TODO: branch other than main
 create_post_data()
 {
   cat <<EOF
 {
   "refUpdates": [
     {
-      "name": "refs/heads/main",
+      "name": "$current_ref",
       "oldObjectId": "$last_commit"
     }
   ],
@@ -22,7 +23,7 @@ create_post_data()
         {
           "changeType": "add",
           "item": {
-            "path": "/backend.tf"
+            "path": "/demo_environment/backend.tf"
           },
           "newContent": {
             "content": "$backend_config",
@@ -136,6 +137,9 @@ sa=$(terraform output -raw storage_account_name)
 cn=$(terraform output -raw container_name)
 key=$(terraform output -raw key)
 ri=$(terraform output -raw git_repo_id)
+proj=$(terraform output -raw ado_project_name)
+# needs got installed
+current_ref=$(git symbolic-ref HEAD) # refs/heads/main
 
 printf "resource_group_name: %s\n" "$rg"
 printf "storage_account_name: %s\n" "$sa"
@@ -164,11 +168,12 @@ fi
 
 terraform init -migrate-state -force-copy
 
-# TODO: get project name dynamically
 # get the last commit from the repo - required for committing new file
-commitUrl="$AZDO_ORG_SERVICE_URL/demo-vmss/_apis/git/repositories/$ri/commits?searchCriteria.\$top=1&api-version=6.0"
+commitUrl="$AZDO_ORG_SERVICE_URL/$proj/_apis/git/repositories/$ri/commits?searchCriteria.\$top=1&api-version=6.0"
 rest_api_call "GET" "$commitUrl"
 last_commit=$(echo "$out" | jq -r '.value[0].commitId')
+
+printf "last_commit: %s\n" "$last_commit"
 
 # commit the backend config to the repository
 # backend_config=$(<backend.tf)
