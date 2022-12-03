@@ -64,7 +64,7 @@ payload="{ \"pipelines\": [{ \"id\": $id, \"authorized\": true }]}"
 echo $id
 echo $payload
 curl \
-  --slient \
+  --silent \
   --show-error \
   --user ":$AZDO_PERSONAL_ACCESS_TOKEN" \
   --header "Content-Type: application/json" \
