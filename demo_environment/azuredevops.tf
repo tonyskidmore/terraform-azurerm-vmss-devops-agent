@@ -121,7 +121,7 @@ resource "azuredevops_variable_group" "vars" {
   }
 
   variable {
-    name  = "org"
+    name  = "ado_org"
     value = var.ado_org
   }
 
