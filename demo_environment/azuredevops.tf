@@ -126,6 +126,12 @@ resource "azuredevops_variable_group" "vars" {
   }
 
   variable {
+    name         = "ado_ext_pat"
+    secret_value = var.ado_ext_pat
+    is_secret    = true
+  }
+
+  variable {
     name         = "serviceprincipalid"
     secret_value = var.serviceprincipalid
     is_secret    = true
