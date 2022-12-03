@@ -33,3 +33,6 @@ groups:
 system_info:
   default_user:
     groups: [docker]
+
+runcmd:
+  - curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
