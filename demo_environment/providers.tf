@@ -17,10 +17,9 @@ terraform {
       source  = "hashicorp/azurerm"
       version = ">=3.1.0"
     }
-    #    restapi = {
-    #      source  = "Mastercard/restapi"
-    #      version = ">=1.18.0"
-    #    }
+    null = {
+      version = ">= 3.2.1"
+    }
   }
   required_version = ">= 1.0.0"
 }
@@ -28,15 +27,3 @@ terraform {
 provider "azurerm" {
   features {}
 }
-
-#provider "restapi" {
-#  alias                = "restapi_headers"
-#  uri                  = "https://dev.azure.com"
-#  debug                = true
-#  write_returns_object = true
-
-#  headers = {
-#    Content-Type  = "application/json",
-#    Authorization = "Basic ${base64encode(var.ado_ext_pat)}"
-#  }
-#}

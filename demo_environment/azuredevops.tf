@@ -46,7 +46,7 @@ resource "azuredevops_build_definition" "build_definition" {
   }
 }
 
-# ${azuredevops_git_repository.repository['repo1'].project_id}.
+# add permissions to repo for pipeline
 resource "null_resource" "build_definition_repo_perms" {
   triggers = {
     id = azuredevops_build_definition.build_definition["pipeline2"].id
@@ -64,26 +64,16 @@ payload="{ \"pipelines\": [{ \"id\": $id, \"authorized\": true }]}"
 echo $id
 echo $payload
 curl \
-  -u :$AZDO_PERSONAL_ACCESS_TOKEN \
-  -H "Content-Type: application/json" \
+  --slient \
+  --show-error \
+  --user ":$AZDO_PERSONAL_ACCESS_TOKEN" \
+  --header "Content-Type: application/json" \
   --request PATCH \
   --data "$payload" \
   "$AZDO_ORG_SERVICE_URL/${var.ado_project_name}/_apis/pipelines/pipelinePermissions/repository/${azuredevops_project.project.id}.${azuredevops_git_repository.repository["repo1"].id}?api-version=7.0-preview.1" | jq .
 EOF
   }
 }
-
-#resource "restapi_object" "build_definition_repo_perms" {
-#  provider      = restapi.restapi_headers
-#  path          = "/tonyskidmore/${var.ado_project_name}/_apis/pipelines/pipelinePermissions/repository/${azuredevops_project.project.id}.${azuredevops_git_repository.repository["repo1"].id}?api-version=7.0-preview.1"
-#  data          = "{ \"pipelines\": [{ \"id\": ${azuredevops_build_definition.build_definition["pipeline2"].id}, \"authorized\": true }]}"
-#  create_method = "PATCH"
-
-#  depends_on = [
-#    azuredevops_build_definition.build_definition,
-#    azuredevops_git_repository.repository
-#  ]
-#}
 
 resource "azuredevops_serviceendpoint_azurerm" "sub" {
   project_id            = azuredevops_project.project.id
@@ -111,8 +101,7 @@ resource "azuredevops_environment" "demo" {
   description = "Demo environment"
 }
 
-# https://github.com/microsoft/terraform-provider-azuredevops/issues/451
-# https://github.com/Mastercard/terraform-provider-restapi
+
 # https://stackoverflow.com/questions/72557511/how-to-add-update-approvers-for-environments-through-rest-api-on-azure-devops
 
 resource "azuredevops_variable_group" "vars" {
