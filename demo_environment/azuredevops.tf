@@ -13,7 +13,9 @@ resource "azuredevops_git_repository" "repository" {
   project_id = azuredevops_project.project.id
   name       = each.value.name
   # default_branch = each.value.default_branch
-  default_branch = "refs/heads/main"
+  # TODO:
+  # default_branch = "refs/heads/main"
+  default_branch = "refs/heads/examples"
   initialization {
     init_type   = each.value.initialization.init_type
     source_type = each.value.initialization.source_type
