@@ -33,6 +33,12 @@ variable "vmss_subnet_id" {
 
 # variables with predefined defaults
 
+variable "ado_dirty" {
+  type        = bool
+  description = "Azure DevOps pool settings are dirty"
+  default     = false
+}
+
 variable "ado_pool_auth_all_pipelines" {
   type        = string
   description = "Setting to determine if all pipelines are authorized to use this TaskAgentPool by default (at create only)"
