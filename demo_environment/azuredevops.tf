@@ -24,29 +24,22 @@ resource "azuredevops_git_repository" "repository" {
 }
 
 data "azuredevops_group" "build_service" {
-  name = "Project Collection Build Service"
+  name = "Project Collection Build Service Accounts"
 }
 
-resource "azuredevops_git_permissions" "repo-permissions" {
-  for_each      = azuredevops_git_repository.repository
-  project_id    = azuredevops_project.project.id
-  repository_id = each.value.id
-  principal     = data.azuredevops_group.build_service.id
-  permissions = {
-    Administer        = "Allow"
-    RemoveOthersLocks = "Allow"
-    GenericContribute = "Allow"
-    PolicyExempt      = "Allow"
-  }
-}
+# TODO:
+# https://github.com/microsoft/terraform-provider-azuredevops/issues/668
+# resource "azuredevops_git_permissions" "repo-permissions" {
+#   for_each      = azuredevops_git_repository.repository
+#   project_id    = azuredevops_project.project.id
+#   repository_id = each.value.id
+#   principal     = data.azuredevops_group.build_service.id
+#   permissions = {
+#     GenericContribute = "Allow"
+#     PolicyExempt      = "Allow"
+#   }
+# }
 
-#curl \
-#  -u :$AZDO_PERSONAL_ACCESS_TOKEN \
-#  -H "Content-Type: application/json" \
-#  --data "$payload" \
-#  --request PATCH \
-#  https://dev.azure.com/tonyskidmore/demo-vmss/_apis/pipelines/pipelinepermissions/repository/3246591f-2cde-4b42-b950-5513e10a21d9.c9cfd82e-9e24-4fa2-bb17-8a1daefd94a3?api-version=7.0-preview.1
-# project_id.repo1_id
 
 resource "azuredevops_build_definition" "build_definition" {
   for_each = var.build_definitions

@@ -3,21 +3,27 @@ ado_pool_name = "vmss-bootstrap-pool"
 build_definitions = {
   "pipeline1" = {
     "name" : "000-bootstrap-test",
-    "path" : "\\bootstrap",
+    "path" : "\\000-bootstrap",
     "repo_ref" : "repo2",
     "yml_path" : "demo-vmss/000-bootstrap-test.yml"
   }
   "pipeline2" = {
     "name" : "000-bootstrap-update",
-    "path" : "\\bootstrap",
+    "path" : "\\000-bootstrap",
     "repo_ref" : "repo2",
     "yml_path" : "demo-vmss/000-bootstrap-update.yml"
   }
   "pipeline3" = {
     "name" : "000-bootstrap-terraform",
-    "path" : "\\bootstrap",
+    "path" : "\\000-bootstrap",
     "repo_ref" : "repo2",
     "yml_path" : "demo-vmss/000-bootstrap-terraform.yml"
+  }
+  "pipeline3" = {
+    "name" : "001-admin-password",
+    "path" : "\\001-admin-password",
+    "repo_ref" : "repo2",
+    "yml_path" : "demo-vmss/001-admin-password-terraform.yml"
   }
 }
 
