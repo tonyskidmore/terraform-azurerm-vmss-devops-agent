@@ -23,6 +23,23 @@ resource "azuredevops_git_repository" "repository" {
   }
 }
 
+data "azuredevops_group" "build_service" {
+  name = "Project Collection Build Service"
+}
+
+resource "azuredevops_git_permissions" "repo-permissions" {
+  for_each      = azuredevops_git_repository.repository
+  project_id    = azuredevops_project.project.id
+  repository_id = each.value.id
+  principal     = data.azuredevops_group.build_service.id
+  permissions = {
+    Administer        = "Allow"
+    RemoveOthersLocks = "Allow"
+    GenericContribute = "Allow"
+    PolicyExempt      = "Allow"
+  }
+}
+
 #curl \
 #  -u :$AZDO_PERSONAL_ACCESS_TOKEN \
 #  -H "Content-Type: application/json" \
