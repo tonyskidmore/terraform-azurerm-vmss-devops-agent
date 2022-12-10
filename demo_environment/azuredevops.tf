@@ -104,9 +104,11 @@ resource "azuredevops_serviceendpoint_azurerm" "sub" {
 }
 
 resource "azuredevops_resource_authorization" "azurerm" {
-  project_id    = azuredevops_project.project.id
-  resource_id   = azuredevops_serviceendpoint_azurerm.sub.id
-  definition_id = azuredevops_build_definition.build_definition["pipeline2"].id
+  for_each    = azuredevops_build_definition.build_definition
+  project_id  = azuredevops_project.project.id
+  resource_id = azuredevops_serviceendpoint_azurerm.sub.id
+  # definition_id = azuredevops_build_definition.build_definition["pipeline2"].id
+  definition_id = each.value.id
   authorized    = true
 }
 
@@ -171,18 +173,18 @@ resource "azuredevops_variable_group" "vars" {
   }
 
   variable {
-    name         = "state_resource_group_name"
-    secret_value = azurerm_resource_group.demo-vmss.name
+    name  = "state_resource_group_name"
+    value = azurerm_resource_group.demo-vmss.name
   }
 
   variable {
-    name         = "state_storage_account_name"
-    secret_value = azurerm_storage_account.demo-vmss.name
+    name  = "state_storage_account_name"
+    value = azurerm_storage_account.demo-vmss.name
   }
 
   variable {
-    name         = "state_container_name"
-    secret_value = azurerm_storage_container.tfstate.name
+    name  = "state_container_name"
+    value = azurerm_storage_container.tfstate.name
   }
 
 }
