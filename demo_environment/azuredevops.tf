@@ -60,8 +60,10 @@ resource "azuredevops_build_definition" "build_definition" {
 
 # add permissions to repo for pipeline
 resource "null_resource" "build_definition_repo_perms" {
+  for_each = azuredevops_build_definition.build_definition
   triggers = {
-    id = azuredevops_build_definition.build_definition["pipeline2"].id
+    # id = azuredevops_build_definition.build_definition["pipeline2"].id
+    id = each.value.id
   }
 
   depends_on = [
@@ -71,7 +73,8 @@ resource "null_resource" "build_definition_repo_perms" {
 
   provisioner "local-exec" {
     command = <<EOF
-id=${azuredevops_build_definition.build_definition["pipeline2"].id}
+# id=${azuredevops_build_definition.build_definition["pipeline2"].id}
+id=${each.value.id}
 payload="{ \"pipelines\": [{ \"id\": $id, \"authorized\": true }]}"
 echo $id
 echo $payload
@@ -166,4 +169,20 @@ resource "azuredevops_variable_group" "vars" {
     secret_value = var.azurerm_subscription_id
     is_secret    = true
   }
+
+  variable {
+    name         = "state_resource_group_name"
+    secret_value = azurerm_resource_group.demo-vmss.name
+  }
+
+  variable {
+    name         = "state_storage_account_name"
+    secret_value = azurerm_storage_account.demo-vmss.name
+  }
+
+  variable {
+    name         = "state_container_name"
+    secret_value = azurerm_storage_container.tfstate.name
+  }
+
 }

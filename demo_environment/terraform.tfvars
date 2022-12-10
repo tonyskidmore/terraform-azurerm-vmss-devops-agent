@@ -19,7 +19,7 @@ build_definitions = {
     "repo_ref" : "repo2",
     "yml_path" : "demo-vmss/000-bootstrap-terraform.yml"
   }
-  "pipeline3" = {
+  "pipeline4" = {
     "name" : "001-admin-password",
     "path" : "\\001-admin-password",
     "repo_ref" : "repo2",
