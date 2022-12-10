@@ -13,6 +13,12 @@ build_definitions = {
     "repo_ref" : "repo2",
     "yml_path" : "demo-vmss/000-bootstrap-update.yml"
   }
+  "pipeline3" = {
+    "name" : "000-bootstrap-terraform",
+    "path" : "\\bootstrap",
+    "repo_ref" : "repo2",
+    "yml_path" : "demo-vmss/000-bootstrap-terraform.yml"
+  }
 }
 
 git_repos = {
