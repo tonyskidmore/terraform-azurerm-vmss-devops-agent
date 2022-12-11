@@ -42,7 +42,7 @@ To use this example update the `terraform.tfvars` file to match your Azure requi
 
 | Name | Version |
 |------|---------|
-| azurerm | 3.33.0 |
+| azurerm | 3.35.0 |
 ## Modules
 
 | Name | Source | Version |
