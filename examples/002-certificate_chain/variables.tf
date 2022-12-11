@@ -43,6 +43,16 @@ variable "vmss_vnet_name" {
   description = "Name of the Vnet that the target subnet is a member of"
 }
 
+variable "vmss_source_image_offer" {
+  description = "Azure Virtual Machine Scale Set Source Image Offer"
+  type        = string
+}
+
+variable "vmss_source_image_sku" {
+  description = "Azure Virtual Machine Scale Set Source Image SKU"
+  type        = string
+}
+
 variable "tags" {
   type        = map(string)
   description = "Map of the tags to use for the resources that are deployed"
