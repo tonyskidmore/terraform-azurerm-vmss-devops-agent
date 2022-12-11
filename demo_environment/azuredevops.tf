@@ -6,6 +6,7 @@ resource "random_string" "build_index" {
 resource "azuredevops_project" "project" {
   name        = var.ado_project_name
   description = var.ado_project_description
+  visibility  = var.ado_project_visibility
 }
 
 resource "azuredevops_git_repository" "repository" {
