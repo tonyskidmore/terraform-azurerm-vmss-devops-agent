@@ -31,6 +31,18 @@ build_definitions = {
     "repo_ref" : "repo2",
     "yml_path" : "demo-vmss/001-admin-password-test.yml"
   }
+  "pipeline6" = {
+    "name" : "002-certificate-chain",
+    "path" : "\\002-certificate-chain",
+    "repo_ref" : "repo2",
+    "yml_path" : "demo-vmss/002-certificate-chain-terraform.yml"
+  }
+  "pipeline7" = {
+    "name" : "002-certificate-chain-test",
+    "path" : "\\002-certificate-chain",
+    "repo_ref" : "repo2",
+    "yml_path" : "002-certificate-chain-test.yml"
+  }
 }
 
 git_repos = {
