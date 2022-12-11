@@ -23,12 +23,14 @@ resource "azuredevops_git_repository" "repository" {
   }
 }
 
-data "azuredevops_group" "build_service" {
-  name = "Project Collection Build Service Accounts"
-}
 
 # TODO:
 # https://github.com/microsoft/terraform-provider-azuredevops/issues/668
+
+# data "azuredevops_group" "build_service" {
+#   name = "Project Collection Build Service Accounts"
+# }
+#
 # resource "azuredevops_git_permissions" "repo-permissions" {
 #   for_each      = azuredevops_git_repository.repository
 #   project_id    = azuredevops_project.project.id
@@ -39,7 +41,6 @@ data "azuredevops_group" "build_service" {
 #     PolicyExempt      = "Allow"
 #   }
 # }
-
 
 resource "azuredevops_build_definition" "build_definition" {
   for_each = var.build_definitions

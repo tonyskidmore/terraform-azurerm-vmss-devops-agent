@@ -4,12 +4,12 @@ resource "azurerm_resource_group" "demo-vmss" {
   tags     = var.tags
 }
 
-resource "azurerm_management_lock" "resource-group-level" {
-  name       = "resource-group-level"
-  scope      = azurerm_resource_group.demo-vmss.id
-  lock_level = "CanNotDelete"
-  notes      = "This would normally be set if not a demo"
-}
+# resource "azurerm_management_lock" "resource-group-level" {
+#   name       = "resource-group-level"
+#   scope      = azurerm_resource_group.demo-vmss.id
+#   lock_level = "CanNotDelete"
+#   notes      = "This would normally be set if not a demo"
+# }
 
 provider "shell" {
   sensitive_environment = {

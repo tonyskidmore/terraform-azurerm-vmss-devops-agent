@@ -25,6 +25,12 @@ build_definitions = {
     "repo_ref" : "repo2",
     "yml_path" : "demo-vmss/001-admin-password-terraform.yml"
   }
+  "pipeline5" = {
+    "name" : "001-admin-password-test",
+    "path" : "\\001-admin-password",
+    "repo_ref" : "repo2",
+    "yml_path" : "demo-vmss/001-admin-password-terraform.yml"
+  }
 }
 
 git_repos = {
