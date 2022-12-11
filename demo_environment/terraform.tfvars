@@ -20,7 +20,7 @@ build_definitions = {
     "yml_path" : "demo-vmss/000-bootstrap-terraform.yml"
   }
   "pipeline4" = {
-    "name" : "001-admin-password",
+    "name" : "001-admin-password-terraform",
     "path" : "\\001-admin-password",
     "repo_ref" : "repo2",
     "yml_path" : "demo-vmss/001-admin-password-terraform.yml"
@@ -32,7 +32,7 @@ build_definitions = {
     "yml_path" : "demo-vmss/001-admin-password-test.yml"
   }
   "pipeline6" = {
-    "name" : "002-certificate-chain",
+    "name" : "002-certificate-chain-terraform",
     "path" : "\\002-certificate-chain",
     "repo_ref" : "repo2",
     "yml_path" : "demo-vmss/002-certificate-chain-terraform.yml"
@@ -41,7 +41,7 @@ build_definitions = {
     "name" : "002-certificate-chain-test",
     "path" : "\\002-certificate-chain",
     "repo_ref" : "repo2",
-    "yml_path" : "002-certificate-chain-test.yml"
+    "yml_path" : "demo-vmss/002-certificate-chain-test.yml"
   }
 }
 
