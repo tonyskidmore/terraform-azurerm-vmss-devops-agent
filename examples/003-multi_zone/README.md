@@ -4,7 +4,12 @@ In this example we are creating a pool named `vmss-mkt-image-004` based on an Az
 
 We are setting `ado_pool_desired_idle` to 3 to indicate that we want 3 standby agents deployed into the pool, going up to a maximum of 5 active instances.  The `vmss_zones` is defined so that each instance in the VMSS is spread across availability zones.
 
-`-var ado_project_visibility=Public`
+````bash
+
+cd demo_environment
+terraform plan -var ado_project_visibility=public -out tfplan
+
+````
 
 <!-- BEGIN_TF_DOCS -->
 
