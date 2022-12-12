@@ -13,7 +13,7 @@ It is an abstraction over two child modules:
 
 The child modules can be used separately if required.
 
-This brings the functionality together in an all in one module with a number of examples that demonstrate how the module can be used.
+This brings the functionality together in an all in one module with a number of examples that demonstrate how the module and VMSS can be used within Azure DevOps for self-hosted agents.
 The default behaviour is that the VMSS instances will be configured as Docker hosts, but that can be disabled if desired by setting the
 `vmss_custom_data_script` variable to `null`.  Alternatively, supplying a base64 encoded value for `vmss_custom_data_data`, which overrides the `vmss_custom_data_script` variable.
 
@@ -21,8 +21,8 @@ The default behaviour is that the VMSS instances will be configured as Docker ho
 ## Requirements
 
 Currently, due to the fact that creating an [Agent Pool - Azure virtual machine scale set][scale-agents] is currently [blocked][blocking-issue]
-because the SDK used by the [Azure DevOps Terraform Provider][terraform-provider-azuredevops],
-does not support the required functionality this module uses the [Terraform shell provider][shell-provider] as a workaround.  Therefore, it inherits most of the requirements of the [Terraform Azure DevOps Scale Set Agent module](https://registry.terraform.io/modules/tonyskidmore/azure-devops-elasticpool/shell/latest) module, namely:
+because the SDK used by the [Azure DevOps Terraform Provider][terraform-provider-azuredevops]
+does not support the required functionality, this module uses the [Terraform shell provider][shell-provider] as a workaround.  Therefore, it inherits most of the requirements of the [Terraform Azure DevOps Scale Set Agent module](https://registry.terraform.io/modules/tonyskidmore/azure-devops-elasticpool/shell/latest) module, namely:
 
 * An Azure subscription.
   _Note:_ you can get started with a [Azure free account][azure-free]
@@ -42,7 +42,7 @@ does not support the required functionality this module uses the [Terraform shel
   - sed
   - jq
 
-The PAT needs be passed to the Terraform configuration by any standard mechanism, for example:
+The PAT and other required variables need be passed to the Terraform configuration by any standard mechanism, for example:
 
 ````bash
 
@@ -53,7 +53,7 @@ export TF_VAR_ado_ext_pat="$AZURE_DEVOPS_EXT_PAT"
 
 _Note:_ The PAT is used for the initial creation of the agent pool and for subsequent Terraform operations.  Therefore, it would be advisable to create/use a service account for this rather than a standard user account.
 
-## Getting started
+A full example of passing the necessary variables can be seen in the `demo_environment/README.md` directory of this repo.
 
 
 <!-- BEGIN_TF_DOCS -->
@@ -173,3 +173,16 @@ No providers.
 
 * Running a `terrform destroy` while pipelines are running will result in an error.  If pipelines are expected to be running then it is best to disable agents and then run the destroy.
   Although, re-running the destroy should subsequently work after an error when pipelines are not running.
+
+[scale-agents]: https://learn.microsoft.com/en-us/azure/devops/pipelines/agents/scale-set-agents
+[scale-agents]: https://learn.microsoft.com/en-us/azure/devops/pipelines/agents/scale-set-agents
+[shell-provider]: https://registry.terraform.io/providers/scottwinkler/shell/1.7.10
+[blocking-issue]: https://github.com/microsoft/terraform-provider-azuredevops/issues/204
+[terraform-provider-azuredevops]: https://github.com/microsoft/terraform-provider-azuredevops
+[azdo-pat]: https://learn.microsoft.com/en-us/azure/devops/organizations/accounts/use-personal-access-tokens-to-authenticate
+[azure-free]: https://azure.microsoft.com/en-gb/free
+[azdo]: https://azure.microsoft.com/en-gb/products/devops
+[azdo-org]: https://learn.microsoft.com/en-us/azure/devops/organizations/accounts/create-organization
+[azdo-project]: https://learn.microsoft.com/en-us/azure/devops/organizations/projects/create-project
+[azdo-connect-azure]: https://learn.microsoft.com/en-us/azure/devops/pipelines/library/connect-to-azure
+[tf-vmss-example]: https://github.com/tonyskidmore/terraform-azurerm-vmss/tree/main/examples/admin_password
