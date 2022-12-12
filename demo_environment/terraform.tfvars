@@ -43,6 +43,24 @@ build_definitions = {
     "repo_ref" : "repo2",
     "yml_path" : "demo-vmss/002-certificate-chain-test.yml"
   }
+  "pipeline8" = {
+    "name" : "003-multi-zone-scale-up-terraform",
+    "path" : "\\003-multi-zone",
+    "repo_ref" : "repo2",
+    "yml_path" : "demo-vmss/003-multi-zone-scale-up-terraform.yml"
+  }
+  "pipeline9" = {
+    "name" : "003-multi-zone-scale-down-terraform",
+    "path" : "\\003-multi-zone",
+    "repo_ref" : "repo2",
+    "yml_path" : "demo-vmss/003-multi-zone-scale-down-terraform.yml"
+  }
+  "pipeline10" = {
+    "name" : "003-multi-zone-test",
+    "path" : "\\003-multi-zone",
+    "repo_ref" : "repo2",
+    "yml_path" : "demo-vmss/003-multi-zone.yml"
+  }
 }
 
 git_repos = {
