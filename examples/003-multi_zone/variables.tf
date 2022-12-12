@@ -48,6 +48,12 @@ variable "vmss_resource_group_name" {
   description = "Existing resource group name of where the VMSS will be created"
 }
 
+variable "vmss_sku" {
+  type        = string
+  description = "Azure Virtual Machine Scale Set SKU"
+  default     = "Standard_B1s"
+}
+
 variable "vmss_subnet_name" {
   type        = string
   description = "Name of subnet where the vmss will be connected"

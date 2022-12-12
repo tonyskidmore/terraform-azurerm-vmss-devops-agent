@@ -35,6 +35,7 @@ module "terraform-azurerm-vmss-devops-agent" {
   vmss_ssh_public_key      = tls_private_key.vmss_ssh.public_key_openssh
   vmss_name                = var.vmss_name
   vmss_resource_group_name = var.vmss_resource_group_name
+  vmss_sku                 = var.vmss_sku
   vmss_subnet_id           = data.azurerm_subnet.agents.id
   vmss_zones               = var.vmss_zones
   tags                     = var.tags

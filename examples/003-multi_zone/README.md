@@ -47,6 +47,7 @@ terraform plan -var ado_project_visibility=public -out tfplan
 | tags | Map of the tags to use for the resources that are deployed | `map(string)` | `{}` | no |
 | vmss\_name | Name of the Virtual Machine Scale Set to create | `string` | n/a | yes |
 | vmss\_resource\_group\_name | Existing resource group name of where the VMSS will be created | `string` | n/a | yes |
+| vmss\_sku | Azure Virtual Machine Scale Set SKU | `string` | `"Standard_B1s"` | no |
 | vmss\_subnet\_name | Name of subnet where the vmss will be connected | `string` | n/a | yes |
 | vmss\_vnet\_name | Name of the Vnet that the target subnet is a member of | `string` | n/a | yes |
 | vmss\_zones | A collection of availability zones to spread the Virtual Machines over | `list(string)` | `[]` | no |
@@ -94,6 +95,7 @@ module "terraform-azurerm-vmss-devops-agent" {
   vmss_ssh_public_key      = tls_private_key.vmss_ssh.public_key_openssh
   vmss_name                = var.vmss_name
   vmss_resource_group_name = var.vmss_resource_group_name
+  vmss_sku                 = var.vmss_sku
   vmss_subnet_id           = data.azurerm_subnet.agents.id
   vmss_zones               = var.vmss_zones
   tags                     = var.tags
