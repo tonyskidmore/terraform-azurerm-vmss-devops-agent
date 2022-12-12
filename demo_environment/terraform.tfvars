@@ -59,7 +59,7 @@ build_definitions = {
     "name" : "003-multi-zone-test",
     "path" : "\\003-multi-zone",
     "repo_ref" : "repo2",
-    "yml_path" : "demo-vmss/003-multi-zone.yml"
+    "yml_path" : "demo-vmss/003-multi-zone-test.yml"
   }
 }
 
