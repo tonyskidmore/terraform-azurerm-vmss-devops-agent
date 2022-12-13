@@ -10,4 +10,4 @@ vmss_vnet_name           = "vnet-demo-azure-devops-vmss"
 vmss_subnet_name         = "snet-demo-azure-devops-vmss"
 # split the nodes over 3 availability zones
 vmss_zones = ["1", "2", "3"]
-vmss_sku   = "Standard_DS2_v2"
+vmss_sku   = "Standard_D2as_v4"
