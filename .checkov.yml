@@ -1,4 +1,6 @@
 ---
+directory:
+  - .
 
 skip-check:
   # "Ensure Azure linux scale set does not use basic authentication(Use SSH Key Instead)"

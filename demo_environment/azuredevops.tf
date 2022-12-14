@@ -51,7 +51,6 @@ resource "azuredevops_build_definition" "build_definition" {
   repository {
     repo_type = "TfsGit"
     repo_id   = azuredevops_git_repository.repository[each.value.repo_ref].id
-    # branch_name = azuredevops_git_repository.repository[each.value.repo_ref].default_branch
     # TODO: "refs/heads/main"
     branch_name = "refs/heads/examples"
     yml_path    = each.value.yml_path
@@ -62,7 +61,6 @@ resource "azuredevops_build_definition" "build_definition" {
 resource "null_resource" "build_definition_repo_perms" {
   for_each = azuredevops_build_definition.build_definition
   triggers = {
-    # id = azuredevops_build_definition.build_definition["pipeline2"].id
     id = each.value.id
   }
 
@@ -73,7 +71,6 @@ resource "null_resource" "build_definition_repo_perms" {
 
   provisioner "local-exec" {
     command = <<EOF
-# id=${azuredevops_build_definition.build_definition["pipeline2"].id}
 id=${each.value.id}
 payload="{ \"pipelines\": [{ \"id\": $id, \"authorized\": true }]}"
 echo $id
@@ -89,6 +86,47 @@ curl \
 EOF
   }
 }
+
+# https://github.com/microsoft/terraform-provider-azuredevops/issues/540
+# https://github.com/microsoft/OHDSIonAzure/blob/bd21a5a3f002bb45080ec967a06cd2fe1d0f5713/infra/terraform/modules/azure_devops_environment_pipeline_assignment/azure_devops_environment_pipeline_assignment.sh
+# https://github.com/microsoft/OHDSIonAzure/blob/437d214861eecd6a3d488303beec56415d04cb59/porter-scripts/update_environment_pipeline_assignment.sh
+
+resource "azuredevops_environment" "demo" {
+  project_id  = azuredevops_project.project.id
+  name        = "demo"
+  description = "Demo environment"
+}
+
+# add permissions to environment for pipeline
+resource "null_resource" "build_definition_env_perms" {
+  for_each = azuredevops_build_definition.build_definition
+  triggers = {
+    id = each.value.id
+  }
+
+  depends_on = [
+    azuredevops_build_definition.build_definition,
+    azuredevops_environment.demo
+  ]
+
+  provisioner "local-exec" {
+    command = <<EOF
+id=${each.value.id}
+payload="{ \"pipelines\": [{ \"id\": $id, \"authorized\": true }]}"
+echo $id
+echo $payload
+curl \
+  --silent \
+  --show-error \
+  --user ":$AZDO_PERSONAL_ACCESS_TOKEN" \
+  --header "Content-Type: application/json" \
+  --request PATCH \
+  --data "$payload" \
+  "$AZDO_ORG_SERVICE_URL/${var.ado_project_name}/_apis/pipelines/pipelinePermissions/environment/${azuredevops_environment.demo.id}?api-version=7.1-preview.1" | jq .
+EOF
+  }
+}
+
 
 resource "azuredevops_serviceendpoint_azurerm" "sub" {
   project_id            = azuredevops_project.project.id
@@ -111,13 +149,6 @@ resource "azuredevops_resource_authorization" "azurerm" {
   definition_id = each.value.id
   authorized    = true
 }
-
-resource "azuredevops_environment" "demo" {
-  project_id  = azuredevops_project.project.id
-  name        = "demo"
-  description = "Demo environment"
-}
-
 
 # https://stackoverflow.com/questions/72557511/how-to-add-update-approvers-for-environments-through-rest-api-on-azure-devops
 
