@@ -42,7 +42,7 @@ does not support the required functionality, this module uses the [Terraform she
   - sed
   - jq
 
-The PAT and other required variables need be passed to the Terraform configuration by any standard mechanism, for example:
+The Azure DevOps PAT and other required variables need be passed to the Terraform configuration by any standard mechanism, for example:
 
 ````bash
 
