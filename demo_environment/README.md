@@ -71,7 +71,7 @@ export TF_VAR_azurerm_subscription_id="$ARM_SUBSCRIPTION_ID"
 git clone https://github.com/tonyskidmore/terraform-azurerm-vmss-devops-agent.git
 cd demo_environment
 terraform init
-terraform plan -out tfplan
+terraform plan -out tfplan # -var ado_project_visibility=public # add this to make public for unlimited parallel pipelines
 terraform apply tfplan
 
 ````
