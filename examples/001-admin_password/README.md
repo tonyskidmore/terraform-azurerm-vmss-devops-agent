@@ -12,10 +12,10 @@ Example steps to test the module locally (for example in Windows Subsystem for L
  export ARM_SUBSCRIPTION_ID=00000000-0000-0000-0000-000000000000
  export ARM_TENANT_ID=00000000-0000-0000-0000-000000000000
  export ARM_CLIENT_ID=00000000-0000-0000-0000-000000000000
- export ARM_CLIENT_SECRET=AAABjkwhs7862782626_BsGGjkskj_MaGv
+ export ARM_CLIENT_SECRET=<secret-here>
 
 # authenticate to Azure DevOps with Personal Access Token
- export AZDO_PERSONAL_ACCESS_TOKEN="ckusfcc8ope2soot1yuovmdvlgtfgj9nio2orfwyvv5jsgcnwwga"
+ export AZDO_PERSONAL_ACCESS_TOKEN="<pat-here>"
 export TF_VAR_ado_ext_pat="$AZURE_DEVOPS_EXT_PAT"
 
 git clone https://github.com/tonyskidmore/terraform-azurerm-vmss-devops-agent.git

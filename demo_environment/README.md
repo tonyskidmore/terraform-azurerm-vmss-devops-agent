@@ -17,7 +17,7 @@ Personal Access Token - Full Access
  export ARM_SUBSCRIPTION_ID=00000000-0000-0000-0000-000000000000
  export ARM_TENANT_ID=00000000-0000-0000-0000-000000000000
  export ARM_CLIENT_ID=00000000-0000-0000-0000-000000000000
- export ARM_CLIENT_SECRET=AAABjkwhs7862782626_BsGGjkskj_MaGv
+ export ARM_CLIENT_SECRET=<secret-here>
 
  export AZDO_PERSONAL_ACCESS_TOKEN="your PAT here" # full access
 export AZDO_ORG_SERVICE_URL="https://dev.azure.com/tonyskidmore" # your organization

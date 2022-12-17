@@ -57,6 +57,7 @@ resource "azuredevops_build_definition" "build_definition" {
   }
 }
 
+
 # add permissions to repo for pipeline
 resource "null_resource" "build_definition_repo_perms" {
   for_each = azuredevops_build_definition.build_definition
@@ -87,9 +88,6 @@ EOF
   }
 }
 
-# https://github.com/microsoft/terraform-provider-azuredevops/issues/540
-# https://github.com/microsoft/OHDSIonAzure/blob/bd21a5a3f002bb45080ec967a06cd2fe1d0f5713/infra/terraform/modules/azure_devops_environment_pipeline_assignment/azure_devops_environment_pipeline_assignment.sh
-# https://github.com/microsoft/OHDSIonAzure/blob/437d214861eecd6a3d488303beec56415d04cb59/porter-scripts/update_environment_pipeline_assignment.sh
 
 resource "azuredevops_environment" "demo" {
   project_id  = azuredevops_project.project.id
@@ -127,7 +125,6 @@ EOF
   }
 }
 
-
 resource "azuredevops_serviceendpoint_azurerm" "sub" {
   project_id            = azuredevops_project.project.id
   service_endpoint_name = var.service_endpoint_name
@@ -150,7 +147,6 @@ resource "azuredevops_resource_authorization" "azurerm" {
   authorized    = true
 }
 
-# https://stackoverflow.com/questions/72557511/how-to-add-update-approvers-for-environments-through-rest-api-on-azure-devops
 
 resource "azuredevops_variable_group" "vars" {
   project_id   = azuredevops_project.project.id

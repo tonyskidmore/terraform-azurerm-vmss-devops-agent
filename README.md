@@ -53,7 +53,7 @@ export TF_VAR_ado_ext_pat="$AZURE_DEVOPS_EXT_PAT"
 
 _Note:_ The PAT is used for the initial creation of the agent pool and for subsequent Terraform operations.  Therefore, it would be advisable to create/use a service account for this rather than a standard user account.
 
-A full example of passing the necessary variables can be seen in the `demo_environment/README.md` directory of this repo.
+A full example of passing the necessary variables can be seen in the `demo_environment/README.md` directory of this repository.
 
 
 <!-- BEGIN_TF_DOCS -->
@@ -175,7 +175,6 @@ No providers.
   Although, re-running the destroy should subsequently work after an error when pipelines are not running.
 
 [scale-agents]: https://learn.microsoft.com/en-us/azure/devops/pipelines/agents/scale-set-agents
-[scale-agents]: https://learn.microsoft.com/en-us/azure/devops/pipelines/agents/scale-set-agents
 [shell-provider]: https://registry.terraform.io/providers/scottwinkler/shell/1.7.10
 [blocking-issue]: https://github.com/microsoft/terraform-provider-azuredevops/issues/204
 [terraform-provider-azuredevops]: https://github.com/microsoft/terraform-provider-azuredevops
@@ -185,4 +184,3 @@ No providers.
 [azdo-org]: https://learn.microsoft.com/en-us/azure/devops/organizations/accounts/create-organization
 [azdo-project]: https://learn.microsoft.com/en-us/azure/devops/organizations/projects/create-project
 [azdo-connect-azure]: https://learn.microsoft.com/en-us/azure/devops/pipelines/library/connect-to-azure
-[tf-vmss-example]: https://github.com/tonyskidmore/terraform-azurerm-vmss/tree/main/examples/admin_password
