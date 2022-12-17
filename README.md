@@ -4,19 +4,20 @@ Terraform Azure DevOps virtual machine scale set agent module
 
 ## Overview
 
-This Terraform module will create an Azure Virtual Machine Scale Set and an associated Azure virtual machine scale set agent pool in Azure DevOps.
+This Terraform module will create an Azure Virtual Machine Scale Set in Azure and an associated Azure virtual machine scale set agent pool in Azure DevOps.
 
 It is an abstraction over two child modules:
 
 * [Terraform azurerm Virtual Machine Scale Set module](https://registry.terraform.io/modules/tonyskidmore/vmss/azurerm/latest)
 * [Terraform Azure DevOps Scale Set Agent module](https://registry.terraform.io/modules/tonyskidmore/azure-devops-elasticpool/shell/latest)
 
-The child modules can be used separately if required.  Once the Azure DevOps Terraform module has been updated to use an update [SDK][blocking-issue] then that can be used instead of the workaround of using [Terraform Azure DevOps Scale Set Agent module](https://registry.terraform.io/modules/tonyskidmore/azure-devops-elasticpool/shell/latest).
+The child modules can be used separately if required.
 
 This brings the functionality together in an all in one module with a number of examples that demonstrate how the module and VMSS can be used within Azure DevOps for self-hosted agents.
 The default behaviour is that the VMSS instances will be configured as Docker hosts, but that can be disabled if desired by setting the
 `vmss_custom_data_script` variable to `null`.  Alternatively, supplying a base64 encoded value for `vmss_custom_data_data`, which overrides the `vmss_custom_data_script` variable.
 
+Once the Azure DevOps Terraform provider has been updated to use an updated [SDK][blocking-issue] we can use that to replace the workaround of using the [Terraform Azure DevOps Scale Set Agent module](https://registry.terraform.io/modules/tonyskidmore/azure-devops-elasticpool/shell/latest).
 
 ## Requirements
 

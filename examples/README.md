@@ -13,3 +13,8 @@ The table below lists the various example contained in the directories below.
 Each example will have a `*-terraform` pipeline which deploys the scale set based agent pool which should be run first.
 There is also an associated `*-test` pipeline that tests the functionality of the deployed agent pool.
 The example agent pool and VMSS can be destroyed by re-running the `*-terraform` pipeline and choosing the `terraform-destroy` parameter option.
+
+_Note:_
+
+In most examples VMSS instances are limited to 0 by default to reduce potential costs.
+Therefore, there will be a delay of a few minutes (typically 3-5mins depending on the configuration) from when the test pipelines are triggered to when they start executing.
