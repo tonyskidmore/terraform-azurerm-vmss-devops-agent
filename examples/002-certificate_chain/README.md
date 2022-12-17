@@ -2,7 +2,7 @@
 
 In this example we are creating a pool named `vmss-agent-pool-linux-002` based on an Azure MarketPlace Ubuntu 20.04 image.
 
-The example doesn't use many variables, just to keep the inputs explicit and easy to show in the `main.tf`, normally these would be passed using variables and a method to [assign values](https://www.terraform.io/language/values/variables#assigning-values-to-root-module-variables) to those variables.
+It demonstrates how to add a custom certificate chain to VMSS instances.  This might be required if TLS inspection occurs at the network level.
 
 <!-- BEGIN_TF_DOCS -->
 

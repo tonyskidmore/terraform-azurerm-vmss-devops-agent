@@ -1,8 +1,16 @@
 # Example - Create Multi-Zone Azure DevOps Scale Set
 
-In this example we are creating a pool named `vmss-mkt-image-004` based on an Azure MarketPlace Ubuntu 20.04 image.
+In this example we are creating a pool named `vmss-agent-pool-linux-003` based on an Azure MarketPlace Ubuntu 20.04 image.
 
 We are setting `ado_pool_desired_idle` to 3 to indicate that we want 3 standby agents deployed into the pool, going up to a maximum of 5 active instances.  The `vmss_zones` is defined so that each instance in the VMSS is spread across availability zones.
+
+_Note_:
+By default, this example uses the `UK South` region and the VMSS instance `Standard_D2as_v4` SKU.
+It will deploy 3 instances to begin with, which means cost will be incurred from the time the Scale Set agent is deployed to illustrate the functionality.
+To keep costs ensure that after running the test pipeline you either run the `003-multi-zone-scale-down-terraform` pipeline to set the desired idle agents to zero
+or run the the same pipeline and choose the `terraform-destroy` parameter option.
+
+To take advantage of [unlimited parallel jobs](https://learn.microsoft.com/en-us/azure/devops/pipelines/licensing/concurrent-jobs?view=azure-devops&tabs=self-hosted) the original demo environment should be created with Public visibility i.e.:
 
 ````bash
 

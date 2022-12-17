@@ -16,7 +16,15 @@ Example steps to test the module locally (for example in Windows Subsystem for L
 
 # authenticate to Azure DevOps with Personal Access Token
  export AZDO_PERSONAL_ACCESS_TOKEN="<pat-here>"
-export TF_VAR_ado_ext_pat="$AZURE_DEVOPS_EXT_PAT"
+export AZDO_ORG_SERVICE_URL="https://dev.azure.com/tonyskidmore" # your organization here
+
+# reference the above to pass into Terraform
+export TF_VAR_ado_org="$AZDO_ORG_SERVICE_URL"
+export TF_VAR_ado_ext_pat="$AZDO_PERSONAL_ACCESS_TOKEN"
+export TF_VAR_serviceprincipalid="$ARM_CLIENT_ID"
+export TF_VAR_serviceprincipalkey="$ARM_CLIENT_SECRET"
+export TF_VAR_azurerm_spn_tenantid="$ARM_TENANT_ID"
+export TF_VAR_azurerm_subscription_id="$ARM_SUBSCRIPTION_ID"
 
 git clone https://github.com/tonyskidmore/terraform-azurerm-vmss-devops-agent.git
 

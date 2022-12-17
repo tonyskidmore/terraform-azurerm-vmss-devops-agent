@@ -1,10 +1,15 @@
 # Examples
 
-The table below lists the various example contained in the directories below.
+The examples show how functionality can be achieved by tailoring the deployment of the underlying Virtual Machine Scale Set.
 
+The table below lists the various example contained in the directories below.
 
 | Name                  | Description
 |-----------------------|---------------------------------------------------------------------------------------------------------------------------------|
 | 001-admin_password    | Minimal example to create an Azure VMSS with admin password and an associated Azure DevOps agent pool.                          |
 | 002-certificate_chain | Including a custom certificate chain on the VMSS instance.  Useful if TLS inspection is used e.g. traffic goes through Zscaler. |
-| 003-multi-zone        | Deploying agents across availability zones.  Also demonstrates scaling down agents on a schedule.                               |
+| 003-multi-zone        | Deploying agents across availability zones.  Also demonstrates scaling up/down agents on a schedule.                            |
+
+Each example will have a `*-terraform` pipeline which deploys the scale set based agent pool which should be run first.
+There is also an associated `*-test` pipeline that tests the functionality of the deployed agent pool.
+The example agent pool and VMSS can be destroyed by re-running the `*-terraform` pipeline and choosing the `terraform-destroy` parameter option.

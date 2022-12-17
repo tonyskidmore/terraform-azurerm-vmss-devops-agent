@@ -1,24 +1,26 @@
 ado_pool_name = "vmss-bootstrap-pool"
 
 build_definitions = {
-  "pipeline1" = {
-    "name" : "000-bootstrap-test",
-    "path" : "\\000-bootstrap",
-    "repo_ref" : "repo2",
-    "yml_path" : "demo-vmss/000-bootstrap-test.yml"
-  }
-  "pipeline2" = {
-    "name" : "000-bootstrap-update",
-    "path" : "\\000-bootstrap",
-    "repo_ref" : "repo2",
-    "yml_path" : "demo-vmss/000-bootstrap-update.yml"
-  }
-  "pipeline3" = {
-    "name" : "000-bootstrap-terraform",
-    "path" : "\\000-bootstrap",
-    "repo_ref" : "repo2",
-    "yml_path" : "demo-vmss/000-bootstrap-terraform.yml"
-  }
+  # TODO:
+  # pending: https://github.com/microsoft/terraform-provider-azuredevops/issues/668
+  # "pipeline1" = {
+  #   "name" : "000-bootstrap-test",
+  #   "path" : "\\000-bootstrap",
+  #   "repo_ref" : "repo2",
+  #   "yml_path" : "demo-vmss/000-bootstrap-test.yml"
+  # }
+  # "pipeline2" = {
+  #   "name" : "000-bootstrap-update",
+  #   "path" : "\\000-bootstrap",
+  #   "repo_ref" : "repo2",
+  #   "yml_path" : "demo-vmss/000-bootstrap-update.yml"
+  # }
+  # "pipeline3" = {
+  #   "name" : "000-bootstrap-terraform",
+  #   "path" : "\\000-bootstrap",
+  #   "repo_ref" : "repo2",
+  #   "yml_path" : "demo-vmss/000-bootstrap-terraform.yml"
+  # }
   "pipeline4" = {
     "name" : "001-admin-password-terraform",
     "path" : "\\001-admin-password",

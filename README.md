@@ -11,7 +11,7 @@ It is an abstraction over two child modules:
 * [Terraform azurerm Virtual Machine Scale Set module](https://registry.terraform.io/modules/tonyskidmore/vmss/azurerm/latest)
 * [Terraform Azure DevOps Scale Set Agent module](https://registry.terraform.io/modules/tonyskidmore/azure-devops-elasticpool/shell/latest)
 
-The child modules can be used separately if required.
+The child modules can be used separately if required.  Once the Azure DevOps Terraform module has been updated to use an update [SDK][blocking-issue] then that can be used instead of the workaround of using [Terraform Azure DevOps Scale Set Agent module](https://registry.terraform.io/modules/tonyskidmore/azure-devops-elasticpool/shell/latest).
 
 This brings the functionality together in an all in one module with a number of examples that demonstrate how the module and VMSS can be used within Azure DevOps for self-hosted agents.
 The default behaviour is that the VMSS instances will be configured as Docker hosts, but that can be disabled if desired by setting the
@@ -53,7 +53,7 @@ export TF_VAR_ado_ext_pat="$AZURE_DEVOPS_EXT_PAT"
 
 _Note:_ The PAT is used for the initial creation of the agent pool and for subsequent Terraform operations.  Therefore, it would be advisable to create/use a service account for this rather than a standard user account.
 
-A full example of passing the necessary variables can be seen in the `demo_environment/README.md` directory of this repository.
+A full example of passing the necessary variables can be seen in the [demo_environment/README.md](demo_environment/README.md).
 
 
 <!-- BEGIN_TF_DOCS -->

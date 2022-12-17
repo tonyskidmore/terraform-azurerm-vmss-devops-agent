@@ -24,7 +24,7 @@ resource "azuredevops_git_repository" "repository" {
 
 
 # TODO:
-# https://github.com/microsoft/terraform-provider-azuredevops/issues/668
+# pending: https://github.com/microsoft/terraform-provider-azuredevops/issues/668
 
 # data "azuredevops_group" "build_service" {
 #   name = "Project Collection Build Service Accounts"
