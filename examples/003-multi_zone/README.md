@@ -5,10 +5,16 @@ Deploy the agent pool by running the pipeline `003-multi-zone-scale-up-terraform
 
 We are setting `ado_pool_desired_idle` to 3 to indicate that we want 3 standby agents deployed into the pool, going up to a maximum of 5 active instances.  The `vmss_zones` is defined so that each instance in the VMSS is spread across availability zones.
 
+The `scale/scale-up.tfvars` and `scale/scale-down.tfvars` give examples of using both 2 and 3 zones.  The example pipelines are also defined with schedules to demonstrate how pools can be scaled at different times.  For example, you might want 3 agents deployed during the working day but 0 deployed agents overnight or at the weekend.  Jobs will still be able to run during out of hours but costs won't be incurred if no jobs are executing.
+
 _Note_:
-By default, this example uses the `UK South` region and the VMSS instance `Standard_D2as_v4` SKU.
+By default, this example uses the `UK South` region and the VMSS instance `Standard_B1s` SKU over 2 zones.
+If set to the `Standard_D2as_v4` SKU it is possible to run across 3 zones.
+
+_Note_:
 It will deploy 3 instances to begin with, which means cost will be incurred from the time the Scale Set agent is deployed to illustrate the functionality.
-To keep costs ensure that after running the test pipeline you either run the `003-multi-zone-scale-down-terraform` pipeline to set the desired idle agents to zero
+
+To keep costs down ensure that after running the test pipeline you either run the `003-multi-zone-scale-down-terraform` pipeline to set the desired idle agents to zero
 or run the the same pipeline and choose the `terraform-destroy` parameter option.
 
 To take advantage of [unlimited parallel jobs](https://learn.microsoft.com/en-us/azure/devops/pipelines/licensing/concurrent-jobs?view=azure-devops&tabs=self-hosted) the original demo environment should be created with Public visibility i.e.:
