@@ -8,6 +8,10 @@ We are setting `ado_pool_desired_idle` to 3 to indicate that we want 3 standby a
 The `scale/scale-up.tfvars` and `scale/scale-down.tfvars` give examples of using both 2 and 3 zones.  The example pipelines are also defined with schedules to demonstrate how pools can be scaled at different times.  For example, you might want 3 agents deployed during the working day but 0 deployed agents overnight or at the weekend.  Jobs will still be able to run during out of hours but costs won't be incurred if no jobs are executing.
 
 _Note_:
+The `Plan Terraform11` job is expected to fail.  The `003-multi-zone-test.yml` pipeline runs some Terraform code with a `precondition` block, which was not introduced until `v1.2.0`.
+It demonstrates running `terraform plan` against different versions of terraform as an example of a matrix strategy job.
+
+_Note_:
 By default, this example uses the `UK South` region and the VMSS instance `Standard_B1s` SKU over 2 zones.
 If set to the `Standard_D2as_v4` SKU it is possible to run across 3 zones.
 
