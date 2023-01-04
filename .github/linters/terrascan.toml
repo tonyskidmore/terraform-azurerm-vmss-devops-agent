@@ -9,3 +9,5 @@
       "AC_AZURE_0389", # Ensure that Azure Resource Group has resource lock enabled
       "AC_AZURE_0356" # Ensure that Azure Virtual Network subnet is configured with a Network Security Group
     ]
+[severity]
+level = "high"
