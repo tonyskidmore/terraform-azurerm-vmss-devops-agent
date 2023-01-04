@@ -12,12 +12,12 @@ repos:
       - id: trailing-whitespace
       - id: detect-private-key
 
-  # - repo: https://github.com/bridgecrewio/checkov.git
-  #   rev: '2.1.201'
-  #   hooks:
-  #     - id: checkov
-  #       verbose: false
-  #       args: [ ]
+  - repo: https://github.com/bridgecrewio/checkov.git
+    rev: '2.2.234'
+    hooks:
+      - id: checkov
+        verbose: false
+        args: [ ]
 
   - repo: https://github.com/antonbabenko/pre-commit-terraform
   # Get the latest from:
