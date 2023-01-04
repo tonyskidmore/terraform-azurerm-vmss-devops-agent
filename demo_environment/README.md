@@ -77,7 +77,7 @@ terraform apply tfplan
 ````
 _Note:_
 The Azure DevOps Terraform provider occasionally throws up `Internal Error Occurred` errors.
-If it does just re-run the `plan` and `apply` steps and it should go through ok.
+If it does just re-run the `plan` and `apply` steps and it should go through OK.
 
 
 

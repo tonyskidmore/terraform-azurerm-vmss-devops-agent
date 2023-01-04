@@ -5,7 +5,8 @@ Deploy the agent pool by running the pipeline `003-multi-zone-scale-up-terraform
 
 We are setting `ado_pool_desired_idle` to 3 to indicate that we want 3 standby agents deployed into the pool, going up to a maximum of 5 active instances.  The `vmss_zones` is defined so that each instance in the VMSS is spread across availability zones.
 
-The `scale/scale-up.tfvars` and `scale/scale-down.tfvars` give examples of using both 2 and 3 zones.  The example pipelines are also defined with schedules to demonstrate how pools can be scaled at different times.  For example, you might want 3 agents deployed during the working day but 0 deployed agents overnight or at the weekend.  Jobs will still be able to run during out of hours but costs won't be incurred if no jobs are executing.
+The `scale/scale-up.tfvars` and `scale/scale-down.tfvars` give examples of using both 2 and 3 zones.  The example pipelines are also defined with schedules to demonstrate how pools can be scaled at different times.
+For example, you might want 3 agents deployed during the working day but 0 deployed agents overnight or at the weekend.  Jobs will still be able to run during out of hours but costs won't be incurred if no jobs are executing.
 
 _Note_:
 The `Plan Terraform11` job is expected to fail.  The `003-multi-zone-test.yml` pipeline runs some Terraform code with a `precondition` block, which was not introduced until `v1.2.0`.
