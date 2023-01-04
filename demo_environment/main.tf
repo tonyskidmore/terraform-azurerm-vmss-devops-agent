@@ -18,7 +18,6 @@ provider "shell" {
 }
 
 module "terraform-azurerm-vmss-devops-agent" {
-  # TODO: update module path
   # source                   = "tonyskidmore/vmss-devops-agent/azurerm"
   # version                  = "0.1.0"
   source                   = "../"
