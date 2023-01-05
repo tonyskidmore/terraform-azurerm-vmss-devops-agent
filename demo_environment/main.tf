@@ -4,12 +4,12 @@ resource "azurerm_resource_group" "demo-vmss" {
   tags     = var.tags
 }
 
-resource "azurerm_management_lock" "resource-group-level" {
-  name       = "resource-group-level"
-  scope      = azurerm_resource_group.demo-vmss.id
-  lock_level = "CanNotDelete"
-  notes      = "This would normally be set if not a demo"
-}
+# resource "azurerm_management_lock" "resource-group-level" {
+#   name       = "resource-group-level"
+#   scope      = azurerm_resource_group.demo-vmss.id
+#   lock_level = "CanNotDelete"
+#   notes      = "This would normally be set if not a demo"
+# }
 
 provider "shell" {
   sensitive_environment = {
@@ -18,7 +18,6 @@ provider "shell" {
 }
 
 module "terraform-azurerm-vmss-devops-agent" {
-  # TODO: update module path
   # source                   = "tonyskidmore/vmss-devops-agent/azurerm"
   # version                  = "0.1.0"
   source                   = "../"
@@ -31,4 +30,6 @@ module "terraform-azurerm-vmss-devops-agent" {
   vmss_name                = var.vmss_name
   vmss_resource_group_name = azurerm_resource_group.demo-vmss.name
   vmss_subnet_id           = azurerm_subnet.demo-vmss.id
+  vmss_custom_data_data    = local.vmss_custom_data_data
+  vmss_identity_type       = "SystemAssigned"
 }

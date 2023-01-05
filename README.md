@@ -1,10 +1,14 @@
+
 # terraform-azurerm-vmss-devops-agent
+
+[![GitHub Super-Linter](https://github.com/tonyskidmore/terraform-azurerm-vmss-devops-agent/workflows/Lint%20Code%20Base/badge.svg)](https://github.com/marketplace/actions/super-linter)
+
 Terraform Azure DevOps virtual machine scale set agent module
 
 
 ## Overview
 
-This Terraform module will create an Azure Virtual Machine Scale Set and an associated Azure virtual machine scale set agent pool in Azure DevOps.
+This Terraform module will create an Azure Virtual Machine Scale Set in Azure and an associated Azure virtual machine scale set agent pool in Azure DevOps.
 
 It is an abstraction over two child modules:
 
@@ -13,16 +17,17 @@ It is an abstraction over two child modules:
 
 The child modules can be used separately if required.
 
-This brings the functionality together in an all in one module with a number of examples that demonstrate how the module can be used.
+This brings the functionality together in an all in one module with a number of examples that demonstrate how the module and VMSS can be used within Azure DevOps for self-hosted agents.
 The default behaviour is that the VMSS instances will be configured as Docker hosts, but that can be disabled if desired by setting the
 `vmss_custom_data_script` variable to `null`.  Alternatively, supplying a base64 encoded value for `vmss_custom_data_data`, which overrides the `vmss_custom_data_script` variable.
 
+Once the Azure DevOps Terraform provider has been updated to use an updated [SDK][blocking-issue] we can use that to replace the workaround of using the [Terraform Azure DevOps Scale Set Agent module](https://registry.terraform.io/modules/tonyskidmore/azure-devops-elasticpool/shell/latest).
 
 ## Requirements
 
 Currently, due to the fact that creating an [Agent Pool - Azure virtual machine scale set][scale-agents] is currently [blocked][blocking-issue]
-because the SDK used by the [Azure DevOps Terraform Provider][terraform-provider-azuredevops],
-does not support the required functionality this module uses the [Terraform shell provider][shell-provider] as a workaround.  Therefore, it inherits most of the requirements of the [Terraform Azure DevOps Scale Set Agent module](https://registry.terraform.io/modules/tonyskidmore/azure-devops-elasticpool/shell/latest) module, namely:
+because the SDK used by the [Azure DevOps Terraform Provider][terraform-provider-azuredevops]
+does not support the required functionality, this module uses the [Terraform shell provider][shell-provider] as a workaround.  Therefore, it inherits most of the requirements of the [Terraform Azure DevOps Scale Set Agent module](https://registry.terraform.io/modules/tonyskidmore/azure-devops-elasticpool/shell/latest) module, namely:
 
 * An Azure subscription.
   _Note:_ you can get started with a [Azure free account][azure-free]
@@ -42,7 +47,7 @@ does not support the required functionality this module uses the [Terraform shel
   - sed
   - jq
 
-The PAT needs be passed to the Terraform configuration by any standard mechanism, for example:
+The Azure DevOps PAT and other required variables need be passed to the Terraform configuration by any standard mechanism, for example:
 
 ````bash
 
@@ -53,7 +58,7 @@ export TF_VAR_ado_ext_pat="$AZURE_DEVOPS_EXT_PAT"
 
 _Note:_ The PAT is used for the initial creation of the agent pool and for subsequent Terraform operations.  Therefore, it would be advisable to create/use a service account for this rather than a standard user account.
 
-## Getting started
+A full example of passing the necessary variables can be seen in the [demo_environment/README.md](demo_environment/README.md).
 
 
 <!-- BEGIN_TF_DOCS -->
@@ -81,10 +86,8 @@ data "azurerm_subnet" "agents" {
 }
 
 module "terraform-azurerm-vmss-devops-agent" {
-  # TODO: update module path
-  # source                   = "tonyskidmore/vmss-devops-agent/azurerm"
-  # version                  = "0.1.0"
-  source                   = "../../"
+  source                   = "tonyskidmore/vmss-devops-agent/azurerm"
+  version                  = "0.1.0"
   ado_org                  = var.ado_org
   ado_pool_name            = var.ado_pool_name
   ado_project              = var.ado_project
@@ -105,6 +108,7 @@ No resources.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
+| <a name="input_ado_dirty"></a> [ado\_dirty](#input\_ado\_dirty) | Azure DevOps pool settings are dirty | `bool` | `false` | no |
 | <a name="input_ado_org"></a> [ado\_org](#input\_ado\_org) | Azure DevOps Organization name | `string` | n/a | yes |
 | <a name="input_ado_pool_auth_all_pipelines"></a> [ado\_pool\_auth\_all\_pipelines](#input\_ado\_pool\_auth\_all\_pipelines) | Setting to determine if all pipelines are authorized to use this TaskAgentPool by default (at create only) | `string` | `"True"` | no |
 | <a name="input_ado_pool_auto_provision_projects"></a> [ado\_pool\_auto\_provision\_projects](#input\_ado\_pool\_auto\_provision\_projects) | Setting to automatically provision TaskAgentQueues in every project for the new pool (at create only) | `string` | `"True"` | no |
@@ -141,7 +145,7 @@ No resources.
 | <a name="input_vmss_se_enabled"></a> [vmss\_se\_enabled](#input\_vmss\_se\_enabled) | Whether to process the Linux Virtual Machine Scale Set extension resource | `bool` | `false` | no |
 | <a name="input_vmss_se_settings_data"></a> [vmss\_se\_settings\_data](#input\_vmss\_se\_settings\_data) | The base64 encoded data to use as the script for the VMSS custom script extension | `string` | `null` | no |
 | <a name="input_vmss_se_settings_script"></a> [vmss\_se\_settings\_script](#input\_vmss\_se\_settings\_script) | The path of the file to use as the script for the VMSS custom script extension | `string` | `"scripts/vmss-startup.sh"` | no |
-| <a name="input_vmss_sku"></a> [vmss\_sku](#input\_vmss\_sku) | Azure Virtual Machine Scale Set SKU | `string` | `"Standard_B1s"` | no |
+| <a name="input_vmss_sku"></a> [vmss\_sku](#input\_vmss\_sku) | Azure Virtual Machine Scale Set SKU | `string` | `"Standard_B2s"` | no |
 | <a name="input_vmss_source_image_id"></a> [vmss\_source\_image\_id](#input\_vmss\_source\_image\_id) | Azure Virtual Machine Scale Set Image ID | `string` | `null` | no |
 | <a name="input_vmss_source_image_offer"></a> [vmss\_source\_image\_offer](#input\_vmss\_source\_image\_offer) | Azure Virtual Machine Scale Set Source Image Offer | `string` | `"0001-com-ubuntu-server-focal"` | no |
 | <a name="input_vmss_source_image_publisher"></a> [vmss\_source\_image\_publisher](#input\_vmss\_source\_image\_publisher) | Azure Virtual Machine Scale Set Source Image Publisher | `string` | `"Canonical"` | no |
@@ -172,3 +176,14 @@ No providers.
 
 * Running a `terrform destroy` while pipelines are running will result in an error.  If pipelines are expected to be running then it is best to disable agents and then run the destroy.
   Although, re-running the destroy should subsequently work after an error when pipelines are not running.
+
+[scale-agents]: https://learn.microsoft.com/en-us/azure/devops/pipelines/agents/scale-set-agents
+[shell-provider]: https://registry.terraform.io/providers/scottwinkler/shell/1.7.10
+[blocking-issue]: https://github.com/microsoft/terraform-provider-azuredevops/issues/204
+[terraform-provider-azuredevops]: https://github.com/microsoft/terraform-provider-azuredevops
+[azdo-pat]: https://learn.microsoft.com/en-us/azure/devops/organizations/accounts/use-personal-access-tokens-to-authenticate
+[azure-free]: https://azure.microsoft.com/en-gb/free
+[azdo]: https://azure.microsoft.com/en-gb/products/devops
+[azdo-org]: https://learn.microsoft.com/en-us/azure/devops/organizations/accounts/create-organization
+[azdo-project]: https://learn.microsoft.com/en-us/azure/devops/organizations/projects/create-project
+[azdo-connect-azure]: https://learn.microsoft.com/en-us/azure/devops/pipelines/library/connect-to-azure

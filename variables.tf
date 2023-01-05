@@ -1,10 +1,5 @@
 # required variables
 
-# variable "ado_ext_pat" {
-#   type        = string
-#   description = "Azure DevOps personal access token"
-# }
-
 variable "ado_org" {
   type        = string
   description = "Azure DevOps Organization name"
@@ -30,8 +25,13 @@ variable "vmss_subnet_id" {
   description = "Existing subnet ID of where the VMSS will be connected"
 }
 
-
 # variables with predefined defaults
+
+variable "ado_dirty" {
+  type        = bool
+  description = "Azure DevOps pool settings are dirty"
+  default     = false
+}
 
 variable "ado_pool_auth_all_pipelines" {
   type        = string
@@ -125,14 +125,12 @@ variable "ado_project_only" {
   }
 }
 
-
 variable "tags" {
   description = "Tags to apply to Azure Virtual Machine Scale"
   type        = map(string)
   default     = {}
 }
 
-# should only really be used in testing from a security perspective
 variable "vmss_admin_password" {
   type        = string
   description = "Azure Virtual Machine Scale Set instance administrator password"
@@ -157,7 +155,6 @@ variable "vmss_custom_data_script" {
   default     = "scripts/cloud-init/cloud-init"
 }
 
-# TODO: this should be named vmss_disk_size_gb, rename in breaking changes update
 variable "vmss_disk_size_gb" {
   type        = number
   description = "The Size of the Internal OS Disk in GB, if you wish to vary from the size used in the image this Virtual Machine Scale Set is sourced from"
@@ -299,7 +296,7 @@ variable "vmss_source_image_version" {
 variable "vmss_sku" {
   type        = string
   description = "Azure Virtual Machine Scale Set SKU"
-  default     = "Standard_B1s"
+  default     = "Standard_B2s"
 }
 
 variable "vmss_ssh_public_key" {

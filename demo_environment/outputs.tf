@@ -22,3 +22,8 @@ output "git_repo_id" {
   value       = azuredevops_git_repository.repository["repo1"].id
   description = "Azure storage resource group name"
 }
+
+output "ado_project_name" {
+  value       = var.ado_project_name
+  description = "Azure DevOps project"
+}

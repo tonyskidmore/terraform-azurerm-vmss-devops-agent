@@ -12,11 +12,19 @@ Example steps to test the module locally (for example in Windows Subsystem for L
  export ARM_SUBSCRIPTION_ID=00000000-0000-0000-0000-000000000000
  export ARM_TENANT_ID=00000000-0000-0000-0000-000000000000
  export ARM_CLIENT_ID=00000000-0000-0000-0000-000000000000
- export ARM_CLIENT_SECRET=AAABjkwhs7862782626_BsGGjkskj_MaGv
+ export ARM_CLIENT_SECRET=<secret-here>
 
 # authenticate to Azure DevOps with Personal Access Token
- export AZDO_PERSONAL_ACCESS_TOKEN="ckusfcc8ope2soot1yuovmdvlgtfgj9nio2orfwyvv5jsgcnwwga"
-export TF_VAR_ado_ext_pat="$AZURE_DEVOPS_EXT_PAT"
+ export AZDO_PERSONAL_ACCESS_TOKEN="<pat-here>"
+export AZDO_ORG_SERVICE_URL="https://dev.azure.com/tonyskidmore" # your organization here
+
+# reference the above to pass into Terraform
+export TF_VAR_ado_org="$AZDO_ORG_SERVICE_URL"
+export TF_VAR_ado_ext_pat="$AZDO_PERSONAL_ACCESS_TOKEN"
+export TF_VAR_serviceprincipalid="$ARM_CLIENT_ID"
+export TF_VAR_serviceprincipalkey="$ARM_CLIENT_SECRET"
+export TF_VAR_azurerm_spn_tenantid="$ARM_TENANT_ID"
+export TF_VAR_azurerm_subscription_id="$ARM_SUBSCRIPTION_ID"
 
 git clone https://github.com/tonyskidmore/terraform-azurerm-vmss-devops-agent.git
 
@@ -42,12 +50,12 @@ To use this example update the `terraform.tfvars` file to match your Azure requi
 
 | Name | Version |
 |------|---------|
-| azurerm | 3.33.0 |
+| azurerm | 3.35.0 |
 ## Modules
 
 | Name | Source | Version |
 |------|--------|---------|
-| terraform-azurerm-vmss-devops-agent | ../../ | n/a |
+| terraform-azurerm-vmss-devops-agent | tonyskidmore/vmss-devops-agent/azurerm | 0.1.0 |
 ## Inputs
 
 | Name | Description | Type | Default | Required |
@@ -89,10 +97,8 @@ data "azurerm_subnet" "agents" {
 }
 
 module "terraform-azurerm-vmss-devops-agent" {
-  # TODO: update module path
-  # source                   = "tonyskidmore/vmss-devops-agent/azurerm"
-  # version                  = "0.1.0"
-  source                   = "../../"
+  source                   = "tonyskidmore/vmss-devops-agent/azurerm"
+  version                  = "0.1.0"
   ado_org                  = var.ado_org
   ado_pool_name            = var.ado_pool_name
   ado_project              = var.ado_project

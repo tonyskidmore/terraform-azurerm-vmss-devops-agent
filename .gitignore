@@ -8,6 +8,8 @@ tfplan
 */__pycache__/
 *.pyc
 
+demo_environment/backend.tf
+
 modules/
 
 # ADO pool generated JSON

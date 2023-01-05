@@ -14,6 +14,17 @@ variable "ado_project_name" {
   default     = "demo-vmss"
 }
 
+variable "ado_project_visibility" {
+  type        = string
+  description = "Azure DevOps project visibility"
+  default     = "private"
+
+  validation {
+    condition     = contains(["private", "public"], var.ado_project_visibility)
+    error_message = "The ado_project_visibility variable must be public or private."
+  }
+}
+
 variable "ado_pool_name" {
   type        = string
   description = "Azure DevOps agent pool name"
@@ -65,6 +76,7 @@ variable "azurerm_subscription_name" {
 variable "build_definitions" {
   type = map(object({
     name     = string
+    path     = string
     repo_ref = string
     yml_path = string
   }))
