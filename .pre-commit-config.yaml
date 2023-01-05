@@ -28,11 +28,11 @@ repos:
       - id: terraform_validate
       # - id: terraform_tfsec
       - id: terraform_tflint
-      # - id: terrascan
-      #   args:
-      #     - --args=--non-recursive
-      #     - --args=--skip-rules="AC_AZURE_0356" # avoids nsg test for simple admin_password example
-      #     - --args=--policy-type=azure
+#       - id: terrascan
+#         args:
+#           - --args=--non-recursive
+#           - --args=--skip-rules="AC_AZURE_0356" # avoids nsg test for simple admin_password example
+#           - --args=--policy-type=azure
 
   - repo: https://github.com/terraform-docs/terraform-docs
     rev: "v0.16.0"
