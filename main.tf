@@ -1,6 +1,6 @@
 module "vmss" {
   source  = "tonyskidmore/vmss/azurerm"
-  version = "0.2.1"
+  version = "0.2.2"
   # required variables
   vmss_resource_group_name = var.vmss_resource_group_name
   vmss_subnet_id           = var.vmss_subnet_id
@@ -38,7 +38,7 @@ module "vmss" {
 
 module "azure-devops-elasticpool" {
   source  = "tonyskidmore/azure-devops-elasticpool/shell"
-  version = "0.4.2"
+  version = "0.4.3"
   # required variables
   ado_org                = var.ado_org
   ado_project            = var.ado_project
