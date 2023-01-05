@@ -1,4 +1,8 @@
+
 # terraform-azurerm-vmss-devops-agent
+
+[![GitHub Super-Linter](https://github.com/tonyskidmore/terraform-azurerm-vmss-devops-agent/workflows/Lint%20Code%20Base/badge.svg)](https://github.com/marketplace/actions/super-linter)
+
 Terraform Azure DevOps virtual machine scale set agent module
 
 
