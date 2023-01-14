@@ -62,12 +62,27 @@ build_definitions = {
     "path" : "\\003-multi-zone",
     "repo_ref" : "repo2",
     "yml_path" : "demo-vmss/003-multi-zone-test.yml"
+  },
+  "pipeline11" = {
+    "name" : "004-docker-data-disk-terraform",
+    "path" : "\\004-docker-data-disk",
+    "repo_ref" : "repo2",
+    "yml_path" : "demo-vmss/004-docker-data-disk-terraform.yml"
+  }
+  "pipeline12" = {
+    "name" : "004-docker-data-disk-test",
+    "path" : "\\004-docker-data-disk",
+    "repo_ref" : "repo2",
+    "yml_path" : "demo-vmss/004-docker-data-disk-test.yml"
   }
 }
 
 git_repos = {
   "repo1" = {
     name = "module",
+    # TODO:
+    default_branch = "refs/heads/docker_data_disk",
+    # default_branch = "refs/heads/main",
     initialization = {
       init_type   = "Import",
       source_type = "Git",
@@ -75,8 +90,10 @@ git_repos = {
     }
   }
   "repo2" = {
-    name           = "pipelines",
-    default_branch = "refs/heads/main",
+    name = "pipelines",
+    # TODO:
+    default_branch = "refs/heads/docker_data_disk",
+    # default_branch = "refs/heads/main",
     initialization = {
       init_type   = "Import",
       source_type = "Git",

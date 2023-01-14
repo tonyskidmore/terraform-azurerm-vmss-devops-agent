@@ -48,9 +48,11 @@ resource "azuredevops_build_definition" "build_definition" {
   path       = each.value.path
 
   repository {
-    repo_type   = "TfsGit"
-    repo_id     = azuredevops_git_repository.repository[each.value.repo_ref].id
-    branch_name = "refs/heads/main"
+    repo_type = "TfsGit"
+    repo_id   = azuredevops_git_repository.repository[each.value.repo_ref].id
+    # TODO:
+    # branch_name = "refs/heads/main"
+    branch_name = "refs/heads/docker_data_disk"
     yml_path    = each.value.yml_path
   }
 }
