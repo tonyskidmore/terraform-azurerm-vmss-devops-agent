@@ -70,6 +70,12 @@ build_definitions = {
     "yml_path" : "demo-vmss/004-docker-data-disk-terraform.yml"
   }
   "pipeline12" = {
+    "name" : "004-docker-data-disk-host-test",
+    "path" : "\\004-docker-data-disk",
+    "repo_ref" : "repo2",
+    "yml_path" : "demo-vmss/004-docker-data-disk-host-test.yml"
+  }
+  "pipeline13" = {
     "name" : "004-docker-data-disk-test",
     "path" : "\\004-docker-data-disk",
     "repo_ref" : "repo2",
