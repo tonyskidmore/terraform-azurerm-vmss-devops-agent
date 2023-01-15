@@ -85,10 +85,8 @@ build_definitions = {
 
 git_repos = {
   "repo1" = {
-    name = "module",
-    # TODO:
-    default_branch = "refs/heads/docker_data_disk",
-    # default_branch = "refs/heads/main",
+    name           = "module",
+    default_branch = "refs/heads/main",
     initialization = {
       init_type   = "Import",
       source_type = "Git",
@@ -96,10 +94,8 @@ git_repos = {
     }
   }
   "repo2" = {
-    name = "pipelines",
-    # TODO:
-    default_branch = "refs/heads/docker_data_disk",
-    # default_branch = "refs/heads/main",
+    name           = "pipelines",
+    default_branch = "refs/heads/main",
     initialization = {
       init_type   = "Import",
       source_type = "Git",

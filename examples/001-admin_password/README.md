@@ -55,7 +55,7 @@ To use this example update the `terraform.tfvars` file to match your Azure requi
 
 | Name | Source | Version |
 |------|--------|---------|
-| terraform-azurerm-vmss-devops-agent | tonyskidmore/vmss-devops-agent/azurerm | 0.1.0 |
+| terraform-azurerm-vmss-devops-agent | tonyskidmore/vmss-devops-agent/azurerm | 0.2.0 |
 ## Inputs
 
 | Name | Description | Type | Default | Required |
@@ -98,7 +98,7 @@ data "azurerm_subnet" "agents" {
 
 module "terraform-azurerm-vmss-devops-agent" {
   source                   = "tonyskidmore/vmss-devops-agent/azurerm"
-  version                  = "0.1.0"
+  version                  = "0.2.0"
   ado_org                  = var.ado_org
   ado_pool_name            = var.ado_pool_name
   ado_project              = var.ado_project

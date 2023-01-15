@@ -1,9 +1,22 @@
 # Azure Virtual Machine Scale Set
 
 In this example we are creating a pool named `vmss-agent-pool-linux-004` based on an Azure MarketPlace Ubuntu 20.04 image.
-Deploy the agent pool by running the pipeline `004-docker-data-disk-terraform` created by the `demo_environment`.
 
-Then use the `004-docker-data-disk-test` pipelines to check that the test pipelines runs successfully.
+This example adds a VMSS data disk (minimal 10GB by default) as the location to store Docker data.  The cloud-init configuration (cloud-init.tpl) configures this additional storage and configures Docker to use the data disk sa the `data-root`.  This might be useful if you use a lot of or large container images and you want to separate them onto their own disk and not se the default OS disk.
+
+Deploy the agent pool by running the pipeline `004-docker-data-disk-terraform` created by the `demo_environment`.  Then use the `004-docker-data-disk-test` and `004-docker-data-disk-host-test` pipelines to check the deployment.
+
+The `demo_environment` pipelines are documented below.
+
+| Pipeline                        | Description                                                                              |
+|---------------------------------|------------------------------------------------------------------------------------------|
+| 004-docker-data-disk-terraform  | create/destroy the `vmss-agent-pool-linux-004` agent pool/VMSS                           |
+| 004-docker-data-disk-test       | runs test container jobs on the the above agent pool/VMSS                                |
+| 004-docker-data-disk-host-test  | runs test jobs on the host to check storage location (also demonstrates example cleanup) |
+
+
+_Note_:
+If using the `demo_environment` pipeline it will deploy 2 instances to begin with, which means that cost will be incurred from the time the Scale Set agent is deployed.  To keep costs down ensure that after running and testing that you run `004-docker-data-disk-terraform` pipeline and choose the `terraform-destroy` parameter option.
 
 
 <!-- BEGIN_TF_DOCS -->
@@ -24,7 +37,7 @@ Then use the `004-docker-data-disk-test` pipelines to check that the test pipeli
 
 | Name | Source | Version |
 |------|--------|---------|
-| terraform-azurerm-vmss-devops-agent | ../../ | n/a |
+| terraform-azurerm-vmss-devops-agent | tonyskidmore/vmss-devops-agent/azurerm | 0.2.0 |
 ## Inputs
 
 | Name | Description | Type | Default | Required |
@@ -72,10 +85,8 @@ data "azurerm_subnet" "agents" {
 }
 
 module "terraform-azurerm-vmss-devops-agent" {
-  # TODO:
-  # source                   = "tonyskidmore/vmss-devops-agent/azurerm"
-  # version                  = "0.1.0"
-  source                   = "../../"
+  source                   = "tonyskidmore/vmss-devops-agent/azurerm"
+  version                  = "0.2.0"
   ado_org                  = var.ado_org
   ado_pool_name            = var.ado_pool_name
   ado_project              = var.ado_project
