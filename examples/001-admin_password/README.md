@@ -28,7 +28,7 @@ export TF_VAR_azurerm_subscription_id="$ARM_SUBSCRIPTION_ID"
 
 git clone https://github.com/tonyskidmore/terraform-azurerm-vmss-devops-agent.git
 
-cd examples/admin_password
+cd examples/001-admin_password
 terraform init
 terraform plan -out tfplan
 terraform apply tfplan

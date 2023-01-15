@@ -1,41 +1,10 @@
 # Azure Virtual Machine Scale Set
 
-Example of creating an Azure VMSS and associated Azure DevOps agent pool.
-In this case we are using the most basic configuration, supplying an administrator password
-to keep the example as simple as possible.
+In this example we are creating a pool named `vmss-agent-pool-linux-004` based on an Azure MarketPlace Ubuntu 20.04 image.
+Deploy the agent pool by running the pipeline `004-docker-data-disk-terraform` created by the `demo_environment`.
 
-Example steps to test the module locally (for example in Windows Subsystem for Linux):
+Then use the `004-docker-data-disk-test` pipelines to check that the test pipelines runs successfully.
 
-````bash
-
-# authenticate Terraform to Azure - replace values with your tenant, subscription and service principal values
- export ARM_SUBSCRIPTION_ID=00000000-0000-0000-0000-000000000000
- export ARM_TENANT_ID=00000000-0000-0000-0000-000000000000
- export ARM_CLIENT_ID=00000000-0000-0000-0000-000000000000
- export ARM_CLIENT_SECRET=<secret-here>
-
-# authenticate to Azure DevOps with Personal Access Token
- export AZDO_PERSONAL_ACCESS_TOKEN="<pat-here>"
-export AZDO_ORG_SERVICE_URL="https://dev.azure.com/tonyskidmore" # your organization here
-
-# reference the above to pass into Terraform
-export TF_VAR_ado_org="$AZDO_ORG_SERVICE_URL"
-export TF_VAR_ado_ext_pat="$AZDO_PERSONAL_ACCESS_TOKEN"
-export TF_VAR_serviceprincipalid="$ARM_CLIENT_ID"
-export TF_VAR_serviceprincipalkey="$ARM_CLIENT_SECRET"
-export TF_VAR_azurerm_spn_tenantid="$ARM_TENANT_ID"
-export TF_VAR_azurerm_subscription_id="$ARM_SUBSCRIPTION_ID"
-
-git clone https://github.com/tonyskidmore/terraform-azurerm-vmss-devops-agent.git
-
-cd examples/admin_password
-terraform init
-terraform plan -out tfplan
-terraform apply tfplan
-
-````
-
-To use this example update the `terraform.tfvars` file to match your Azure requirements and your Azure DevOps setup.
 
 <!-- BEGIN_TF_DOCS -->
 
