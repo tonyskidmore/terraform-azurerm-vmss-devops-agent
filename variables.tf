@@ -155,6 +155,18 @@ variable "vmss_custom_data_script" {
   default     = "scripts/cloud-init/cloud-init"
 }
 
+variable "vmss_data_disks" {
+  type = list(object({
+    caching              = string
+    create_option        = string
+    disk_size_gb         = string
+    lun                  = number
+    storage_account_type = string
+  }))
+  description = "Additional data disks"
+  default     = []
+}
+
 variable "vmss_disk_size_gb" {
   type        = number
   description = "The Size of the Internal OS Disk in GB, if you wish to vary from the size used in the image this Virtual Machine Scale Set is sourced from"

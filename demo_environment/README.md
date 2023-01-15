@@ -13,6 +13,7 @@ By default the project will be called `demo-vmss`.  It will create the following
 
 _Note:_
 The demo environment uses Azure Repos but that is only to make things easier for creating the demos, it is not a prerequisite to using the module.
+The Azure DevOps YAML pipelines using in the demo environment are located in a separate repo: [azure-pipelines-yaml](https://github.com/tonyskidmore/azure-pipelines-yaml).
 
 Azure resources are also create:
 

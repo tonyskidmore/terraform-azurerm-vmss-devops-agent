@@ -87,7 +87,7 @@ data "azurerm_subnet" "agents" {
 
 module "terraform-azurerm-vmss-devops-agent" {
   source                   = "tonyskidmore/vmss-devops-agent/azurerm"
-  version                  = "0.1.0"
+  version                  = "0.2.0"
   ado_org                  = var.ado_org
   ado_pool_name            = var.ado_pool_name
   ado_project              = var.ado_project
@@ -129,6 +129,7 @@ No resources.
 | <a name="input_vmss_admin_username"></a> [vmss\_admin\_username](#input\_vmss\_admin\_username) | Azure Virtual Machine Scale Set instance administrator name | `string` | `"adminuser"` | no |
 | <a name="input_vmss_custom_data_data"></a> [vmss\_custom\_data\_data](#input\_vmss\_custom\_data\_data) | The base64 encoded data to use as custom data for the VMSS instances | `string` | `null` | no |
 | <a name="input_vmss_custom_data_script"></a> [vmss\_custom\_data\_script](#input\_vmss\_custom\_data\_script) | The path to the script that will be base64 encoded custom data for the VMSS instances | `string` | `"scripts/cloud-init/cloud-init"` | no |
+| <a name="input_vmss_data_disks"></a> [vmss\_data\_disks](#input\_vmss\_data\_disks) | Additional data disks | <pre>list(object({<br>    caching              = string<br>    create_option        = string<br>    disk_size_gb         = string<br>    lun                  = number<br>    storage_account_type = string<br>  }))</pre> | `[]` | no |
 | <a name="input_vmss_disk_size_gb"></a> [vmss\_disk\_size\_gb](#input\_vmss\_disk\_size\_gb) | The Size of the Internal OS Disk in GB, if you wish to vary from the size used in the image this Virtual Machine Scale Set is sourced from | `number` | `null` | no |
 | <a name="input_vmss_encryption_at_host_enabled"></a> [vmss\_encryption\_at\_host\_enabled](#input\_vmss\_encryption\_at\_host\_enabled) | Should all of the disks (including the temp disk) attached to this Virtual Machine be encrypted by enabling Encryption at Host? | `bool` | `false` | no |
 | <a name="input_vmss_identity_ids"></a> [vmss\_identity\_ids](#input\_vmss\_identity\_ids) | Specifies a list of User Assigned Managed Identity IDs to be assigned to this Linux Virtual Machine Scale Set | `list(string)` | `null` | no |
