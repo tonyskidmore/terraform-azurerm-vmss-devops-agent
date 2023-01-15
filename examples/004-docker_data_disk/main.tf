@@ -26,6 +26,7 @@ module "terraform-azurerm-vmss-devops-agent" {
   ado_pool_name            = var.ado_pool_name
   ado_project              = var.ado_project
   ado_service_connection   = var.ado_service_connection
+  ado_pool_desired_idle    = var.ado_pool_desired_idle
   vmss_admin_password      = var.vmss_admin_password
   vmss_name                = var.vmss_name
   vmss_resource_group_name = var.vmss_resource_group_name

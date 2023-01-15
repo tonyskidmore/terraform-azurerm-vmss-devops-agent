@@ -31,6 +31,7 @@ Then use the `004-docker-data-disk-test` pipelines to check that the test pipeli
 |------|-------------|------|---------|:--------:|
 | ado\_ext\_pat | Azure DevOps Personal Access Token | `string` | n/a | yes |
 | ado\_org | Azure DevOps organization | `string` | n/a | yes |
+| ado\_pool\_desired\_idle | Number of machines to have ready waiting for jobs | `number` | n/a | yes |
 | ado\_pool\_name | Azure DevOps agent pool name | `string` | n/a | yes |
 | ado\_project | Azure DevOps organization | `string` | n/a | yes |
 | ado\_service\_connection | Azure DevOps organiservice connection name | `string` | n/a | yes |
@@ -78,6 +79,7 @@ module "terraform-azurerm-vmss-devops-agent" {
   ado_pool_name            = var.ado_pool_name
   ado_project              = var.ado_project
   ado_service_connection   = var.ado_service_connection
+  ado_pool_desired_idle    = var.ado_pool_desired_idle
   vmss_admin_password      = var.vmss_admin_password
   vmss_name                = var.vmss_name
   vmss_resource_group_name = var.vmss_resource_group_name

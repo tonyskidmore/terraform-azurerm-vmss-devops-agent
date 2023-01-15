@@ -23,6 +23,11 @@ variable "ado_pool_name" {
   description = "Azure DevOps agent pool name"
 }
 
+variable "ado_pool_desired_idle" {
+  type        = number
+  description = "Number of machines to have ready waiting for jobs"
+}
+
 variable "vmss_name" {
   type        = string
   description = "Name of the Virtual Machine Scale Set to create"
