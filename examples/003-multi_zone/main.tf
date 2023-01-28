@@ -22,7 +22,7 @@ resource "tls_private_key" "vmss_ssh" {
 
 module "terraform-azurerm-vmss-devops-agent" {
   source                   = "tonyskidmore/vmss-devops-agent/azurerm"
-  version                  = "0.2.0"
+  version                  = "0.2.1"
   ado_org                  = var.ado_org
   ado_pool_name            = var.ado_pool_name
   ado_project              = var.ado_project

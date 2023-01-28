@@ -5,6 +5,8 @@
 
 Terraform Azure DevOps virtual machine scale set agent module
 
+A getting started, simple standalone example of using the module can be found in the [ado-vmss-simple-demo](https://github.com/tonyskidmore/ado-vmss-simple-demo) repo.
+
 
 ## Overview
 
@@ -58,7 +60,7 @@ export TF_VAR_ado_ext_pat="$AZURE_DEVOPS_EXT_PAT"
 
 _Note:_ The PAT is used for the initial creation of the agent pool and for subsequent Terraform operations.  Therefore, it would be advisable to create/use a service account for this rather than a standard user account.
 
-A full example of passing the necessary variables can be seen in the [demo_environment/README.md](demo_environment/README.md).
+A full example of passing the necessary variables can be seen in the [demo_environment/README.md](https://github.com/tonyskidmore/terraform-azurerm-vmss-devops-agent/blob/main/demo_environment/README.md).
 
 
 <!-- BEGIN_TF_DOCS -->
