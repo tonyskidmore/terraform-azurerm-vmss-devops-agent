@@ -5,7 +5,7 @@
 
 Terraform Azure DevOps virtual machine scale set agent module
 
-A getting started, simple standalone example of using the module can be found in the [ado-vmss-simple-demo](https://github.com/tonyskidmore/ado-vmss-simple-demo) repo.
+A getting started, simple standalone example of using the module can be found in the [ado-vmss-simple-demo](https://github.com/tonyskidmore/ado-vmss-simple-demo) repository.
 
 
 ## Overview
@@ -89,7 +89,7 @@ data "azurerm_subnet" "agents" {
 
 module "terraform-azurerm-vmss-devops-agent" {
   source                   = "tonyskidmore/vmss-devops-agent/azurerm"
-  version                  = "0.2.0"
+  version                  = "0.2.1"
   ado_org                  = var.ado_org
   ado_pool_name            = var.ado_pool_name
   ado_project              = var.ado_project

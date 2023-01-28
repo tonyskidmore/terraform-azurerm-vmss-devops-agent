@@ -24,7 +24,7 @@ It demonstrates how to add a custom certificate chain to VMSS instances.  This m
 
 | Name | Source | Version |
 |------|--------|---------|
-| terraform-azurerm-vmss-devops-agent | tonyskidmore/vmss-devops-agent/azurerm | 0.2.0 |
+| terraform-azurerm-vmss-devops-agent | tonyskidmore/vmss-devops-agent/azurerm | 0.2.1 |
 ## Inputs
 
 | Name | Description | Type | Default | Required |
@@ -75,7 +75,7 @@ resource "tls_private_key" "vmss_ssh" {
 
 module "terraform-azurerm-vmss-devops-agent" {
   source                     = "tonyskidmore/vmss-devops-agent/azurerm"
-  version                    = "0.2.0"
+  version                    = "0.2.1"
   ado_org                    = var.ado_org
   ado_pool_name              = var.ado_pool_name
   ado_project                = var.ado_project
