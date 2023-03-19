@@ -12,6 +12,15 @@ package_update: true
 package_reboot_if_required: true
 
 apt:
+  conf: |
+    Acquire {
+      Retries "60";
+    };
+    DPkg {
+      Lock {
+        Timeout "60";
+      };
+    };
   sources:
     docker.list:
       source: deb [arch=amd64] https://download.docker.com/linux/ubuntu $RELEASE stable

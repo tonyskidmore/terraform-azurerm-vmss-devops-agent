@@ -50,7 +50,8 @@ resource "azuredevops_build_definition" "build_definition" {
   repository {
     repo_type = "TfsGit"
     repo_id   = azuredevops_git_repository.repository[each.value.repo_ref].id
-    # set try to check only if branch_name exists otherwise use refs/heads/main
+    # TODO: set try to check only if branch_name exists otherwise use refs/heads/main
+    # set optional on build_definition vars
     branch_name = each.value.branch_name
     yml_path    = each.value.yml_path
   }
