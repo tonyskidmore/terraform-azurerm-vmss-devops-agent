@@ -48,9 +48,10 @@ resource "azuredevops_build_definition" "build_definition" {
   path       = each.value.path
 
   repository {
-    repo_type   = "TfsGit"
-    repo_id     = azuredevops_git_repository.repository[each.value.repo_ref].id
-    branch_name = "refs/heads/main"
+    repo_type = "TfsGit"
+    repo_id   = azuredevops_git_repository.repository[each.value.repo_ref].id
+    # set try to check only if branch_name exists otherwise use refs/heads/main
+    branch_name = each.value.branch_name
     yml_path    = each.value.yml_path
   }
 }
