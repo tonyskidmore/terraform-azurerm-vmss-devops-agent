@@ -53,18 +53,6 @@ variable "vmss_admin_password" {
   description = "Password to allocate to the admin user account"
 }
 
-variable "vmss_data_disks" {
-  type = list(object({
-    caching              = string
-    create_option        = string
-    disk_size_gb         = string
-    lun                  = number
-    storage_account_type = string
-  }))
-  description = "Additional data disks"
-  default     = []
-}
-
 variable "tags" {
   type        = map(string)
   description = "Map of the tags to use for the resources that are deployed"

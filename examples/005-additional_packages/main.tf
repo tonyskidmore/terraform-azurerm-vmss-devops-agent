@@ -30,7 +30,6 @@ module "terraform-azurerm-vmss-devops-agent" {
   vmss_name                = var.vmss_name
   vmss_resource_group_name = var.vmss_resource_group_name
   vmss_subnet_id           = data.azurerm_subnet.agents.id
-  vmss_data_disks          = var.vmss_data_disks
   vmss_custom_data_data    = local.vmss_custom_data_data
   tags                     = var.tags
 }
