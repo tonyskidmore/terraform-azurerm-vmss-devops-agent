@@ -13,15 +13,6 @@ package_reboot_if_required: true
 
 apt:
   preserve_sources_list: true
-  conf: |
-    Acquire {
-      Retries "60";
-    };
-    DPkg {
-      Lock {
-        Timeout "60";
-      };
-    };
   sources:
     docker.list:
       source: "deb [arch=amd64] https://download.docker.com/linux/ubuntu focal stable"
