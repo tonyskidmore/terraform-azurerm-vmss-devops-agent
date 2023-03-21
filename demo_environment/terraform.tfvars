@@ -83,14 +83,12 @@ build_definitions = {
   }
   "pipeline14" = {
     name = "005-additional-packages-terraform",
-    # TODO: set to main
     path     = "\\005-additional-packages",
     repo_ref = "repo2",
     yml_path = "demo-vmss/005-additional-packages-terraform.yml"
   }
   "pipeline15" = {
     name = "005-additional-packages-test",
-    # TODO: set to main
     path     = "\\005-additional-packages",
     repo_ref = "repo2",
     yml_path = "demo-vmss/005-additional-packages-test.yml"
