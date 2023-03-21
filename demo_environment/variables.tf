@@ -75,11 +75,10 @@ variable "azurerm_subscription_name" {
 
 variable "build_definitions" {
   type = map(object({
-    name        = string
-    branch_name = string
-    path        = string
-    repo_ref    = string
-    yml_path    = string
+    name     = string
+    path     = string
+    repo_ref = string
+    yml_path = string
   }))
   description = "Pipelines to create"
 }
