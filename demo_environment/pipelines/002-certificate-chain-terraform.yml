@@ -46,7 +46,7 @@ stages:
         environmentName: "demo"
     initCheckout:
       - self
-      - git://$(project)/module
+      - git://$(project)/pipelines
     poolName: 'vmss-bootstrap-pool'
     terraformDirectory: '$(System.DefaultWorkingDirectory)/module/examples/002-certificate_chain'
     terraformTfVars:

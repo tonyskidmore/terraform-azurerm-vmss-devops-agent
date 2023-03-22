@@ -57,7 +57,7 @@ resource "azuredevops_build_definition" "build_definition" {
 
 
 # add permissions to repo for pipeline
-resource "null_resource" "build_definition_repo_perms" {
+resource "null_resource" "build_definition_pipelines_repo_perms" {
   for_each = azuredevops_build_definition.build_definition
   triggers = {
     id = each.value.id
@@ -82,6 +82,35 @@ curl \
   --request PATCH \
   --data "$payload" \
   "$AZDO_ORG_SERVICE_URL/${var.ado_project_name}/_apis/pipelines/pipelinePermissions/repository/${azuredevops_project.project.id}.${azuredevops_git_repository.repository["repo2"].id}?api-version=7.0-preview.1" | jq .
+EOF
+  }
+}
+
+resource "null_resource" "build_definition_module_repo_perms" {
+  for_each = azuredevops_build_definition.build_definition
+  triggers = {
+    id = each.value.id
+  }
+
+  depends_on = [
+    azuredevops_build_definition.build_definition,
+    azuredevops_git_repository.repository
+  ]
+
+  provisioner "local-exec" {
+    command = <<EOF
+id=${each.value.id}
+payload="{ \"pipelines\": [{ \"id\": $id, \"authorized\": true }]}"
+echo $id
+echo $payload
+curl \
+  --silent \
+  --show-error \
+  --user ":$AZDO_PERSONAL_ACCESS_TOKEN" \
+  --header "Content-Type: application/json" \
+  --request PATCH \
+  --data "$payload" \
+  "$AZDO_ORG_SERVICE_URL/${var.ado_project_name}/_apis/pipelines/pipelinePermissions/repository/${azuredevops_project.project.id}.${azuredevops_git_repository.repository["repo1"].id}?api-version=7.0-preview.1" | jq .
 EOF
   }
 }
