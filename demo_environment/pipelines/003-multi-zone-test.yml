@@ -1,0 +1,66 @@
+---
+
+name: "container-test"
+
+trigger: none
+
+variables:
+- group: build
+
+pool:
+  name: 'vmss-agent-pool-linux-003'
+
+jobs:
+  - job: Plan
+    strategy:
+      matrix:
+        Terraform11:
+          TERRAFORM_VERSION: '1.1.0'
+        Terraform12:
+          TERRAFORM_VERSION: '1.2.0'
+        Terraform13:
+          TERRAFORM_VERSION: '1.3.0'
+      maxParallel: 3
+    steps:
+
+    - checkout: self
+    - checkout: git://$(project)/module
+    # - checkout: git://$(project)/module@refs/heads/examples
+
+    - script: |
+        env
+        ls "$SYSTEM_DEFAULTWORKINGDIRECTORY"
+      displayName: Debug
+
+    - script: |
+        echo $(TERRAFORM_VERSION)
+        hostname
+      displayName: Matrix output
+
+    - script: |
+        sudo apt update > /dev/null 2>&1
+        sudo apt install -y jq unzip > /dev/null 2>&1
+        metadata=$(curl -s -H Metadata:true --noproxy "*" "http://169.254.169.254/metadata/instance?api-version=2021-02-01")
+        zone=$(jq -r '.compute.zone' <<< "$metadata")
+        printf "Running in zone: %s\n" "$zone"
+      displayName: Show zone
+
+    - script: |
+        wget --quiet "https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip"
+        unzip "terraform_${TERRAFORM_VERSION}_linux_amd64.zip"
+        rm "terraform_${TERRAFORM_VERSION}_linux_amd64.zip"
+        sudo mv terraform /usr/bin
+      displayName: Install Terraform
+
+    - script: |
+        tf_ver=$(terraform version -json | jq .terraform_version)
+        printf "Terraform version installed: %s\n" "$tf_ver"
+      displayName: Terraform version
+
+    - script: |
+        terraform init
+        terraform plan
+      workingDirectory: $(System.DefaultWorkingDirectory)/module/examples/003-multi_zone/terraform
+      displayName: Terraform plan
+      env:
+        TF_IN_AUTOMATION: true

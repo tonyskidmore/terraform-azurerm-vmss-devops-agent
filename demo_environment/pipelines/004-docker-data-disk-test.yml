@@ -1,0 +1,47 @@
+---
+
+name: "container-test"
+
+trigger: none
+
+variables:
+- group: build
+- name: containerImage
+  value: "ubuntu:22.04"
+
+pool:
+  name: 'vmss-agent-pool-linux-004'
+
+resources:
+  containers:
+    - container: ubuntu
+      image: '${{ variables.containerImage }}'
+
+jobs:
+  - job: test
+    strategy:
+      matrix:
+        host1:
+          INSTANCE: '1'
+        host2:
+          INSTANCE: '2'
+    displayName: "Test Container Job"
+    continueOnError: false
+    container: ubuntu
+
+    steps:
+
+      - checkout: self
+
+      - script: |
+          env
+        displayName: Show environment variables
+
+      - script: |
+          source /etc/os-release
+          printf "Running on: %s\n" "$PRETTY_NAME"
+        displayName: Check operating system version
+
+      - script: |
+          printf "INSTANCE: %s\n" "$INSTANCE"
+        displayName: Check instance

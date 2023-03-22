@@ -1,0 +1,80 @@
+---
+
+name: "host-test"
+
+trigger: none
+
+variables:
+- group: build
+
+pool:
+  name: 'vmss-agent-pool-linux-004'
+
+
+jobs:
+  - job: test
+    strategy:
+      matrix:
+        host1:
+          INSTANCE: '1'
+        host2:
+          INSTANCE: '2'
+    displayName: "Test Host Job"
+    continueOnError: false
+
+    steps:
+
+      - checkout: self
+
+      - script: |
+          env
+        displayName: Show environment variables
+
+      - script: |
+          source /etc/os-release
+          printf "Running on: %s\n" "$PRETTY_NAME"
+        displayName: Check operating system version
+
+      - script: |
+          printf "INSTANCE: %s\n" "$INSTANCE"
+        displayName: Check instance
+
+      - script: |
+          echo "lsblk output:"
+          lsblk -o NAME,HCTL,SIZE,MOUNTPOINT | grep -i "sd"
+          echo "mount output:"
+          mount -l | grep -i "sd"
+        displayName: Show disk configuration
+
+      - script: |
+          set -e
+          expected_path="/opt/data/docker"
+          printf "Running on %s\n" "$(hostname)"
+          printf "Running as %s\n" "$(whoami)"
+
+          data_root=$(docker info -f '{{ .DockerRootDir}}')
+          if [[ "$expected_path" == "$data_root" ]]
+          then
+            printf "Successfully confirmed data-root as: %s\n" "$data_root"
+          else
+            printf "Failed to confirm expected data-root as: %s\n" "$data_root"
+            exit 1
+          fi
+        displayName: Check Docker data-root path
+
+      - script: |
+          set -e
+          expected_path="/opt/data/docker"
+          printf "Docker data-root disk usage before cleanup:\n"
+          sudo du -sh "$expected_path"
+
+          printf "\nRunning docker system prune and fstrim\n"
+          docker system prune --all --force
+          # TRIM/UNMAP support for Linux in Azure
+          # https://learn.microsoft.com/en-us/azure/virtual-machines/linux/attach-disk-portal?tabs=ubuntu#trimunmap-support-for-linux-in-azure
+          sudo fstrim --verbose "$expected_path"
+
+          printf "Docker data-root disk usage after cleanup:\n"
+          sudo du -sh "$expected_path"
+
+        displayName: Docker and disk cleanup

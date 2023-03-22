@@ -1,0 +1,68 @@
+---
+
+name: "bootstrap-update"
+
+trigger: none
+
+variables:
+- group: build
+- name: serviceConnection
+  value: "demo-vmss"
+# - name: containerImage
+#   value: "ghcr.io/tonyskidmore/azdo-container-image:latest"
+
+pool:
+  name: 'vmss-bootstrap-pool'
+
+
+# resources:
+#   containers:
+#     - container: ubuntu20_04
+#       image: '${{ variables.containerImage }}'
+
+stages:
+- stage: update
+  # condition: eq('${{ parameters.operation }}', 'first-time-only')
+
+  jobs:
+    - job: update
+      workspace:
+        clean: all
+      displayName: "Update Terraform Code"
+      continueOnError: false
+      # container: ubuntu20_04
+
+      steps:
+
+        - checkout: self
+        - checkout: git://$(project)/module
+          persistCredentials: true
+
+        - script: |
+            env
+            ls "$SYSTEM_DEFAULTWORKINGDIRECTORY"
+          displayName: Debug
+
+        - script: |
+            ls -alt "$SYSTEM_DEFAULTWORKINGDIRECTORY/module"
+          displayName: Directory listing
+
+        - script: |
+            git config --global user.email pipeline@azdo.com
+            git config --global user.name "Azure DevOps Pipeline"
+            # git checkout examples
+          displayName: Configure git
+          workingDirectory: "$(System.DefaultWorkingDirectory)/module/demo_environment"
+
+        - script: |
+            set -x
+            cp "$SYSTEM_DEFAULTWORKINGDIRECTORY/module/demo_environment/bootstrap_update/tf/"*.tf "$SYSTEM_DEFAULTWORKINGDIRECTORY/module/demo_environment"
+            ls -alt "$SYSTEM_DEFAULTWORKINGDIRECTORY/module/demo_environment"
+          displayName: Update files
+
+        - script: |
+            git add -A
+            git commit -m "Updating bootstrap"
+            git push --set-upstream origin # examples
+          displayName: Git commit updates
+          workingDirectory: "$(System.DefaultWorkingDirectory)/module/demo_environment"

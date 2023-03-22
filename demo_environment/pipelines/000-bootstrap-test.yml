@@ -1,0 +1,42 @@
+---
+
+name: "container-test"
+
+trigger: none
+
+variables:
+- group: build
+- name: containerImage
+  value: "ubuntu:22.04"
+
+pool:
+  name: 'vmss-bootstrap-pool'
+
+
+resources:
+  containers:
+    - container: ubuntu20_04
+      image: '${{ variables.containerImage }}'
+
+jobs:
+  - job: test
+    displayName: "Test Container Job"
+    continueOnError: false
+    container: ubuntu20_04
+
+    steps:
+
+      - checkout: self
+
+      - script: |
+          source /etc/os-release
+          printf "Running on: %s\n" "$PRETTY_NAME"
+        displayName: Check operating system version
+
+      - script: |
+          echo "Build index: $(build_index)"
+        displayName: Check build index
+
+      # - script: |
+      #     terraform version
+      #   displayName: Terraform version

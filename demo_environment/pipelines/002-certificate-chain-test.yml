@@ -1,0 +1,39 @@
+---
+
+name: "container-test"
+
+trigger: none
+
+variables:
+- group: build
+- name: containerImage
+  value: "ubuntu:22.04"
+
+pool:
+  name: 'vmss-agent-pool-linux-002'
+
+jobs:
+  - job: test
+    displayName: "Test Certificate Chain Job"
+    continueOnError: false
+
+    steps:
+
+      - checkout: self
+
+      - script: |
+          env
+        displayName: Show environment variables
+
+      - script: |
+          source /etc/os-release
+          printf "Running on: %s\n" "$PRETTY_NAME"
+        displayName: Check operating system version
+
+      - script: |
+          echo "Build index: $(build_index)"
+        displayName: Check build index
+
+      - script: |
+          awk -v cmd='openssl x509 -noout -subject' '/BEGIN/{close(cmd)};{print | cmd}' < /etc/ssl/certs/ca-certificates.crt  | grep -i skidmore
+        displayName: View certificates

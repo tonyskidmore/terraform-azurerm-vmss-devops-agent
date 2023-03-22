@@ -1,0 +1,38 @@
+---
+
+name: "bootstrap-terraform"
+
+trigger: none
+
+variables:
+- group: build
+- name: serviceConnection
+  value: "demo-vmss"
+
+pool:
+  name: 'vmss-bootstrap-pool'
+
+stages:
+
+- template: ../terraform/terraform.yml
+  parameters:
+    environmentParameters:
+      demo:
+        azureSubscription: "demo-vmss"
+        environmentName: "demo"
+    initCheckout:
+      - self
+      - git://$(project)/module
+      # - git://$(project)/module@refs/heads/examples
+    poolName: 'vmss-bootstrap-pool'
+    terraformDirectory: '$(System.DefaultWorkingDirectory)/module/demo_environment'
+    terraformTfVars:
+      AZ_SUBSCRIPTION: $(azurerm_subscription_id)
+      AZDO_PERSONAL_ACCESS_TOKEN: $(ado_ext_pat)
+      AZDO_ORG_SERVICE_URL: $(ado_org)
+      TF_VAR_ado_ext_pat: $(ado_ext_pat)
+      TF_VAR_ado_org: $(ado_org)
+      TF_VAR_azurerm_subscription_id: $(azurerm_subscription_id)
+      TF_VAR_azurerm_spn_tenantid: $(azurerm_spn_tenantid)
+      TF_VAR_serviceprincipalid: $(serviceprincipalid)
+      TF_VAR_serviceprincipalkey: $(serviceprincipalkey)

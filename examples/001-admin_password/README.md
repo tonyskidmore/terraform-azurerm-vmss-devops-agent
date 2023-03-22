@@ -2,7 +2,8 @@
 
 Example of creating an Azure VMSS and associated Azure DevOps agent pool.
 In this case we are using the most basic configuration, supplying an administrator password
-to keep the example as simple as possible.
+to keep the example as simple as possible.  `vmss_custom_data_script` is defined as `""`
+so no cloud-init configuration will be applied.
 
 Example steps to test the module locally (for example in Windows Subsystem for Linux):
 

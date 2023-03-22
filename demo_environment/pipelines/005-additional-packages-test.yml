@@ -1,0 +1,79 @@
+---
+
+name: "additional-packages-host-test"
+
+trigger: none
+
+variables:
+- group: build
+
+pool:
+  name: 'vmss-agent-pool-linux-005'
+
+
+jobs:
+  - job: test
+    displayName: "Test Host Job"
+    continueOnError: false
+
+    steps:
+
+      - checkout: self
+
+      - script: |
+          env
+        displayName: Show environment variables
+
+      - script: |
+          source /etc/os-release
+          printf "Running on: %s\n" "$PRETTY_NAME"
+        displayName: Check operating system version
+
+      - script: |
+          docker --version
+          docker image ls
+          docker ps -a
+        displayName: 'Docker'
+
+      - script: |
+          az --version
+        displayName: 'Azure CLI'
+
+      - script: |
+          jq --version
+        displayName: jq
+
+      - script: |
+          python3 -V
+          command -v python3
+          venv_path="$BUILD_ARTIFACTSTAGINGDIRECTORY/venv"
+          python3 -m venv "$venv_path"
+          source "$venv_path/bin/activate"
+          pip install pip --upgrade
+          pip install setuptools --upgrade
+          pip install ansible
+          ansible --version
+        displayName: Python - Ansible
+
+      - script: |
+          pwsh --version
+        displayName: PowerShell
+
+      - script: |
+          terraform --version
+          command -v terraform
+        displayName: Terraform
+
+      - script: |
+          ls -alt /tmp
+          cat /tmp/get-yq.sh || echo "Error!"
+        displayName: Check tmp
+
+      - script: |
+          yq --version
+        displayName: yq
+
+      - script: |
+          packer --version
+          command -v packer
+        displayName: packer
