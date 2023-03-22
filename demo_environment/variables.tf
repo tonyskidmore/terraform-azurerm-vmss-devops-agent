@@ -137,9 +137,3 @@ variable "vmss_name" {
   type        = string
   description = "Name of the Virtual Machine Scale Set to create"
 }
-
-variable "vmss_custom_data_script" {
-  type        = string
-  description = "The path to the script that will be base64 encoded custom data for the VMSS instances"
-  default     = null
-}
