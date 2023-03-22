@@ -81,7 +81,7 @@ curl \
   --header "Content-Type: application/json" \
   --request PATCH \
   --data "$payload" \
-  "$AZDO_ORG_SERVICE_URL/${var.ado_project_name}/_apis/pipelines/pipelinePermissions/repository/${azuredevops_project.project.id}.${azuredevops_git_repository.repository["repo1"].id}?api-version=7.0-preview.1" | jq .
+  "$AZDO_ORG_SERVICE_URL/${var.ado_project_name}/_apis/pipelines/pipelinePermissions/repository/${azuredevops_project.project.id}.${azuredevops_git_repository.repository["repo2"].id}?api-version=7.0-preview.1" | jq .
 EOF
   }
 }

@@ -30,6 +30,6 @@ module "terraform-azurerm-vmss-devops-agent" {
   vmss_name                = var.vmss_name
   vmss_resource_group_name = azurerm_resource_group.demo-vmss.name
   vmss_subnet_id           = azurerm_subnet.demo-vmss.id
-  vmss_custom_data_data    = local.vmss_custom_data_data
+  vmss_custom_data_data    = var.vmss_custom_data_script
   vmss_identity_type       = "SystemAssigned"
 }
