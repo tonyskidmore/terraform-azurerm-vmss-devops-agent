@@ -31,9 +31,16 @@ variables:
 pool:
   name: 'vmss-bootstrap-pool'
 
+resources:
+  repositories:
+    - repository: self
+    - repository: pipelines
+      type: git
+      name: pipelines
+
 stages:
 
-- template: ../terraform/terraform.yml
+- template: terraform/terraform.yml@pipelines
   parameters:
     ${{ if eq(parameters.operation, 'terraform-destroy') }}:
       destroyMode: true
@@ -50,7 +57,7 @@ stages:
         planCommandOptions: '-var-file=$(System.DefaultWorkingDirectory)/module/examples/003-multi_zone/scale/scale-up.tfvars'
     initCheckout:
       - self
-      - git://$(project)/module
+      - git://$(project)/pipelines
     poolName: 'vmss-bootstrap-pool'
     terraformDirectory: '$(System.DefaultWorkingDirectory)/module/examples/003-multi_zone'
     terraformTfVars:

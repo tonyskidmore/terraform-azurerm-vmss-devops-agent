@@ -48,6 +48,12 @@ variable "vmss_admin_password" {
   description = "Password to allocate to the admin user account"
 }
 
+variable "vmss_custom_data_script" {
+  type        = string
+  description = "The path to the script that will be base64 encoded custom data for the VMSS instances"
+  default     = null
+}
+
 variable "tags" {
   type        = map(string)
   description = "Map of the tags to use for the resources that are deployed"

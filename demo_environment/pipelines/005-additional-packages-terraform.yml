@@ -21,9 +21,16 @@ variables:
 pool:
   name: 'vmss-bootstrap-pool'
 
+resources:
+  repositories:
+    - repository: self
+    - repository: pipelines
+      type: git
+      name: pipelines
+
 stages:
 
-- template: ../terraform/terraform.yml
+- template: terraform/terraform.yml@pipelines
   parameters:
     ${{ if eq(parameters.operation, 'terraform-destroy') }}:
       destroyMode: true
@@ -39,8 +46,7 @@ stages:
         environmentName: "demo"
     initCheckout:
       - self
-      # TODO: revert to main
-      - git://$(project)/module@refs/heads/example_005
+      - git://$(project)/pipelines
     poolName: 'vmss-bootstrap-pool'
     terraformDirectory: '$(System.DefaultWorkingDirectory)/module/examples/005-additional_packages'
     terraformTfVars:
