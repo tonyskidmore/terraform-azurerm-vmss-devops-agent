@@ -11,12 +11,6 @@ resource "azurerm_resource_group" "demo-vmss" {
 #   notes      = "This would normally be set if not a demo"
 # }
 
-provider "shell" {
-  sensitive_environment = {
-    AZURE_DEVOPS_EXT_PAT = var.ado_ext_pat
-  }
-}
-
 module "terraform-azurerm-vmss-devops-agent" {
   # source                   = "tonyskidmore/vmss-devops-agent/azurerm"
   # version                  = "0.1.0"

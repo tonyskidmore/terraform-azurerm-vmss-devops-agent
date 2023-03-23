@@ -91,41 +91,35 @@ EOF
 }
 
 
-# │ Error: error creating resource Build Definition: TF400898: An Internal Error Occurred. Activity Id: c01eeedf-9914-4566-b7a5-68139ca06bf1.
-# │
-# │   with azuredevops_build_definition.build_definition["pipeline11"],
-# │   on azuredevops.tf line 43, in resource "azuredevops_build_definition" "build_definition":
-# │   43: resource "azuredevops_build_definition" "build_definition" {
+resource "null_resource" "build_definition_module_repo_perms" {
+  for_each = azuredevops_build_definition.build_definition
+  triggers = {
+    id = each.value.id
+  }
 
-# resource "null_resource" "build_definition_module_repo_perms" {
-#   for_each = azuredevops_build_definition.build_definition
-#   triggers = {
-#     id = each.value.id
-#   }
+  depends_on = [
+    azuredevops_build_definition.build_definition,
+    azuredevops_git_repository.repository,
+    null_resource.build_definition_pipelines_repo_perms
+  ]
 
-#   depends_on = [
-#     azuredevops_build_definition.build_definition,
-#     azuredevops_git_repository.repository,
-#     null_resource.build_definition_pipelines_repo_perms
-#   ]
-
-#   provisioner "local-exec" {
-#     command = <<EOF
-# id=${each.value.id}
-# payload="{ \"pipelines\": [{ \"id\": $id, \"authorized\": true }]}"
-# echo $id
-# echo $payload
-# curl \
-#   --silent \
-#   --show-error \
-#   --user ":$AZDO_PERSONAL_ACCESS_TOKEN" \
-#   --header "Content-Type: application/json" \
-#   --request PATCH \
-#   --data "$payload" \
-#   "$AZDO_ORG_SERVICE_URL/${var.ado_project_name}/_apis/pipelines/pipelinePermissions/repository/${azuredevops_project.project.id}.${azuredevops_git_repository.repository["repo1"].id}?api-version=7.0-preview.1" | jq .
-# EOF
-#   }
-# }
+  provisioner "local-exec" {
+    command = <<EOF
+id=${each.value.id}
+payload="{ \"pipelines\": [{ \"id\": $id, \"authorized\": true }]}"
+echo $id
+echo $payload
+curl \
+  --silent \
+  --show-error \
+  --user ":$AZDO_PERSONAL_ACCESS_TOKEN" \
+  --header "Content-Type: application/json" \
+  --request PATCH \
+  --data "$payload" \
+  "$AZDO_ORG_SERVICE_URL/${var.ado_project_name}/_apis/pipelines/pipelinePermissions/repository/${azuredevops_project.project.id}.${azuredevops_git_repository.repository["repo1"].id}?api-version=7.0-preview.1" | jq .
+EOF
+  }
+}
 
 
 resource "azuredevops_environment" "demo" {
@@ -181,7 +175,6 @@ resource "azuredevops_resource_authorization" "azurerm" {
   for_each    = azuredevops_build_definition.build_definition
   project_id  = azuredevops_project.project.id
   resource_id = azuredevops_serviceendpoint_azurerm.sub.id
-  # definition_id = azuredevops_build_definition.build_definition["pipeline2"].id
   definition_id = each.value.id
   authorized    = true
 }
