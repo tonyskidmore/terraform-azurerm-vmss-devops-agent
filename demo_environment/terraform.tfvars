@@ -98,9 +98,9 @@ build_definitions = {
 git_repos = {
   "repo1" = {
     name = "module",
-    # TODO: set back
-    # default_branch = "refs/heads/main",
-    default_branch = "refs/heads/example_005",
+    # configure to feature branch while testing e.g.
+    # default_branch = "refs/heads/example_005",
+    default_branch = "refs/heads/main",
     initialization = {
       init_type   = "Import",
       source_type = "Git",
