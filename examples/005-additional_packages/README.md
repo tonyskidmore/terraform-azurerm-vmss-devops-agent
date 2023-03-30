@@ -10,7 +10,7 @@ The `demo_environment` pipelines are documented below.
 
 | Pipeline                          | Description                                                                              |
 |-----------------------------------|------------------------------------------------------------------------------------------|
-| 005-additional-packages-terraform | create/destroy the `vmss-agent-pool-linux-004` agent pool/VMSS                           |
+| 005-additional-packages-terraform | create/destroy the `vmss-agent-pool-linux-005` agent pool/VMSS                           |
 | 005-additional-packages-host-test | runs test jobs on the host to validate the additional packages                           |
 
 
