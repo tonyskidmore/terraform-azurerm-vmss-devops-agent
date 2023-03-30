@@ -5,9 +5,9 @@ name: "container-test"
 trigger: none
 
 variables:
-- group: build
-- name: containerImage
-  value: "ubuntu:22.04"
+  - group: build
+  - name: containerImage
+    value: "ubuntu:22.04"
 
 pool:
   name: 'vmss-agent-pool-linux-002'

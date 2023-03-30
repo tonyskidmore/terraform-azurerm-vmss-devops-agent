@@ -3,13 +3,13 @@
 name: "additional-packages"
 
 parameters:
-- name: operation
-  displayName: Operation Mode
-  type: string
-  default: terraform-plan-apply
-  values:
-  - terraform-plan-apply
-  - terraform-destroy
+  - name: operation
+    displayName: Operation Mode
+    type: string
+    default: terraform-plan-apply
+    values:
+      - terraform-plan-apply
+      - terraform-destroy
 
 trigger: none
 
@@ -42,7 +42,7 @@ stages:
         beKey: "005-additional-packages.tfstate"
         beResourceGroupName: $(state_resource_group_name)
         beSubscriptionId: $(azurerm_subscription_id)
-        dependsOn: []
+        dependsOn: [ ]
         environmentName: "demo"
     initCheckout:
       - self
