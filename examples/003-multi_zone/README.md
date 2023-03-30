@@ -51,7 +51,7 @@ terraform plan -var ado_project_visibility=public -out tfplan
 
 | Name | Source | Version |
 |------|--------|---------|
-| terraform-azurerm-vmss-devops-agent | tonyskidmore/vmss-devops-agent/azurerm | 0.2.1 |
+| terraform-azurerm-vmss-devops-agent | tonyskidmore/vmss-devops-agent/azurerm | 0.2.2 |
 ## Inputs
 
 | Name | Description | Type | Default | Required |
@@ -102,7 +102,7 @@ resource "tls_private_key" "vmss_ssh" {
 
 module "terraform-azurerm-vmss-devops-agent" {
   source                   = "tonyskidmore/vmss-devops-agent/azurerm"
-  version                  = "0.2.1"
+  version                  = "0.2.2"
   ado_org                  = var.ado_org
   ado_pool_name            = var.ado_pool_name
   ado_project              = var.ado_project

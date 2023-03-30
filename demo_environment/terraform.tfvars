@@ -6,86 +6,100 @@ build_definitions = {
   # "pipeline1" = {
   #   "name" : "000-bootstrap-test",
   #   "path" : "\\000-bootstrap",
-  #   "repo_ref" : "repo2",
-  #   "yml_path" : "demo-vmss/000-bootstrap-test.yml"
+  #   "repo_ref" : "repo1",
+  #   "yml_path" : "demo_environment/pipelines/000-bootstrap-test.yml"
   # }
   # "pipeline2" = {
   #   "name" : "000-bootstrap-update",
   #   "path" : "\\000-bootstrap",
-  #   "repo_ref" : "repo2",
-  #   "yml_path" : "demo-vmss/000-bootstrap-update.yml"
+  #   "repo_ref" : "repo1",
+  #   "yml_path" : "demo_environment/pipelines/000-bootstrap-update.yml"
   # }
   # "pipeline3" = {
   #   "name" : "000-bootstrap-terraform",
   #   "path" : "\\000-bootstrap",
-  #   "repo_ref" : "repo2",
-  #   "yml_path" : "demo-vmss/000-bootstrap-terraform.yml"
+  #   "repo_ref" : "repo1",
+  #   "yml_path" : "demo_environment/pipelines/000-bootstrap-terraform.yml"
   # }
   "pipeline4" = {
-    "name" : "001-admin-password-terraform",
-    "path" : "\\001-admin-password",
-    "repo_ref" : "repo2",
-    "yml_path" : "demo-vmss/001-admin-password-terraform.yml"
+    name     = "001-admin-password-terraform",
+    path     = "\\001-admin-password",
+    repo_ref = "repo1",
+    yml_path = "demo_environment/pipelines/001-admin-password-terraform.yml"
   }
   "pipeline5" = {
-    "name" : "001-admin-password-test",
-    "path" : "\\001-admin-password",
-    "repo_ref" : "repo2",
-    "yml_path" : "demo-vmss/001-admin-password-test.yml"
+    name     = "001-admin-password-test",
+    path     = "\\001-admin-password",
+    repo_ref = "repo1",
+    yml_path = "demo_environment/pipelines/001-admin-password-test.yml"
   }
   "pipeline6" = {
-    "name" : "002-certificate-chain-terraform",
-    "path" : "\\002-certificate-chain",
-    "repo_ref" : "repo2",
-    "yml_path" : "demo-vmss/002-certificate-chain-terraform.yml"
+    name     = "002-certificate-chain-terraform",
+    path     = "\\002-certificate-chain",
+    repo_ref = "repo1",
+    yml_path = "demo_environment/pipelines/002-certificate-chain-terraform.yml"
   }
   "pipeline7" = {
-    "name" : "002-certificate-chain-test",
-    "path" : "\\002-certificate-chain",
-    "repo_ref" : "repo2",
-    "yml_path" : "demo-vmss/002-certificate-chain-test.yml"
+    name     = "002-certificate-chain-test",
+    path     = "\\002-certificate-chain",
+    repo_ref = "repo1",
+    yml_path = "demo_environment/pipelines/002-certificate-chain-test.yml"
   }
   "pipeline8" = {
-    "name" : "003-multi-zone-scale-up-terraform",
-    "path" : "\\003-multi-zone",
-    "repo_ref" : "repo2",
-    "yml_path" : "demo-vmss/003-multi-zone-scale-up-terraform.yml"
+    name     = "003-multi-zone-scale-up-terraform",
+    path     = "\\003-multi-zone",
+    repo_ref = "repo1",
+    yml_path = "demo_environment/pipelines/003-multi-zone-scale-up-terraform.yml"
   }
   "pipeline9" = {
-    "name" : "003-multi-zone-scale-down-terraform",
-    "path" : "\\003-multi-zone",
-    "repo_ref" : "repo2",
-    "yml_path" : "demo-vmss/003-multi-zone-scale-down-terraform.yml"
+    name     = "003-multi-zone-scale-down-terraform",
+    path     = "\\003-multi-zone",
+    repo_ref = "repo1",
+    yml_path = "demo_environment/pipelines/003-multi-zone-scale-down-terraform.yml"
   }
   "pipeline10" = {
-    "name" : "003-multi-zone-test",
-    "path" : "\\003-multi-zone",
-    "repo_ref" : "repo2",
-    "yml_path" : "demo-vmss/003-multi-zone-test.yml"
+    name     = "003-multi-zone-test",
+    path     = "\\003-multi-zone",
+    repo_ref = "repo1",
+    yml_path = "demo_environment/pipelines/003-multi-zone-test.yml"
   },
   "pipeline11" = {
-    "name" : "004-docker-data-disk-terraform",
-    "path" : "\\004-docker-data-disk",
-    "repo_ref" : "repo2",
-    "yml_path" : "demo-vmss/004-docker-data-disk-terraform.yml"
+    name     = "004-docker-data-disk-terraform",
+    path     = "\\004-docker-data-disk",
+    repo_ref = "repo1",
+    yml_path = "demo_environment/pipelines/004-docker-data-disk-terraform.yml"
   }
   "pipeline12" = {
-    "name" : "004-docker-data-disk-host-test",
-    "path" : "\\004-docker-data-disk",
-    "repo_ref" : "repo2",
-    "yml_path" : "demo-vmss/004-docker-data-disk-host-test.yml"
+    name     = "004-docker-data-disk-host-test",
+    path     = "\\004-docker-data-disk",
+    repo_ref = "repo1",
+    yml_path = "demo_environment/pipelines/004-docker-data-disk-host-test.yml"
   }
   "pipeline13" = {
-    "name" : "004-docker-data-disk-test",
-    "path" : "\\004-docker-data-disk",
-    "repo_ref" : "repo2",
-    "yml_path" : "demo-vmss/004-docker-data-disk-test.yml"
+    name     = "004-docker-data-disk-test",
+    path     = "\\004-docker-data-disk",
+    repo_ref = "repo1",
+    yml_path = "demo_environment/pipelines/004-docker-data-disk-test.yml"
+  }
+  "pipeline14" = {
+    name     = "005-additional-packages-terraform",
+    path     = "\\005-additional-packages",
+    repo_ref = "repo1",
+    yml_path = "demo_environment/pipelines/005-additional-packages-terraform.yml"
+  }
+  "pipeline15" = {
+    name     = "005-additional-packages-test",
+    path     = "\\005-additional-packages",
+    repo_ref = "repo1",
+    yml_path = "demo_environment/pipelines/005-additional-packages-test.yml"
   }
 }
 
 git_repos = {
   "repo1" = {
-    name           = "module",
+    name = "module",
+    # configure to feature branch while testing e.g.
+    # default_branch = "refs/heads/example_005",
     default_branch = "refs/heads/main",
     initialization = {
       init_type   = "Import",

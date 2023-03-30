@@ -23,6 +23,11 @@ variable "ado_pool_name" {
   description = "Azure DevOps agent pool name"
 }
 
+variable "ado_pool_desired_idle" {
+  type        = number
+  description = "Number of machines to have ready waiting for jobs"
+}
+
 variable "vmss_name" {
   type        = string
   description = "Name of the Virtual Machine Scale Set to create"
@@ -46,12 +51,6 @@ variable "vmss_vnet_name" {
 variable "vmss_admin_password" {
   type        = string
   description = "Password to allocate to the admin user account"
-}
-
-variable "vmss_custom_data_script" {
-  type        = string
-  description = "The path to the script that will be base64 encoded custom data for the VMSS instances"
-  default     = null
 }
 
 variable "tags" {

@@ -2,7 +2,8 @@
 
 Example of creating an Azure VMSS and associated Azure DevOps agent pool.
 In this case we are using the most basic configuration, supplying an administrator password
-to keep the example as simple as possible.
+to keep the example as simple as possible.  `vmss_custom_data_script` variable defaults to `null`
+so no cloud-init configuration will be applied.
 
 Example steps to test the module locally (for example in Windows Subsystem for Linux):
 
@@ -55,7 +56,7 @@ To use this example update the `terraform.tfvars` file to match your Azure requi
 
 | Name | Source | Version |
 |------|--------|---------|
-| terraform-azurerm-vmss-devops-agent | tonyskidmore/vmss-devops-agent/azurerm | 0.2.1 |
+| terraform-azurerm-vmss-devops-agent | tonyskidmore/vmss-devops-agent/azurerm | 0.2.2 |
 ## Inputs
 
 | Name | Description | Type | Default | Required |
@@ -67,6 +68,7 @@ To use this example update the `terraform.tfvars` file to match your Azure requi
 | ado\_service\_connection | Azure DevOps organiservice connection name | `string` | n/a | yes |
 | tags | Map of the tags to use for the resources that are deployed | `map(string)` | `{}` | no |
 | vmss\_admin\_password | Password to allocate to the admin user account | `string` | n/a | yes |
+| vmss\_custom\_data\_script | The path to the script that will be base64 encoded custom data for the VMSS instances | `string` | `null` | no |
 | vmss\_name | Name of the Virtual Machine Scale Set to create | `string` | n/a | yes |
 | vmss\_resource\_group\_name | Existing resource group name of where the VMSS will be created | `string` | n/a | yes |
 | vmss\_subnet\_name | Name of subnet where the vmss will be connected | `string` | n/a | yes |
@@ -98,7 +100,7 @@ data "azurerm_subnet" "agents" {
 
 module "terraform-azurerm-vmss-devops-agent" {
   source                   = "tonyskidmore/vmss-devops-agent/azurerm"
-  version                  = "0.2.1"
+  version                  = "0.2.2"
   ado_org                  = var.ado_org
   ado_pool_name            = var.ado_pool_name
   ado_project              = var.ado_project
@@ -107,6 +109,7 @@ module "terraform-azurerm-vmss-devops-agent" {
   vmss_name                = var.vmss_name
   vmss_resource_group_name = var.vmss_resource_group_name
   vmss_subnet_id           = data.azurerm_subnet.agents.id
+  vmss_custom_data_script  = var.vmss_custom_data_script
   tags                     = var.tags
 }
 ```

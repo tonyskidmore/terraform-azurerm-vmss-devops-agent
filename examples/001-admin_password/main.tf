@@ -16,7 +16,7 @@ data "azurerm_subnet" "agents" {
 
 module "terraform-azurerm-vmss-devops-agent" {
   source                   = "tonyskidmore/vmss-devops-agent/azurerm"
-  version                  = "0.2.1"
+  version                  = "0.2.2"
   ado_org                  = var.ado_org
   ado_pool_name            = var.ado_pool_name
   ado_project              = var.ado_project
@@ -25,5 +25,6 @@ module "terraform-azurerm-vmss-devops-agent" {
   vmss_name                = var.vmss_name
   vmss_resource_group_name = var.vmss_resource_group_name
   vmss_subnet_id           = data.azurerm_subnet.agents.id
+  vmss_custom_data_script  = var.vmss_custom_data_script
   tags                     = var.tags
 }

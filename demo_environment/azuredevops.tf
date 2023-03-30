@@ -49,15 +49,19 @@ resource "azuredevops_build_definition" "build_definition" {
 
   repository {
     repo_type   = "TfsGit"
+    branch_name = "main"
     repo_id     = azuredevops_git_repository.repository[each.value.repo_ref].id
-    branch_name = "refs/heads/main"
     yml_path    = each.value.yml_path
   }
+
+  depends_on = [
+    azuredevops_git_repository.repository
+  ]
 }
 
 
 # add permissions to repo for pipeline
-resource "null_resource" "build_definition_repo_perms" {
+resource "null_resource" "build_definition_pipelines_repo_perms" {
   for_each = azuredevops_build_definition.build_definition
   triggers = {
     id = each.value.id
@@ -66,6 +70,37 @@ resource "null_resource" "build_definition_repo_perms" {
   depends_on = [
     azuredevops_build_definition.build_definition,
     azuredevops_git_repository.repository
+  ]
+
+  provisioner "local-exec" {
+    command = <<EOF
+id=${each.value.id}
+payload="{ \"pipelines\": [{ \"id\": $id, \"authorized\": true }]}"
+echo $id
+echo $payload
+curl \
+  --silent \
+  --show-error \
+  --user ":$AZDO_PERSONAL_ACCESS_TOKEN" \
+  --header "Content-Type: application/json" \
+  --request PATCH \
+  --data "$payload" \
+  "$AZDO_ORG_SERVICE_URL/${var.ado_project_name}/_apis/pipelines/pipelinePermissions/repository/${azuredevops_project.project.id}.${azuredevops_git_repository.repository["repo2"].id}?api-version=7.0-preview.1" | jq .
+EOF
+  }
+}
+
+
+resource "null_resource" "build_definition_module_repo_perms" {
+  for_each = azuredevops_build_definition.build_definition
+  triggers = {
+    id = each.value.id
+  }
+
+  depends_on = [
+    azuredevops_build_definition.build_definition,
+    azuredevops_git_repository.repository,
+    null_resource.build_definition_pipelines_repo_perms
   ]
 
   provisioner "local-exec" {
@@ -137,10 +172,9 @@ resource "azuredevops_serviceendpoint_azurerm" "sub" {
 }
 
 resource "azuredevops_resource_authorization" "azurerm" {
-  for_each    = azuredevops_build_definition.build_definition
-  project_id  = azuredevops_project.project.id
-  resource_id = azuredevops_serviceendpoint_azurerm.sub.id
-  # definition_id = azuredevops_build_definition.build_definition["pipeline2"].id
+  for_each      = azuredevops_build_definition.build_definition
+  project_id    = azuredevops_project.project.id
+  resource_id   = azuredevops_serviceendpoint_azurerm.sub.id
   definition_id = each.value.id
   authorized    = true
 }
