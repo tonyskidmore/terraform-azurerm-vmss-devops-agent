@@ -172,9 +172,9 @@ resource "azuredevops_serviceendpoint_azurerm" "sub" {
 }
 
 resource "azuredevops_resource_authorization" "azurerm" {
-  for_each    = azuredevops_build_definition.build_definition
-  project_id  = azuredevops_project.project.id
-  resource_id = azuredevops_serviceendpoint_azurerm.sub.id
+  for_each      = azuredevops_build_definition.build_definition
+  project_id    = azuredevops_project.project.id
+  resource_id   = azuredevops_serviceendpoint_azurerm.sub.id
   definition_id = each.value.id
   authorized    = true
 }
