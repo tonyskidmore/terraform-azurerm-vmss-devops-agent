@@ -34,3 +34,13 @@ module "terraform-azurerm-vmss-devops-agent" {
   vmss_identity_type       = "SystemAssigned"
   tags                     = var.tags
 }
+
+data "azurerm_resource_group" "demo" {
+  name = "rg-demo-azure-devops-vmss"
+}
+
+resource "azurerm_role_assignment" "example" {
+  scope                = data.azurerm_resource_group.demo.id
+  role_definition_name = "Reader"
+  principal_id         = module.terraform-azurerm-vmss-devops-agent.vmss_identity_principal_id
+}
