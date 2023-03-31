@@ -95,19 +95,19 @@ build_definitions = {
   }
   "pipeline16" = {
     name     = "006-managed-identity-terraform",
-    path     = "\\006-managed-identity-terraform",
+    path     = "\\006-managed-identity",
     repo_ref = "repo1",
     yml_path = "demo_environment/pipelines/006-managed-identity-terraform.yml"
   }
   "pipeline17" = {
     name     = "006-managed-identity-host-test",
-    path     = "\\006-managed-identity-host-test",
+    path     = "\\006-managed-identity",
     repo_ref = "repo1",
     yml_path = "demo_environment/pipelines/006-managed-identity-host-test.yml"
   }
   "pipeline18" = {
     name     = "006-managed-identity-test",
-    path     = "\\006-managed-identity-test",
+    path     = "\\006-managed-identity",
     repo_ref = "repo1",
     yml_path = "demo_environment/pipelines/006-managed-identity-test.yml"
   }
