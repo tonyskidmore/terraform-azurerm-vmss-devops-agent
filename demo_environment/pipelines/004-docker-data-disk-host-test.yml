@@ -44,6 +44,12 @@ jobs:
           lsblk -o NAME,HCTL,SIZE,MOUNTPOINT | grep -i "sd"
           echo "mount output:"
           mount -l | grep -i "sd"
+          echo "tree /dev/disk/azure output:"
+          tree /dev/disk/azure
+          echo "df output:"
+          df
+          echo "findmnt output:"
+          findmnt
         displayName: Show disk configuration
 
       - script: |
