@@ -40,6 +40,7 @@ data "azurerm_resource_group" "demo" {
 }
 
 resource "azurerm_role_assignment" "example" {
+  count                = tobool(lower(var.rbac)) ? 1 : 0
   scope                = data.azurerm_resource_group.demo.id
   role_definition_name = "Reader"
   principal_id         = module.terraform-azurerm-vmss-devops-agent.vmss_identity_principal_id

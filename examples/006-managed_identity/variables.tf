@@ -58,3 +58,9 @@ variable "tags" {
   description = "Map of the tags to use for the resources that are deployed"
   default     = {}
 }
+
+variable "rbac" {
+  type        = bool
+  description = "Configure RBAC"
+  default     = false
+}

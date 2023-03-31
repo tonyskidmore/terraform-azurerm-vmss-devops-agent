@@ -10,6 +10,10 @@ parameters:
     values:
       - terraform-plan-apply
       - terraform-destroy
+  - name: rbac
+    displayName: Configure RBAC?
+    type: bool
+    default: false
 
 trigger: none
 
@@ -59,3 +63,4 @@ stages:
         TF_VAR_azurerm_spn_tenantid: $(azurerm_spn_tenantid)
         TF_VAR_serviceprincipalid: $(serviceprincipalid)
         TF_VAR_serviceprincipalkey: $(serviceprincipalkey)
+        TF_VAR_rbac: ${{ parameters.rbac }}
