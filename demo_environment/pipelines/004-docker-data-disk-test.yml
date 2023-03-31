@@ -65,5 +65,5 @@ jobs:
             set -e
             terraform init
             terraform plan
-        workingDirectory: $(System.DefaultWorkingDirectory)/examples/004-docker_data_disk/terraform
+          workingDirectory: $(System.DefaultWorkingDirectory)/examples/004-docker_data_disk/terraform
         displayName: Terraform init & plan
