@@ -12,7 +12,7 @@ parameters:
       - terraform-destroy
   - name: rbac
     displayName: Configure RBAC?
-    type: bool
+    type: boolean
     default: false
 
 trigger: none

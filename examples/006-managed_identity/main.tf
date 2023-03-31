@@ -39,9 +39,9 @@ data "azurerm_resource_group" "demo" {
   name = "rg-demo-azure-devops-vmss"
 }
 
-resource "azurerm_role_assignment" "example" {
+resource "azurerm_role_assignment" "demo" {
   count                = tobool(lower(var.rbac)) ? 1 : 0
   scope                = data.azurerm_resource_group.demo.id
   role_definition_name = "Reader"
-  principal_id         = module.terraform-azurerm-vmss-devops-agent.vmss_identity_principal_id
+  principal_id         = module.terraform-azurerm-vmss-devops-agent.vmss_system_assigned_identity_id
 }

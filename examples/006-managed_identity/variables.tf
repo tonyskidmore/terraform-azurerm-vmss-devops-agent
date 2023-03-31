@@ -60,7 +60,7 @@ variable "tags" {
 }
 
 variable "rbac" {
-  type        = bool
+  type        = string
   description = "Configure RBAC"
   default     = false
 }
