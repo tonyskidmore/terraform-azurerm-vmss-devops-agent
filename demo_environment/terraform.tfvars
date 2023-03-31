@@ -93,14 +93,32 @@ build_definitions = {
     repo_ref = "repo1",
     yml_path = "demo_environment/pipelines/005-additional-packages-test.yml"
   }
+  "pipeline16" = {
+    name     = "006-managed-identity-terraform",
+    path     = "\\006-managed-identity-terraform",
+    repo_ref = "repo1",
+    yml_path = "demo_environment/pipelines/006-managed-identity-terraform.yml"
+  }
+  "pipeline17" = {
+    name     = "006-managed-identity-host-test",
+    path     = "\\006-managed-identity-host-test",
+    repo_ref = "repo1",
+    yml_path = "demo_environment/pipelines/006-managed-identity-host-test.yml"
+  }
+  "pipeline18" = {
+    name     = "006-managed-identity-test",
+    path     = "\\006-managed-identity-test",
+    repo_ref = "repo1",
+    yml_path = "demo_environment/pipelines/006-managed-identity-test.yml"
+  }
 }
 
 git_repos = {
   "repo1" = {
     name = "module",
     # configure to feature branch while testing e.g.
-    # default_branch = "refs/heads/example_005",
-    default_branch = "refs/heads/main",
+    default_branch = "refs/heads/example_006",
+    # default_branch = "refs/heads/main",
     initialization = {
       init_type   = "Import",
       source_type = "Git",

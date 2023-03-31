@@ -1,0 +1,41 @@
+---
+
+name: "host-test"
+
+trigger: none
+
+variables:
+  - group: build
+
+pool:
+  name: 'vmss-agent-pool-linux-004'
+
+
+jobs:
+  - job: test
+    displayName: "Test Host Job"
+    continueOnError: false
+
+    steps:
+
+      - checkout: self
+
+      - script: |
+          env
+        displayName: Show environment variables
+
+      - script: |
+          source /etc/os-release
+          printf "Running on: %s\n" "$PRETTY_NAME"
+        displayName: Check operating system version
+
+      - script: |
+          sudo apt update > /dev/null 2>&1
+          sudo apt install -y jq unzip > /dev/null 2>&1
+          url=""http://169.254.169.254/metadata/instance?api-version=2021-02-01""
+          metadata=$(curl -s \
+                          -H Metadata:true \
+                          --noproxy "*" \
+                          "$url")
+          jq <<< "$metadata"
+        displayName: Metadata
