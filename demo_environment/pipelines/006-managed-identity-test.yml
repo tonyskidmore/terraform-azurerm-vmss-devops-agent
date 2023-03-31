@@ -7,10 +7,10 @@ trigger: none
 variables:
 - group: build
 - name: containerImage
-  value: "ubuntu:22.04"
+  value: "ghcr.io/tonyskidmore/azdo-container-image:latest"
 
 pool:
-  name: 'vmss-agent-pool-linux-004'
+  name: 'vmss-agent-pool-linux-006'
 
 resources:
   containers:

@@ -8,7 +8,7 @@ variables:
   - group: build
 
 pool:
-  name: 'vmss-agent-pool-linux-004'
+  name: 'vmss-agent-pool-linux-006'
 
 
 jobs:
