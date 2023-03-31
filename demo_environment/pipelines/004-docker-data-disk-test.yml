@@ -63,20 +63,7 @@ jobs:
           addSpnToEnvironment: true
           inlineScript: |
             set -e
-            subscription_id=$(az account show --query 'id' --output tsv)
-            tenant_id=$(az account show --query 'tenantId' --output tsv)
-            client_id=${servicePrincipalId:-}
-            client_secret=${servicePrincipalKey:-}
-            echo "##vso[task.setvariable variable=ARM_SUBSCRIPTION_ID;]$subscription_id"
-            echo "##vso[task.setvariable variable=ARM_TENANT_ID;]$tenant_id"
-            echo "##vso[task.setvariable variable=ARM_CLIENT_ID;]$client_id"
-            echo "##vso[task.setvariable variable=ARM_CLIENT_SECRET;]$client_secret"
-        displayName: 'Setup Terraform authentication'
-
-      - script: |
-          terraform init
-          terraform plan
+            terraform init
+            terraform plan
         workingDirectory: $(System.DefaultWorkingDirectory)/examples/004-docker_data_disk/terraform
         displayName: Terraform init & plan
-        env:
-          TF_IN_AUTOMATION: true
