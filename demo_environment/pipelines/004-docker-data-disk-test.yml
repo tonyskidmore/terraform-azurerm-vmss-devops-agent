@@ -5,9 +5,11 @@ name: "container-test"
 trigger: none
 
 variables:
-- group: build
-- name: containerImage
-  value: "ubuntu:22.04"
+  - group: build
+  - name: containerImage
+    value: "ghcr.io/tonyskidmore/azdo-container-image:latest"
+  - name: serviceConnection
+    value: "demo-vmss"
 
 pool:
   name: 'vmss-agent-pool-linux-004'
@@ -19,12 +21,6 @@ resources:
 
 jobs:
   - job: test
-    strategy:
-      matrix:
-        host1:
-          INSTANCE: '1'
-        host2:
-          INSTANCE: '2'
     displayName: "Test Container Job"
     continueOnError: false
     container: ubuntu
@@ -43,5 +39,44 @@ jobs:
         displayName: Check operating system version
 
       - script: |
-          printf "INSTANCE: %s\n" "$INSTANCE"
-        displayName: Check instance
+          url="https://releases.hashicorp.com/terraform/"
+          url+="$TERRAFORM_VERSION"
+          url+="/terraform_${TERRAFORM_VERSION}_linux_amd64.zip"
+          wget --quiet "$url"
+          unzip "terraform_${TERRAFORM_VERSION}_linux_amd64.zip"
+          rm "terraform_${TERRAFORM_VERSION}_linux_amd64.zip"
+          sudo mv terraform /usr/bin
+        displayName: Install Terraform
+        env:
+          TERRAFORM_VERSION: "1.4.0"
+
+      - script: |
+          tf_ver=$(terraform version -json | jq .terraform_version)
+          printf "Terraform version installed: %s\n" "$tf_ver"
+        displayName: Terraform version
+
+      - task: AzureCLI@2
+        inputs:
+          azureSubscription: $(serviceConnection)
+          scriptType: 'bash'
+          scriptLocation: inlineScript
+          addSpnToEnvironment: true
+          inlineScript: |
+            set -e
+            subscription_id=$(az account show --query 'id' --output tsv)
+            tenant_id=$(az account show --query 'tenantId' --output tsv)
+            client_id=${servicePrincipalId:-}
+            client_secret=${servicePrincipalKey:-}
+            echo "##vso[task.setvariable variable=ARM_SUBSCRIPTION_ID;]$subscription_id"
+            echo "##vso[task.setvariable variable=ARM_TENANT_ID;]$tenant_id"
+            echo "##vso[task.setvariable variable=ARM_CLIENT_ID;]$client_id"
+            echo "##vso[task.setvariable variable=ARM_CLIENT_SECRET;]$client_secret"
+        displayName: 'Setup Terraform authentication'
+
+      - script: |
+          terraform init
+          terraform plan
+        workingDirectory: $(System.DefaultWorkingDirectory)/examples/004-docker_data_disk/terraform
+        displayName: Terraform init & plan
+        env:
+          TF_IN_AUTOMATION: true

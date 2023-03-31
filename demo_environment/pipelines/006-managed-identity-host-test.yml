@@ -42,4 +42,38 @@ jobs:
 
       - script: |
           az login --identity
+          az account show
+          tenant_id=$(az account show --query 'tenantId' -o tsv)
+          subscription_id=$(az account show --query 'id' -o tsv)
+          echo "##vso[task.setvariable variable=SUB_ID]$subscription_id"
+          echo "##vso[task.setvariable variable=TEN_ID]$tenant_id"
         displayName: Azure login
+
+      - script: |
+          url="https://releases.hashicorp.com/terraform/"
+          url+="$TERRAFORM_VERSION"
+          url+="/terraform_${TERRAFORM_VERSION}_linux_amd64.zip"
+          wget --quiet "$url"
+          unzip "terraform_${TERRAFORM_VERSION}_linux_amd64.zip"
+          rm "terraform_${TERRAFORM_VERSION}_linux_amd64.zip"
+          sudo mv terraform /usr/bin
+        displayName: Install Terraform
+        env:
+          TERRAFORM_VERSION: "1.4.0"
+
+      - script: |
+          tf_ver=$(terraform version -json | jq .terraform_version)
+          printf "Terraform version installed: %s\n" "$tf_ver"
+        displayName: Terraform version
+
+      - script: |
+          ls "$SYSTEM_DEFAULTWORKINGDIRECTORY"
+          terraform init
+          terraform plan
+        workingDirectory: $(System.DefaultWorkingDirectory)/examples/006-managed_identity/terraform
+        displayName: Terraform plan
+        env:
+          TF_IN_AUTOMATION: true
+          ARM_USE_MSI: true
+          ARM_SUBSCRIPTION_ID: $(SUB_ID)
+          ARM_TENANT_ID: $(TEN_ID)
