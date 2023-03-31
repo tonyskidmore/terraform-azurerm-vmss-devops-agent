@@ -46,3 +46,7 @@ jobs:
                           "$url")
           jq <<< "$metadata"
         displayName: Metadata
+
+      - script: |
+          az login --identity
+        displayName: Azure login

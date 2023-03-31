@@ -1,3 +1,7 @@
+locals {
+  vmss_custom_data_data = base64encode(templatefile("${path.module}/cloud-init.tpl", {}))
+}
+
 provider "azurerm" {
   features {}
 }
@@ -26,6 +30,7 @@ module "terraform-azurerm-vmss-devops-agent" {
   vmss_name                = var.vmss_name
   vmss_resource_group_name = var.vmss_resource_group_name
   vmss_subnet_id           = data.azurerm_subnet.agents.id
+  vmss_custom_data_data    = local.vmss_custom_data_data
   vmss_identity_type       = "SystemAssigned"
   tags                     = var.tags
 }
