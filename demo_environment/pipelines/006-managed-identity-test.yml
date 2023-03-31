@@ -49,4 +49,31 @@ jobs:
 
       - script: |
           az login --identity
+          az account show
+          tenant_id=$(az account show --query 'tenantId' -o tsv)
+          subscription_id=$(az account show --query 'id' -o tsv)
+          echo "##vso[task.setvariable variable=SUB_ID]$subscription_id"
+          echo "##vso[task.setvariable variable=TEN_ID]$tenant_id"
         displayName: Azure login
+
+      - script: |
+          wget -O- https://apt.releases.hashicorp.com/gpg | gpg --dearmor | sudo tee /usr/share/keyrings/hashicorp-archive-keyring.gpg
+          echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/hashicorp.list
+          sudo apt update && sudo apt install terraform
+        displayName: Install Terraform
+
+      - script: |
+          tf_ver=$(terraform version -json | jq .terraform_version)
+          printf "Terraform version installed: %s\n" "$tf_ver"
+        displayName: Terraform version
+
+      - script: |
+          terraform init
+          terraform plan
+        workingDirectory: $(System.DefaultWorkingDirectory)/module/examples/006-managed_identity/terraform
+        displayName: Terraform plan
+        env:
+          TF_IN_AUTOMATION: true
+          ARM_USE_MSI: true
+          ARM_SUBSCRIPTION_ID: $(SUB_ID)
+          ARM_TENANT_ID: $(TEN_ID)
