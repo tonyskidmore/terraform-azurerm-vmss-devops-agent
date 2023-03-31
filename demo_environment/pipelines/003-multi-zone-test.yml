@@ -41,9 +41,9 @@ jobs:
           sudo apt update > /dev/null 2>&1
           sudo apt install -y jq unzip > /dev/null 2>&1
           url=""http://169.254.169.254/metadata/instance?api-version=2021-02-01""
-          metadata=$(curl -s
-                          -H Metadata:true
-                          --noproxy "*"
+          metadata=$(curl -s \
+                          -H Metadata:true \
+                          --noproxy "*" \
                           "$url")
           zone=$(jq -r '.compute.zone' <<< "$metadata")
           printf "Running in zone: %s\n" "$zone"
