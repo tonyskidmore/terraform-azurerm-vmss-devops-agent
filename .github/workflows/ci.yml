@@ -5,6 +5,7 @@ permissions:
 
 name: Lint Code Base
 
+# yamllint disable rule:truthy
 on:
   schedule:
     - cron: "00 20 * * 0"
