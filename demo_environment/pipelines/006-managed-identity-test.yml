@@ -5,13 +5,13 @@ name: "container-test"
 trigger: none
 
 variables:
-- group: build
-- name: containerImage
-  value: "ghcr.io/tonyskidmore/azdo-container-image:latest"
-- name: poolName
-  value: 'vmss-agent-pool-linux-006'
-- name: serviceConnection
-  value: "demo-vmss"
+  - group: build
+  - name: containerImage
+    value: "ghcr.io/tonyskidmore/azdo-container-image:latest"
+  - name: poolName
+    value: 'vmss-agent-pool-linux-006'
+  - name: serviceConnection
+    value: "demo-vmss"
 
 
 resources:

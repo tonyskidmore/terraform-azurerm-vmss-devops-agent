@@ -8,8 +8,8 @@ parameters:
     type: string
     default: terraform-plan-apply
     values:
-    - terraform-plan-apply
-    - terraform-destroy
+      - terraform-plan-apply
+      - terraform-destroy
 
 trigger: none
 

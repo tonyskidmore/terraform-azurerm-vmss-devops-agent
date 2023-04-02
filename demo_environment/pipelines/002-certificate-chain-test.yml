@@ -35,5 +35,6 @@ jobs:
         displayName: Check build index
 
       - script: |
-          awk -v cmd='openssl x509 -noout -subject' '/BEGIN/{close(cmd)};{print | cmd}' < /etc/ssl/certs/ca-certificates.crt  | grep -i skidmore
+          awk -v cmd='openssl x509 -noout -subject' '/BEGIN/{close(cmd)};{print | cmd}' \
+            < /etc/ssl/certs/ca-certificates.crt  | grep -i skidmore
         displayName: View certificates
