@@ -67,4 +67,3 @@ write_files:
 
 runcmd:
   - /tmp/get-yq.sh
-  - az extension add --yes --system --name azure-devops
