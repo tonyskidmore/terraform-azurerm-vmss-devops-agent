@@ -8,9 +8,9 @@ variables:
 - group: build
 - name: containerImage
   value: "ghcr.io/tonyskidmore/azdo-container-image:latest"
+- name: poolName
+  value: 'vmss-agent-pool-linux-006'
 
-pool:
-  name: 'vmss-agent-pool-linux-006'
 
 resources:
   containers:
@@ -18,8 +18,10 @@ resources:
       image: '${{ variables.containerImage }}'
 
 jobs:
-  - job: test
-    displayName: "Test Container Job"
+  - job: identify
+    pool:
+      name: $(poolName)
+    displayName: "Get Azure IDs"
     continueOnError: false
     container: ubuntu
 
@@ -52,35 +54,77 @@ jobs:
           az account show
           tenant_id=$(az account show --query 'tenantId' -o tsv)
           subscription_id=$(az account show --query 'id' -o tsv)
-          echo "##vso[task.setvariable variable=SUB_ID]$subscription_id"
-          echo "##vso[task.setvariable variable=TEN_ID]$tenant_id"
+          echo "##vso[task.setvariable;isoutput=true variable=SUB_ID]$subscription_id"
+          echo "##vso[task.setvariable;isoutput=true variable=TEN_ID]$tenant_id"
+        name: azureIDs
         displayName: Azure login
 
       - script: |
-          url="https://releases.hashicorp.com/terraform/"
-          url+="$TERRAFORM_VERSION"
-          url+="/terraform_${TERRAFORM_VERSION}_linux_amd64.zip"
-          wget --quiet "$url"
-          unzip "terraform_${TERRAFORM_VERSION}_linux_amd64.zip"
-          rm "terraform_${TERRAFORM_VERSION}_linux_amd64.zip"
-          sudo mv terraform /usr/bin
-        displayName: Install Terraform
-        env:
-          TERRAFORM_VERSION: "1.4.0"
+          echo $(ado_ext_pat) | az devops login --org $(ado_org)
+          pool_id=$(az pipelines pool list --pool-name $(poolName) --query '[].id' -o tsv)
+          agents=($(az pipelines agent list --pool-id "$pool_id" --query '[].name' -o tsv))
 
-      - script: |
-          tf_ver=$(terraform version -json | jq .terraform_version)
-          printf "Terraform version installed: %s\n" "$tf_ver"
-        displayName: Terraform version
+          for agent in "${agents[@]}"
+          do
+            if [[ "$agent" != $(hostname) ]]; then
+              use_agent=$agent
+              break
+            fi
+          done
 
-      - script: |
-          ls "$SYSTEM_DEFAULTWORKINGDIRECTORY"
-          terraform init
-          terraform plan
-        workingDirectory: $(System.DefaultWorkingDirectory)/examples/006-managed_identity/terraform
-        displayName: Terraform plan
-        env:
-          TF_IN_AUTOMATION: true
-          ARM_USE_MSI: true
-          ARM_SUBSCRIPTION_ID: $(SUB_ID)
-          ARM_TENANT_ID: $(TEN_ID)
+          echo "##vso[task.setvariable;isoutput=true variable=AGENT_NAME]$use_agent"
+        name: agentName
+        displayName: Get ADO Pool Agent
+
+
+  - job: terraform
+    variables:
+      subscriptionID: $[ dependencies.identify.outputs['azureIDs.SUB_ID'] ]
+      tenantID: $[ dependencies.identify.outputs['azureIDs.TEN_ID'] ]
+      agentName: $[ dependencies.identify.outputs['agentName.AGENT_NAME'] ]
+    pool:
+      name: $(poolName)
+    displayName: "Get Azure IDs"
+    continueOnError: false
+    container: ubuntu
+    # demands:
+    #   - agent.name -equals $(agentName)
+    dependsOn: identity
+
+      steps:
+
+        - checkout: self
+
+        - script: |
+            echo "$AGENT_NAME"
+          displayName: Show agent name
+          env:
+            AGENT_NAME: $(agentName)
+
+        - script: |
+            url="https://releases.hashicorp.com/terraform/"
+            url+="$TERRAFORM_VERSION"
+            url+="/terraform_${TERRAFORM_VERSION}_linux_amd64.zip"
+            wget --quiet "$url"
+            unzip "terraform_${TERRAFORM_VERSION}_linux_amd64.zip"
+            rm "terraform_${TERRAFORM_VERSION}_linux_amd64.zip"
+            sudo mv terraform /usr/bin
+          displayName: Install Terraform
+          env:
+            TERRAFORM_VERSION: "1.4.0"
+
+        - script: |
+            tf_ver=$(terraform version -json | jq .terraform_version)
+            printf "Terraform version installed: %s\n" "$tf_ver"
+          displayName: Terraform version
+
+        - script: |
+            terraform init
+            terraform plan
+          workingDirectory: $(System.DefaultWorkingDirectory)/examples/006-managed_identity/terraform
+          displayName: Terraform plan
+          env:
+            TF_IN_AUTOMATION: true
+            ARM_USE_MSI: true
+            ARM_SUBSCRIPTION_ID: $(subscriptionID)
+            ARM_TENANT_ID: $(subscriptionID)

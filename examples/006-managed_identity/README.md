@@ -32,7 +32,7 @@ If using the `demo_environment` pipeline it will deploy 2 instances to begin wit
 
 | Name | Version |
 |------|---------|
-| azurerm | 3.39.1 |
+| azurerm | 3.50.0 |
 ## Modules
 
 | Name | Source | Version |
@@ -48,9 +48,9 @@ If using the `demo_environment` pipeline it will deploy 2 instances to begin wit
 | ado\_pool\_name | Azure DevOps agent pool name | `string` | n/a | yes |
 | ado\_project | Azure DevOps organization | `string` | n/a | yes |
 | ado\_service\_connection | Azure DevOps organiservice connection name | `string` | n/a | yes |
+| rbac | Configure RBAC | `string` | `false` | no |
 | tags | Map of the tags to use for the resources that are deployed | `map(string)` | `{}` | no |
 | vmss\_admin\_password | Password to allocate to the admin user account | `string` | n/a | yes |
-| vmss\_data\_disks | Additional data disks | <pre>list(object({<br>    caching              = string<br>    create_option        = string<br>    disk_size_gb         = string<br>    lun                  = number<br>    storage_account_type = string<br>  }))</pre> | `[]` | no |
 | vmss\_name | Name of the Virtual Machine Scale Set to create | `string` | n/a | yes |
 | vmss\_resource\_group\_name | Existing resource group name of where the VMSS will be created | `string` | n/a | yes |
 | vmss\_subnet\_name | Name of subnet where the vmss will be connected | `string` | n/a | yes |
@@ -96,9 +96,20 @@ module "terraform-azurerm-vmss-devops-agent" {
   vmss_name                = var.vmss_name
   vmss_resource_group_name = var.vmss_resource_group_name
   vmss_subnet_id           = data.azurerm_subnet.agents.id
-  vmss_data_disks          = var.vmss_data_disks
   vmss_custom_data_data    = local.vmss_custom_data_data
+  vmss_identity_type       = "SystemAssigned"
   tags                     = var.tags
+}
+
+data "azurerm_resource_group" "demo" {
+  name = "rg-demo-azure-devops-vmss"
+}
+
+resource "azurerm_role_assignment" "demo" {
+  count                = tobool(lower(var.rbac)) ? 1 : 0
+  scope                = data.azurerm_resource_group.demo.id
+  role_definition_name = "Reader"
+  principal_id         = module.terraform-azurerm-vmss-devops-agent.vmss_system_assigned_identity_id
 }
 ```
 <!-- END_TF_DOCS -->
