@@ -33,7 +33,8 @@ Normally, you would just pass these IDs into the pipeline by whatever your stand
 _Important:_  As per the note above, the VMSS Managed Identity requires some kind of role assignment in the target subscription.
 
 _Note_:
-If using the `demo_environment` pipeline it will deploy 2 instances to begin with, which means that cost will be incurred from the time the Scale Set agent is deployed.  To keep costs down ensure that after running and testing that you run `006-managed-identity-terraform ` pipeline and choose the `terraform-destroy` parameter option.
+If using the `demo_environment` pipeline it will deploy 2 instances to begin with, which means that cost will be incurred from the time the Scale Set agent is deployed.
+To keep costs down ensure that after running and testing that you run `006-managed-identity-terraform` pipeline and choose the `terraform-destroy` parameter option.
 
 
 <!-- BEGIN_TF_DOCS -->
