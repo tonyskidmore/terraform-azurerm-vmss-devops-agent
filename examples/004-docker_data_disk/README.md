@@ -2,7 +2,7 @@
 
 In this example we are creating a pool named `vmss-agent-pool-linux-004` based on an Azure MarketPlace Ubuntu 20.04 image.
 
-This example adds a VMSS data disk (minimal 10GB by default) as the location to store Docker data.  The cloud-init configuration (cloud-init.tpl) configures this additional storage and configures Docker to use the data disk sa the `data-root`.  This might be useful if you use a lot of or large container images and you want to separate them onto their own disk and not se the default OS disk.
+This example adds a VMSS data disk (minimal 10GB by default) as the location to store Docker data.  The cloud-init configuration (cloud-init.tpl) configures this additional storage and configures Docker to use the data disk as the `data-root`.  This might be useful if you use a lot of or large container images and you want to separate them onto their own disk and not use the default OS disk.
 
 Deploy the agent pool by running the pipeline `004-docker-data-disk-terraform` created by the `demo_environment`.  Then use the `004-docker-data-disk-test` and `004-docker-data-disk-host-test` pipelines to check the deployment.
 
@@ -14,6 +14,8 @@ The `demo_environment` pipelines are documented below.
 | 004-docker-data-disk-test       | runs test container jobs on the the above agent pool/VMSS                                |
 | 004-docker-data-disk-host-test  | runs test jobs on the host to check storage location (also demonstrates example cleanup) |
 
+The `004-docker-data-disk-test` includes an example of running Terraform in a container, authenticated to Azure.
+This uses the Azure Resource Manager service connection created in the demo environment.
 
 _Note_:
 If using the `demo_environment` pipeline it will deploy 2 instances to begin with, which means that cost will be incurred from the time the Scale Set agent is deployed.  To keep costs down ensure that after running and testing that you run `004-docker-data-disk-terraform` pipeline and choose the `terraform-destroy` parameter option.
