@@ -33,4 +33,3 @@ module "terraform-azurerm-vmss-devops-agent" {
   vmss_custom_data_data    = local.vmss_custom_data_data
   tags                     = var.tags
 }
-
