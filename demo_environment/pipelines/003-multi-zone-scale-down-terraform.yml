@@ -52,7 +52,7 @@ stages:
           beKey: "003-multi-zone.tfstate"
           beResourceGroupName: $(state_resource_group_name)
           beSubscriptionId: $(azurerm_subscription_id)
-          dependsOn: [ ]
+          dependsOn: []
           environmentName: "demo"
           planCommandOptions: '-var-file=$(System.DefaultWorkingDirectory)/module/examples/003-multi_zone/scale/scale-down.tfvars'
 

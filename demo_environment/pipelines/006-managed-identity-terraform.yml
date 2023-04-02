@@ -46,7 +46,7 @@ stages:
           beKey: "006-managed_identity.tfstate"
           beResourceGroupName: $(state_resource_group_name)
           beSubscriptionId: $(azurerm_subscription_id)
-          dependsOn: [ ]
+          dependsOn: []
           environmentName: "demo"
       initCheckout:
         - self

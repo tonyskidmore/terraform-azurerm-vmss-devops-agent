@@ -8,21 +8,12 @@ variables:
   - group: build
   - name: serviceConnection
     value: "demo-vmss"
-  # - name: containerImage
-  #   value: "ghcr.io/tonyskidmore/azdo-container-image:latest"
 
 pool:
   name: 'vmss-bootstrap-pool'
 
-
-# resources:
-#   containers:
-#     - container: ubuntu20_04
-#       image: '${{ variables.containerImage }}'
-
 stages:
   - stage: update
-    # condition: eq('${{ parameters.operation }}', 'first-time-only')
 
     jobs:
       - job: update
@@ -30,7 +21,6 @@ stages:
           clean: all
         displayName: "Update Terraform Code"
         continueOnError: false
-        # container: ubuntu20_04
 
         steps:
 

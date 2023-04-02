@@ -42,7 +42,7 @@ stages:
           beKey: "005-additional-packages.tfstate"
           beResourceGroupName: $(state_resource_group_name)
           beSubscriptionId: $(azurerm_subscription_id)
-          dependsOn: [ ]
+          dependsOn: []
           environmentName: "demo"
       initCheckout:
         - self

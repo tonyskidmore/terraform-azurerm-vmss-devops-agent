@@ -17,22 +17,17 @@ repos:
     hooks:
       - id: checkov
         verbose: false
-        args: [ ]
+        args: []
 
   - repo: https://github.com/antonbabenko/pre-commit-terraform
-  # Get the latest from:
-  # https://github.com/antonbabenko/pre-commit-terraform/releases
+    # Get the latest from:
+    # https://github.com/antonbabenko/pre-commit-terraform/releases
     rev: v1.76.0
     hooks:
       - id: terraform_fmt
       - id: terraform_validate
       # - id: terraform_tfsec
       - id: terraform_tflint
-#       - id: terrascan
-#         args:
-#           - --args=--non-recursive
-#           - --args=--skip-rules="AC_AZURE_0356" # avoids nsg test for simple admin_password example
-#           - --args=--policy-type=azure
 
   - repo: https://github.com/terraform-docs/terraform-docs
     rev: "v0.16.0"
