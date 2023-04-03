@@ -2,6 +2,9 @@
 
 [keepachangelog](https://keepachangelog.com/en/1.0.0/)
 
+## [0.2.23]
+* Adding `006-managed_identity` example
+
 ## [0.2.2]
 * Adding `005-additional_packages` example
 
