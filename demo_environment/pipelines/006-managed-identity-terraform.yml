@@ -1,6 +1,6 @@
 ---
 
-name: "linux-certificate-chain"
+name: "managed-identity"
 
 parameters:
   - name: operation
@@ -10,6 +10,10 @@ parameters:
     values:
       - terraform-plan-apply
       - terraform-destroy
+  - name: rbac
+    displayName: Configure RBAC?
+    type: boolean
+    default: false
 
 trigger: none
 
@@ -39,7 +43,7 @@ stages:
           azureSubscription: "demo-vmss"
           beStorageAccountName: $(state_storage_account_name)
           beContainerName: $(state_container_name)
-          beKey: "002-certificate-chain.tfstate"
+          beKey: "006-managed_identity.tfstate"
           beResourceGroupName: $(state_resource_group_name)
           beSubscriptionId: $(azurerm_subscription_id)
           dependsOn: []
@@ -48,7 +52,7 @@ stages:
         - self
         - git://$(project)/pipelines
       poolName: 'vmss-bootstrap-pool'
-      terraformDirectory: '$(System.DefaultWorkingDirectory)/module/examples/002-certificate_chain'
+      terraformDirectory: '$(System.DefaultWorkingDirectory)/module/examples/006-managed_identity'
       terraformTfVars:
         AZ_SUBSCRIPTION: $(azurerm_subscription_id)
         AZDO_PERSONAL_ACCESS_TOKEN: $(ado_ext_pat)
@@ -59,3 +63,4 @@ stages:
         TF_VAR_azurerm_spn_tenantid: $(azurerm_spn_tenantid)
         TF_VAR_serviceprincipalid: $(serviceprincipalid)
         TF_VAR_serviceprincipalkey: $(serviceprincipalkey)
+        TF_VAR_rbac: ${{ parameters.rbac }}

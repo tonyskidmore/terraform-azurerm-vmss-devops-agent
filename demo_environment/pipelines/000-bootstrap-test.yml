@@ -36,7 +36,3 @@ jobs:
       - script: |
           echo "Build index: $(build_index)"
         displayName: Check build index
-
-      # - script: |
-      #     terraform version
-      #   displayName: Terraform version

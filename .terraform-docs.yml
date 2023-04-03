@@ -1,6 +1,6 @@
 ---
 
-formatter: "" # this is required
+formatter: ""  # this is required
 
 version: ""
 
@@ -12,8 +12,8 @@ recursive:
   path: examples
 
 sections:
-  hide: [ ]
-  show: [ ]
+  hide: []
+  show: []
 
 content: |-
 

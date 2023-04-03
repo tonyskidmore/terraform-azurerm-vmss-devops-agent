@@ -39,6 +39,7 @@ packages:
   - docker-ce
   - docker-ce-cli
   - util-linux
+  - tree
 
 write_files:
 - owner: root:root

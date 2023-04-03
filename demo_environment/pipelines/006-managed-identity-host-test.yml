@@ -1,6 +1,6 @@
 ---
 
-name: "container-test"
+name: "host-test"
 
 trigger: none
 
@@ -8,34 +8,26 @@ variables:
   - group: build
 
 pool:
-  name: 'vmss-agent-pool-linux-003'
+  name: 'vmss-agent-pool-linux-006'
+
 
 jobs:
-  - job: Plan
-    strategy:
-      matrix:
-        Terraform11:
-          TERRAFORM_VERSION: '1.1.0'
-        Terraform12:
-          TERRAFORM_VERSION: '1.2.0'
-        Terraform13:
-          TERRAFORM_VERSION: '1.3.0'
-      maxParallel: 3
+  - job: test
+    displayName: "Test Host Job"
+    continueOnError: false
+
     steps:
 
       - checkout: self
-      - checkout: git://$(project)/module
-      # - checkout: git://$(project)/module@refs/heads/examples
 
       - script: |
           env
-          ls "$SYSTEM_DEFAULTWORKINGDIRECTORY"
-        displayName: Debug
+        displayName: Show environment variables
 
       - script: |
-          echo $(TERRAFORM_VERSION)
-          hostname
-        displayName: Matrix output
+          source /etc/os-release
+          printf "Running on: %s\n" "$PRETTY_NAME"
+        displayName: Check operating system version
 
       - script: |
           sudo apt update > /dev/null 2>&1
@@ -45,9 +37,17 @@ jobs:
                           -H Metadata:true \
                           --noproxy "*" \
                           "$url")
-          zone=$(jq -r '.compute.zone' <<< "$metadata")
-          printf "Running in zone: %s\n" "$zone"
-        displayName: Show zone
+          jq <<< "$metadata"
+        displayName: Metadata
+
+      - script: |
+          az login --identity
+          az account show
+          tenant_id=$(az account show --query 'tenantId' -o tsv)
+          subscription_id=$(az account show --query 'id' -o tsv)
+          echo "##vso[task.setvariable variable=SUB_ID]$subscription_id"
+          echo "##vso[task.setvariable variable=TEN_ID]$tenant_id"
+        displayName: Azure login
 
       - script: |
           url="https://releases.hashicorp.com/terraform/"
@@ -58,6 +58,8 @@ jobs:
           rm "terraform_${TERRAFORM_VERSION}_linux_amd64.zip"
           sudo mv terraform /usr/bin
         displayName: Install Terraform
+        env:
+          TERRAFORM_VERSION: "1.4.0"
 
       - script: |
           tf_ver=$(terraform version -json | jq .terraform_version)
@@ -65,9 +67,13 @@ jobs:
         displayName: Terraform version
 
       - script: |
+          ls "$SYSTEM_DEFAULTWORKINGDIRECTORY"
           terraform init
           terraform plan
-        workingDirectory: $(System.DefaultWorkingDirectory)/module/examples/003-multi_zone/terraform
+        workingDirectory: $(System.DefaultWorkingDirectory)/examples/006-managed_identity/terraform
         displayName: Terraform plan
         env:
           TF_IN_AUTOMATION: true
+          ARM_USE_MSI: true
+          ARM_SUBSCRIPTION_ID: $(SUB_ID)
+          ARM_TENANT_ID: $(TEN_ID)
