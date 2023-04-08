@@ -111,6 +111,12 @@ build_definitions = {
     repo_ref = "repo1",
     yml_path = "demo_environment/pipelines/006-managed-identity-test.yml"
   }
+  "pipeline19" = {
+    name     = "007-aks-agents-terraform",
+    path     = "\\007-aks-agents",
+    repo_ref = "repo1",
+    yml_path = "demo_environment/pipelines/007-aks-agents-terraform.yml"
+  }
 }
 
 git_repos = {
@@ -118,7 +124,8 @@ git_repos = {
     name = "module",
     # configure to feature branch while testing e.g.
     # default_branch = "refs/heads/example_006",
-    default_branch = "refs/heads/main",
+    # default_branch = "refs/heads/main",
+    default_branch = "refs/heads/007-aks-agents",
     initialization = {
       init_type   = "Import",
       source_type = "Git",
@@ -145,3 +152,5 @@ vmss_vnet_name               = "vnet-demo-azure-devops-vmss"
 vmss_vnet_address_space      = ["192.168.0.0/16"]
 vmss_subnet_name             = "snet-demo-azure-devops-vmss"
 vmss_subnet_address_prefixes = ["192.168.0.0/24"]
+aks_subnet_name              = "snet-demo-azure-devops-aks"
+aks_subnet_address_prefixes  = ["192.168.1.0/24"]
