@@ -67,10 +67,10 @@ jobs:
             --from-literal=AZP_TOKEN=$(ado_ext_pat) || echo "Secret already exists"
         displayName: Create K8s secret
 
-      - script: |
-          kubectl apply \
-          -f https://raw.githubusercontent.com/lippertmarkus/keda-azure-pipelines-agent/main/kubernetes/job-setup.yml
-        displayName: Register agent
+      # - script: |
+      #     kubectl apply \
+      #     -f https://raw.githubusercontent.com/lippertmarkus/keda-azure-pipelines-agent/main/kubernetes/job-setup.yml
+      #   displayName: Register agent
 
       - script: |
           curl https://baltocdn.com/helm/signing.asc | gpg --dearmor | sudo tee /usr/share/keyrings/helm.gpg > /dev/null
