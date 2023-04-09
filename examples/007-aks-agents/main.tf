@@ -19,18 +19,18 @@ module "terraform-azurerm-aks-devops-agent" {
   prefix              = "prefix-${random_id.prefix.hex}"
   resource_group_name = data.azurerm_resource_group.demo.name
 
-  cluster_name                   = "test-cluster"
-  node_resource_group            = var.node_resource_group
-  net_profile_dns_service_ip     = "10.0.0.10"
-  net_profile_docker_bridge_cidr = "170.10.0.1/16"
+  cluster_name        = "test-cluster"
+  node_resource_group = var.node_resource_group
+  # net_profile_dns_service_ip     = "10.0.0.10"
+  # net_profile_docker_bridge_cidr = "170.10.0.1/16"
   # https://learn.microsoft.com/en-us/azure/aks/egress-outboundtype
   # https://learn.microsoft.com/en-us/azure/aks/nat-gateway
   # https://www.thorsten-hans.com/provision-aks-and-nat-gateway-with-terraform/
   # net_profile_outbound_type = "userAssignedNATGateway"
-  net_profile_service_cidr = "10.0.0.0/16"
-  network_plugin           = "azure"
-  network_policy           = "azure"
-  vnet_subnet_id           = data.azurerm_subnet.agents.id
+  # net_profile_service_cidr = "10.0.0.0/16"
+  # network_plugin           = "azure"
+  # network_policy           = "azure"
+  vnet_subnet_id = data.azurerm_subnet.agents.id
 }
 
 data "azurerm_resource_group" "demo" {
