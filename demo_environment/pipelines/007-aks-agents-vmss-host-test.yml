@@ -1,0 +1,39 @@
+---
+
+name: "container-test"
+
+trigger: none
+
+variables:
+  - group: build
+
+
+jobs:
+  - job: test
+    displayName: "Test AKS Job"
+    continueOnError: false
+
+    steps:
+
+      - checkout: self
+
+      - script: |
+          source /etc/os-release
+          printf "Running on: %s\n" "$PRETTY_NAME"
+        displayName: Check operating system version
+
+      - script: |
+          echo "Build index: $(build_index)"
+        displayName: Check build index
+
+      - script: |
+          az aks install-cli
+        displayName: Install kubectl
+
+      - script: |
+          az aks get-credentials --resource-group rg-demo-azure-devops-vmss --name test-cluster
+        displayName: Get AKS credentials
+
+      - script: |
+          kubectl get nodes
+        displayName: Get AKS nodes

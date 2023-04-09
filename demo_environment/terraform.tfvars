@@ -117,6 +117,12 @@ build_definitions = {
     repo_ref = "repo1",
     yml_path = "demo_environment/pipelines/007-aks-agents-terraform.yml"
   }
+  "pipeline20" = {
+    name     = "007-aks-agents-vmss-host-test",
+    path     = "\\007-aks-agents",
+    repo_ref = "repo1",
+    yml_path = "demo_environment/pipelines/007-aks-agents-vmss-host-test.yml"
+  }
 }
 
 git_repos = {
