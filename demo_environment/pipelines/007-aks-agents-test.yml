@@ -1,0 +1,17 @@
+---
+
+trigger: none
+
+pool: Default
+
+steps:
+  - checkout: self
+
+  - script: |
+      env
+    displayName: Show environment variables
+
+  - script: |
+      source /etc/os-release
+      printf "Running on: %s\n" "$PRETTY_NAME"
+    displayName: Check operating system version
