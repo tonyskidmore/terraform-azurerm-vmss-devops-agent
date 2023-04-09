@@ -16,6 +16,8 @@ data "azurerm_subnet" "agents" {
 module "terraform-azurerm-aks-devops-agent" {
   source              = "tonyskidmore/aks-devops-agent/azurerm"
   version             = "0.0.2"
+  ado_ext_pat         = var.ado_ext_pat
+  ado_org             = var.ado_org
   prefix              = "prefix-${random_id.prefix.hex}"
   resource_group_name = data.azurerm_resource_group.demo.name
 

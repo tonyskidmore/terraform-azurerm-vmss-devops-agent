@@ -62,6 +62,8 @@ To keep costs down ensure that after running and testing that you run `006-manag
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
+| ado\_ext\_pat | Azure DevOps Personal Access Token | `string` | n/a | yes |
+| ado\_org | Azure DevOps organization | `string` | n/a | yes |
 | aks\_subnet\_name | Name of subnet where the vmss will be connected | `string` | n/a | yes |
 | node\_resource\_group | Resource group name for the AKS cluster | `string` | n/a | yes |
 | vmss\_resource\_group\_name | Existing resource group name of where the VMSS will be created | `string` | n/a | yes |
@@ -91,6 +93,8 @@ data "azurerm_subnet" "agents" {
 module "terraform-azurerm-aks-devops-agent" {
   source              = "tonyskidmore/aks-devops-agent/azurerm"
   version             = "0.0.2"
+  ado_ext_pat         = var.ado_ext_pat
+  ado_org             = var.ado_org
   prefix              = "prefix-${random_id.prefix.hex}"
   resource_group_name = data.azurerm_resource_group.demo.name
 
