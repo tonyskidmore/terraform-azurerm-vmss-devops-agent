@@ -22,5 +22,5 @@ module "aks" {
   node_resource_group             = var.node_resource_group
   vnet_subnet_id                  = data.azurerm_subnet.agents.id
   rbac_aad                        = var.rbac_aad
-  log_analytics_workspace_enabled = false
+  log_analytics_workspace_enabled = var.log_analytics_workspace_enabled
 }

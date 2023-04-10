@@ -29,3 +29,9 @@ variable "rbac_aad" {
   description = "AKS AAD RBAC"
   default     = false
 }
+
+variable "log_analytics_workspace_enabled" {
+  type        = bool
+  description = "AKS log analytics workspace enabled"
+  default     = false
+}
