@@ -112,18 +112,24 @@ build_definitions = {
     yml_path = "demo_environment/pipelines/006-managed-identity-test.yml"
   }
   "pipeline19" = {
+    name     = "007-aks-terraform",
+    path     = "\\007-aks-agents",
+    repo_ref = "repo1",
+    yml_path = "demo_environment/pipelines/007-aks-terraform.yml"
+  }
+  "pipeline20" = {
     name     = "007-aks-agents-terraform",
     path     = "\\007-aks-agents",
     repo_ref = "repo1",
     yml_path = "demo_environment/pipelines/007-aks-agents-terraform.yml"
   }
-  "pipeline20" = {
+  "pipeline21" = {
     name     = "007-aks-agents-vmss-host-test",
     path     = "\\007-aks-agents",
     repo_ref = "repo1",
     yml_path = "demo_environment/pipelines/007-aks-agents-vmss-host-test.yml"
   }
-  "pipeline21" = {
+  "pipeline22" = {
     name     = "007-aks-agents-test",
     path     = "\\007-aks-agents",
     repo_ref = "repo1",
