@@ -35,7 +35,7 @@ stages:
       ${{ if eq(parameters.operation, 'terraform-destroy') }}:
         destroyMode: true
       environmentParameters:
-        aks-agents:
+        demo:
           azureSubscription: "demo-vmss"
           beStorageAccountName: $(state_storage_account_name)
           beContainerName: $(state_container_name)
@@ -43,7 +43,7 @@ stages:
           beResourceGroupName: $(state_resource_group_name)
           beSubscriptionId: $(azurerm_subscription_id)
           dependsOn: []
-          environmentName: "aks-agents"
+          environmentName: "demo"
       initCheckout:
         - self
         - git://$(project)/pipelines
