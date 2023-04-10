@@ -2,7 +2,7 @@
 
 trigger: none
 
-pool: aks-agent-pool-001
+pool: aks-agents-pool-001
 
 steps:
   - checkout: self

@@ -57,6 +57,7 @@ To keep costs down ensure that after running and testing that you run `006-manag
 
 | Name | Source | Version |
 |------|--------|---------|
+| aks | Azure/aks/azurerm | 6.8.0 |
 | terraform-azurerm-aks-devops-agent | tonyskidmore/aks-devops-agent/azurerm | 0.0.2 |
 ## Inputs
 
@@ -90,16 +91,27 @@ data "azurerm_subnet" "agents" {
   virtual_network_name = var.vmss_vnet_name
 }
 
+module "aks" {
+  source              = "Azure/aks/azurerm"
+  version             = "6.8.0"
+  prefix              = "prefix-${random_id.prefix.hex}"
+  resource_group_name = var.vmss_resource_group_name
+  cluster_name        = "test-cluster"
+  node_resource_group = var.node_resource_group
+  vnet_subnet_id      = data.azurerm_subnet.agents.id
+}
+
+
 module "terraform-azurerm-aks-devops-agent" {
   source              = "tonyskidmore/aks-devops-agent/azurerm"
   version             = "0.0.2"
   ado_ext_pat         = var.ado_ext_pat
   ado_org             = var.ado_org
   prefix              = "prefix-${random_id.prefix.hex}"
-  resource_group_name = data.azurerm_resource_group.demo.name
+  resource_group_name = var.vmss_resource_group_name
 
-  cluster_name        = "test-cluster"
-  node_resource_group = var.node_resource_group
+  cluster_name = module.aks.aks_name
+  # node_resource_group = var.node_resource_group
   # net_profile_dns_service_ip     = "10.0.0.10"
   # net_profile_docker_bridge_cidr = "170.10.0.1/16"
   # https://learn.microsoft.com/en-us/azure/aks/egress-outboundtype
@@ -109,11 +121,11 @@ module "terraform-azurerm-aks-devops-agent" {
   # net_profile_service_cidr = "10.0.0.0/16"
   # network_plugin           = "azure"
   # network_policy           = "azure"
-  vnet_subnet_id = data.azurerm_subnet.agents.id
+  # vnet_subnet_id = data.azurerm_subnet.agents.id
 }
 
-data "azurerm_resource_group" "demo" {
-  name = var.vmss_resource_group_name
-}
+# data "azurerm_resource_group" "demo" {
+#   name = var.vmss_resource_group_name
+# }
 ```
 <!-- END_TF_DOCS -->
