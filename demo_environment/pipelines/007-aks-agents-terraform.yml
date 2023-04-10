@@ -35,20 +35,20 @@ stages:
       ${{ if eq(parameters.operation, 'terraform-destroy') }}:
         destroyMode: true
       environmentParameters:
-        demo:
+        aks:
           azureSubscription: "demo-vmss"
           beStorageAccountName: $(state_storage_account_name)
           beContainerName: $(state_container_name)
-          beKey: "007-aks-agents.tfstate"
+          beKey: "007-aks.tfstate"
           beResourceGroupName: $(state_resource_group_name)
           beSubscriptionId: $(azurerm_subscription_id)
           dependsOn: []
-          environmentName: "demo"
+          environmentName: "aks"
       initCheckout:
         - self
         - git://$(project)/pipelines
       poolName: 'vmss-bootstrap-pool'
-      terraformDirectory: '$(System.DefaultWorkingDirectory)/module/examples/007-aks-agents'
+      terraformDirectory: '$(System.DefaultWorkingDirectory)/module/examples/007-aks-agents/aks'
       terraformTfVars:
         AZ_SUBSCRIPTION: $(azurerm_subscription_id)
         AZDO_PERSONAL_ACCESS_TOKEN: $(ado_ext_pat)
@@ -65,7 +65,7 @@ stages:
       ${{ if eq(parameters.operation, 'terraform-destroy') }}:
         destroyMode: true
       environmentParameters:
-        demo:
+        aks-agents:
           azureSubscription: "demo-vmss"
           beStorageAccountName: $(state_storage_account_name)
           beContainerName: $(state_container_name)
@@ -73,12 +73,12 @@ stages:
           beResourceGroupName: $(state_resource_group_name)
           beSubscriptionId: $(azurerm_subscription_id)
           dependsOn: []
-          environmentName: "demo"
+          environmentName: "aks-agents"
       initCheckout:
         - self
         - git://$(project)/pipelines
       poolName: 'vmss-bootstrap-pool'
-      terraformDirectory: '$(System.DefaultWorkingDirectory)/module/examples/007-aks-agents'
+      terraformDirectory: '$(System.DefaultWorkingDirectory)/module/examples/007-aks-agents/aks-agents'
       terraformTfVars:
         AZ_SUBSCRIPTION: $(azurerm_subscription_id)
         AZDO_PERSONAL_ACCESS_TOKEN: $(ado_ext_pat)
