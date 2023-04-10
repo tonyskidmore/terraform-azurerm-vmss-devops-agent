@@ -23,3 +23,9 @@ variable "cluster_name" {
   type        = string
   description = "AKS cluster name"
 }
+
+variable "rbac_aad" {
+  type        = bool
+  description = "AKS AAD RBAC"
+  default     = false
+}

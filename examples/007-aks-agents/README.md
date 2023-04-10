@@ -74,13 +74,15 @@ data "azurerm_subnet" "agents" {
 }
 
 module "aks" {
-  source              = "Azure/aks/azurerm"
-  version             = "6.8.0"
-  prefix              = "prefix-${random_id.prefix.hex}"
-  resource_group_name = var.resource_group_name
-  cluster_name        = var.cluster_name
-  node_resource_group = var.node_resource_group
-  vnet_subnet_id      = data.azurerm_subnet.agents.id
+  source                          = "Azure/aks/azurerm"
+  version                         = "6.8.0"
+  prefix                          = "prefix-${random_id.prefix.hex}"
+  resource_group_name             = var.resource_group_name
+  cluster_name                    = var.cluster_name
+  node_resource_group             = var.node_resource_group
+  vnet_subnet_id                  = data.azurerm_subnet.agents.id
+  rbac_aad                        = var.rbac_aad
+  log_analytics_workspace_enabled = false
 }
 ```
 <!-- END_TF_DOCS -->
