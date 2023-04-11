@@ -4,14 +4,62 @@ trigger: none
 
 pool: aks-agents-pool-001
 
-steps:
-  - checkout: self
+variables:
+  - group: build
 
-  - script: |
-      env
-    displayName: Show environment variables
+jobs:
+  - job: Plan
+    strategy:
+      matrix:
+        Terraform10:
+          TERRAFORM_VERSION: '1.0.0'
+        Terraform11:
+          TERRAFORM_VERSION: '1.1.0'
+        Terraform12:
+          TERRAFORM_VERSION: '1.2.0'
+        Terraform13:
+          TERRAFORM_VERSION: '1.3.0'
+        Terraform14:
+          TERRAFORM_VERSION: '1.4.0'
+      maxParallel: 5
+    steps:
 
-  - script: |
-      source /etc/os-release
-      printf "Running on: %s\n" "$PRETTY_NAME"
-    displayName: Check operating system version
+      - checkout: self
+      - checkout: git://$(project)/module
+
+      - script: |
+          env
+          ls "$SYSTEM_DEFAULTWORKINGDIRECTORY"
+        displayName: Debug
+
+      - script: |
+          echo $(TERRAFORM_VERSION)
+          hostname
+        displayName: Matrix output
+
+      - script: |
+          sudo apt update > /dev/null 2>&1
+          sudo apt install -y jq unzip > /dev/null 2>&1
+          url=""http://169.254.169.254/metadata/instance?api-version=2021-02-01""
+          metadata=$(curl -s \
+                          -H Metadata:true \
+                          --noproxy "*" \
+                          "$url")
+          zone=$(jq -r '.compute.zone' <<< "$metadata")
+          printf "Running in zone: %s\n" "$zone"
+        displayName: Show zone
+
+      - script: |
+          url="https://releases.hashicorp.com/terraform/"
+          url+="$TERRAFORM_VERSION"
+          url+="/terraform_${TERRAFORM_VERSION}_linux_amd64.zip"
+          wget --quiet "$url"
+          unzip "terraform_${TERRAFORM_VERSION}_linux_amd64.zip"
+          rm "terraform_${TERRAFORM_VERSION}_linux_amd64.zip"
+          sudo mv terraform /usr/bin
+        displayName: Install Terraform
+
+      - script: |
+          tf_ver=$(terraform version -json | jq .terraform_version)
+          printf "Terraform version installed: %s\n" "$tf_ver"
+        displayName: Terraform version
