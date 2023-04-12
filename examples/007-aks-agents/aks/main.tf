@@ -23,4 +23,5 @@ module "aks" {
   vnet_subnet_id                  = data.azurerm_subnet.agents.id
   rbac_aad                        = var.rbac_aad
   log_analytics_workspace_enabled = var.log_analytics_workspace_enabled
+  private_cluster_enabled         = true
 }
