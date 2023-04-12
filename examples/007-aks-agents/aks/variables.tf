@@ -30,6 +30,12 @@ variable "rbac_aad" {
   default     = false
 }
 
+variable "private_cluster_enabled" {
+  type        = bool
+  description = "AKS Private Cluster"
+  default     = true
+}
+
 variable "log_analytics_workspace_enabled" {
   type        = bool
   description = "AKS log analytics workspace enabled"
