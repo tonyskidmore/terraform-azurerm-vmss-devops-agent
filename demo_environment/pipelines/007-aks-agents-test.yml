@@ -10,7 +10,7 @@ variables:
     value: "demo-vmss"
 
 jobs:
-  - job: identity
+  - job: terraform
     strategy:
       matrix:
         Terraform10:
@@ -27,7 +27,6 @@ jobs:
     steps:
 
       - checkout: self
-      - checkout: git://$(project)/module
 
       - script: |
           env
@@ -38,18 +37,6 @@ jobs:
           echo $(TERRAFORM_VERSION)
           hostname
         displayName: Matrix output
-
-      - script: |
-          sudo apt update > /dev/null 2>&1
-          sudo apt install -y jq unzip > /dev/null 2>&1
-          url=""http://169.254.169.254/metadata/instance?api-version=2021-02-01""
-          metadata=$(curl -s \
-                          -H Metadata:true \
-                          --noproxy "*" \
-                          "$url")
-          zone=$(jq -r '.compute.zone' <<< "$metadata")
-          printf "Running in zone: %s\n" "$zone"
-        displayName: Show zone
 
       - script: |
           url="https://releases.hashicorp.com/terraform/"
@@ -73,69 +60,8 @@ jobs:
           scriptLocation: inlineScript
           addSpnToEnvironment: true
           inlineScript: |
-            az account show
-            tenant_id=$(az account show --query 'tenantId' -o tsv)
-            subscription_id=$(az account show --query 'id' -o tsv)
-            echo "##vso[task.setvariable variable=SUB_ID;isoutput=true]$subscription_id"
-            echo "##vso[task.setvariable variable=TEN_ID;isoutput=true]$tenant_id"
-        name: azureIDs
-        displayName: Get Azure login IDs
-
-  - job: terraform
-    variables:
-      subscriptionID: $[ dependencies.identity.outputs['azureIDs.SUB_ID'] ]
-      tenantID: $[ dependencies.identity.outputs['azureIDs.TEN_ID'] ]
-      agentName: $[ dependencies.identity.outputs['agentName.AGENT_NAME'] ]
-    displayName: "Terraform using managed identity"
-    continueOnError: false
-    container: ubuntu
-    dependsOn: identity
-    strategy:
-      matrix:
-        Terraform10:
-          TERRAFORM_VERSION: '1.0.0'
-        Terraform11:
-          TERRAFORM_VERSION: '1.1.0'
-        Terraform12:
-          TERRAFORM_VERSION: '1.2.0'
-        Terraform13:
-          TERRAFORM_VERSION: '1.3.0'
-        Terraform14:
-          TERRAFORM_VERSION: '1.4.0'
-      maxParallel: 5
-
-      steps:
-
-        - checkout: self
-
-        - script: |
-            echo "$AGENT_NAME"
-          displayName: Show agent name
-          env:
-            AGENT_NAME: $(agentName)
-
-        - script: |
-            url="https://releases.hashicorp.com/terraform/"
-            url+="$TERRAFORM_VERSION"
-            url+="/terraform_${TERRAFORM_VERSION}_linux_amd64.zip"
-            wget --quiet "$url"
-            unzip "terraform_${TERRAFORM_VERSION}_linux_amd64.zip"
-            rm "terraform_${TERRAFORM_VERSION}_linux_amd64.zip"
-            sudo mv terraform /usr/bin
-          displayName: Install Terraform
-
-        - script: |
-            tf_ver=$(terraform version -json | jq .terraform_version)
-            printf "Terraform version installed: %s\n" "$tf_ver"
-          displayName: Terraform version
-
-        - script: |
             terraform init
             terraform plan
           workingDirectory: $(System.DefaultWorkingDirectory)/examples/006-managed_identity/terraform
-          displayName: Terraform plan
-          env:
-            TF_IN_AUTOMATION: true
-            ARM_USE_MSI: true
-            ARM_SUBSCRIPTION_ID: $(subscriptionID)
-            ARM_TENANT_ID: $(subscriptionID)
+        displayName: Terraform plan
+
