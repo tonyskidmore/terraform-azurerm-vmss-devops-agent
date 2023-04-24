@@ -29,8 +29,8 @@ data "azurerm_kubernetes_cluster" "default" {
 }
 
 module "terraform-azurerm-aks-devops-agent" {
-  source      = "tonyskidmore/aks-devops-agent/azurerm"
-  version     = "0.0.2"
+  source      = "tonyskidmore/azure-devops-agent/kubernetes"
+  version     = "0.0.3"
   ado_ext_pat = var.ado_ext_pat
   ado_org     = var.ado_org
   # resource_group_name = var.vmss_resource_group_name

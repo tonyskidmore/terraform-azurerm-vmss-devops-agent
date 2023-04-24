@@ -64,4 +64,3 @@ jobs:
             terraform plan
           workingDirectory: $(System.DefaultWorkingDirectory)/examples/006-managed_identity/terraform
         displayName: Terraform plan
-
