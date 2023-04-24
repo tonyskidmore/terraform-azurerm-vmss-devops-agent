@@ -2,7 +2,7 @@
 
 trigger: none
 
-pool: aks-agents-pool-001
+pool: k8s-agents-pool-001
 
 variables:
   - group: build
