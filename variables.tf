@@ -323,6 +323,12 @@ variable "vmss_storage_account_uri" {
   default     = null
 }
 
+variable "vmss_user_data" {
+  description = "The base64 encoded data to use as user data for the VMSS instances"
+  type        = string
+  default     = null
+}
+
 variable "vmss_zones" {
   type        = list(string)
   description = "A collection of availability zones to spread the Virtual Machines over"

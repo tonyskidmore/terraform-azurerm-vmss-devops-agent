@@ -34,12 +34,12 @@ If using the `demo_environment` pipeline it will deploy 2 instances to begin wit
 
 | Name | Version |
 |------|---------|
-| azurerm | 3.39.1 |
+| azurerm | >=3.1.0 |
 ## Modules
 
 | Name | Source | Version |
 |------|--------|---------|
-| terraform-azurerm-vmss-devops-agent | tonyskidmore/vmss-devops-agent/azurerm | 0.2.2 |
+| terraform-azurerm-vmss-devops-agent | tonyskidmore/vmss-devops-agent/azurerm | 0.2.4 |
 ## Inputs
 
 | Name | Description | Type | Default | Required |
@@ -88,7 +88,7 @@ data "azurerm_subnet" "agents" {
 
 module "terraform-azurerm-vmss-devops-agent" {
   source                   = "tonyskidmore/vmss-devops-agent/azurerm"
-  version                  = "0.2.2"
+  version                  = "0.2.4"
   ado_org                  = var.ado_org
   ado_pool_name            = var.ado_pool_name
   ado_project              = var.ado_project

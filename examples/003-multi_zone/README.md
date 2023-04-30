@@ -45,13 +45,13 @@ terraform plan -var ado_project_visibility=public -out tfplan
 
 | Name | Version |
 |------|---------|
-| azurerm | 3.35.0 |
-| tls | 4.0.4 |
+| azurerm | >=3.1.0 |
+| tls | ~>4.0 |
 ## Modules
 
 | Name | Source | Version |
 |------|--------|---------|
-| terraform-azurerm-vmss-devops-agent | tonyskidmore/vmss-devops-agent/azurerm | 0.2.2 |
+| terraform-azurerm-vmss-devops-agent | tonyskidmore/vmss-devops-agent/azurerm | 0.2.4 |
 ## Inputs
 
 | Name | Description | Type | Default | Required |
@@ -99,10 +99,13 @@ resource "tls_private_key" "vmss_ssh" {
   rsa_bits  = 4096
 }
 
+locals {
+  vmss_user_data = base64encode(jsonencode({ "hello" = "world" }))
+}
 
 module "terraform-azurerm-vmss-devops-agent" {
   source                   = "tonyskidmore/vmss-devops-agent/azurerm"
-  version                  = "0.2.2"
+  version                  = "0.2.4"
   ado_org                  = var.ado_org
   ado_pool_name            = var.ado_pool_name
   ado_project              = var.ado_project
@@ -115,6 +118,7 @@ module "terraform-azurerm-vmss-devops-agent" {
   vmss_resource_group_name = var.vmss_resource_group_name
   vmss_sku                 = var.vmss_sku
   vmss_subnet_id           = data.azurerm_subnet.agents.id
+  vmss_user_data           = local.vmss_user_data
   vmss_zones               = var.vmss_zones
   tags                     = var.tags
 }

@@ -1,6 +1,6 @@
 module "vmss" {
   source  = "tonyskidmore/vmss/azurerm"
-  version = "0.3.0"
+  version = "0.3.2"
   # required variables
   vmss_resource_group_name = var.vmss_resource_group_name
   vmss_subnet_id           = var.vmss_subnet_id
@@ -33,6 +33,7 @@ module "vmss" {
   vmss_sku                                    = var.vmss_sku
   vmss_ssh_public_key                         = var.vmss_ssh_public_key
   vmss_storage_account_uri                    = var.vmss_storage_account_uri
+  vmss_user_data                              = var.vmss_user_data
   vmss_zones                                  = var.vmss_zones
 
 }
