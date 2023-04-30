@@ -26,13 +26,21 @@ module "aks" {
   private_cluster_enabled         = var.private_cluster_enabled
 }
 
-module "terraform-azurerm-aks-devops-agent" {
+data "azurerm_kubernetes_cluster" "default" {
+  name                = var.cluster_name
+  resource_group_name = var.resource_group_name
+  depends_on = [
+    module.aks-cluster
+  ]
+}
+
+module "terraform-kubernetes-azure-devops-agent" {
   source      = "tonyskidmore/azure-devops-agent/kubernetes"
   version     = "0.0.3"
   ado_ext_pat = var.ado_ext_pat
   ado_org     = var.ado_org
 
   depends_on = [
-    module.aks
+    data.azurerm_kubernetes_cluster.default
   ]
 }
