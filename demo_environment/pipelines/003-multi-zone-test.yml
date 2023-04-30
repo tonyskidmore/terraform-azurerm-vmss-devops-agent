@@ -38,14 +38,19 @@ jobs:
         displayName: Matrix output
 
       - script: |
-          sudo apt update > /dev/null 2>&1
-          sudo apt install -y jq unzip > /dev/null 2>&1
-          url=""http://169.254.169.254/metadata/instance?api-version=2021-02-01""
+          url="http://169.254.169.254/metadata/instance?api-version=2021-02-01"
           metadata=$(curl -s \
                           -H Metadata:true \
                           --noproxy "*" \
                           "$url")
-          zone=$(jq -r '.compute.zone' <<< "$metadata")
+          printf "metadata:\n\n%s\n" "$metadata"
+          echo "##vso[task.setvariable variable=IMDS]$metadata"
+        displayName: Get IMDS metadata
+
+      - script: |
+          sudo apt update > /dev/null 2>&1
+          sudo apt install -y jq unzip > /dev/null 2>&1
+          zone=$(jq -r '.compute.zone' <<< "$IMDS")
           printf "Running in zone: %s\n" "$zone"
         displayName: Show zone
 
