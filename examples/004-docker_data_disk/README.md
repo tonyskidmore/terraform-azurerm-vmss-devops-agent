@@ -34,7 +34,7 @@ If using the `demo_environment` pipeline it will deploy 2 instances to begin wit
 
 | Name | Version |
 |------|---------|
-| azurerm | >=3.1.0 |
+| azurerm | 3.54.0 |
 ## Modules
 
 | Name | Source | Version |

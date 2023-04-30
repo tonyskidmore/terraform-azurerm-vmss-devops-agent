@@ -18,8 +18,8 @@ It demonstrates how to add a custom certificate chain to VMSS instances.  This m
 
 | Name | Version |
 |------|---------|
-| azurerm | >=3.1.0 |
-| tls | ~>4.0 |
+| azurerm | 3.54.0 |
+| tls | 4.0.4 |
 ## Modules
 
 | Name | Source | Version |
