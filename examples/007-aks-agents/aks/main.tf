@@ -25,3 +25,14 @@ module "aks" {
   log_analytics_workspace_enabled = var.log_analytics_workspace_enabled
   private_cluster_enabled         = var.private_cluster_enabled
 }
+
+module "terraform-azurerm-aks-devops-agent" {
+  source      = "tonyskidmore/azure-devops-agent/kubernetes"
+  version     = "0.0.3"
+  ado_ext_pat = var.ado_ext_pat
+  ado_org     = var.ado_org
+
+  depends_on = [
+    module.aks
+  ]
+}
