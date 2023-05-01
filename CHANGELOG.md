@@ -2,6 +2,9 @@
 
 [keepachangelog](https://keepachangelog.com/en/1.0.0/)
 
+## [0.2.5]
+* Adding `007-aks-agents` example
+
 ## [0.2.4]
 * Adding `user_data` argument
 

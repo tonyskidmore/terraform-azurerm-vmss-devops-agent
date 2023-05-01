@@ -1,6 +1,8 @@
 # Azure Kubernetes Service Agent Pool
 
 In this example we are creating an AKS hosted pool named `k8s-agents-pool-001`.
+Although this example does not create a VMSS agent pool, it does use the `vmss-bootstrap-pool` to
+perform the deployment of an AKS cluster and self-hosted agents deployed to the cluster.
 
 The `demo_environment` pipelines are documented below.
 

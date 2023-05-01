@@ -136,8 +136,7 @@ git_repos = {
     name = "module",
     # configure to feature branch while testing e.g.
     # default_branch = "refs/heads/example_006",
-    # default_branch = "refs/heads/main",
-    default_branch = "refs/heads/007-aks-agents",
+    default_branch = "refs/heads/main",
     initialization = {
       init_type   = "Import",
       source_type = "Git",
