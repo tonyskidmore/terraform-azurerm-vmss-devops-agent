@@ -124,12 +124,6 @@ build_definitions = {
     yml_path = "demo_environment/pipelines/007-aks-agents-terraform.yml"
   }
   "pipeline21" = {
-    name     = "007-aks-agents-vmss-host-test",
-    path     = "\\007-aks-agents",
-    repo_ref = "repo1",
-    yml_path = "demo_environment/pipelines/007-aks-agents-vmss-host-test.yml"
-  }
-  "pipeline22" = {
     name     = "007-aks-agents-test",
     path     = "\\007-aks-agents",
     repo_ref = "repo1",
