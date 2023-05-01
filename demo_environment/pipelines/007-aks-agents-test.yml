@@ -1,0 +1,66 @@
+---
+
+trigger: none
+
+pool: k8s-agents-pool-001
+
+variables:
+  - group: build
+  - name: serviceConnection
+    value: "demo-vmss"
+
+jobs:
+  - job: terraform
+    strategy:
+      matrix:
+        Terraform10:
+          TERRAFORM_VERSION: '1.0.0'
+        Terraform11:
+          TERRAFORM_VERSION: '1.1.0'
+        Terraform12:
+          TERRAFORM_VERSION: '1.2.0'
+        Terraform13:
+          TERRAFORM_VERSION: '1.3.0'
+        Terraform14:
+          TERRAFORM_VERSION: '1.4.0'
+      maxParallel: 5
+    steps:
+
+      - checkout: self
+
+      - script: |
+          env
+          ls "$SYSTEM_DEFAULTWORKINGDIRECTORY"
+        displayName: Debug
+
+      - script: |
+          echo $(TERRAFORM_VERSION)
+          hostname
+        displayName: Matrix output
+
+      - script: |
+          url="https://releases.hashicorp.com/terraform/"
+          url+="$TERRAFORM_VERSION"
+          url+="/terraform_${TERRAFORM_VERSION}_linux_amd64.zip"
+          wget --quiet "$url"
+          unzip "terraform_${TERRAFORM_VERSION}_linux_amd64.zip"
+          rm "terraform_${TERRAFORM_VERSION}_linux_amd64.zip"
+          sudo mv terraform /usr/bin
+        displayName: Install Terraform
+
+      - script: |
+          tf_ver=$(terraform version -json | jq .terraform_version)
+          printf "Terraform version installed: %s\n" "$tf_ver"
+        displayName: Terraform version
+
+      - task: AzureCLI@2
+        inputs:
+          azureSubscription: $(serviceConnection)
+          scriptType: 'bash'
+          scriptLocation: inlineScript
+          addSpnToEnvironment: true
+          inlineScript: |
+            terraform init
+            terraform plan
+          workingDirectory: $(System.DefaultWorkingDirectory)/examples/006-managed_identity/terraform
+        displayName: Terraform plan

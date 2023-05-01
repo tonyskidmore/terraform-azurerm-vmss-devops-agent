@@ -11,6 +11,8 @@ The table below lists the various example contained in the directories below.
 | 003-multi-zone          | Deploying agents across availability zones.  Also demonstrates scaling up/down agents on a schedule.                            |
 | 004-docker-data-disk    | Adds a data disk and locates the Docker data on that data disk mounted at `/opt/data/docker`                                    |
 | 005-additional_packages | Adds additional default packages e.g. azure-cli, packer, powershell, Python3 venv support, terraform (see example README)       |
+| 006-managed_identity    | Assigns and uses a System assigned managed identity to authenticate to Azure                                                    |
+| 007-aks-agents          | Shows an example of creating an AKS cluster from VMSS and then running Azure DevOps agents in the Kubernetes cluster            |
 
 Each example will have a `*-terraform` pipeline which deploys the scale set based agent pool which should be run first.
 There is also an associated `*-test` pipeline that tests the functionality of the deployed agent pool.

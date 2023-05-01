@@ -111,6 +111,24 @@ build_definitions = {
     repo_ref = "repo1",
     yml_path = "demo_environment/pipelines/006-managed-identity-test.yml"
   }
+  "pipeline19" = {
+    name     = "007-aks-terraform",
+    path     = "\\007-aks-agents",
+    repo_ref = "repo1",
+    yml_path = "demo_environment/pipelines/007-aks-terraform.yml"
+  }
+  "pipeline20" = {
+    name     = "007-aks-agents-terraform",
+    path     = "\\007-aks-agents",
+    repo_ref = "repo1",
+    yml_path = "demo_environment/pipelines/007-aks-agents-terraform.yml"
+  }
+  "pipeline21" = {
+    name     = "007-aks-agents-test",
+    path     = "\\007-aks-agents",
+    repo_ref = "repo1",
+    yml_path = "demo_environment/pipelines/007-aks-agents-test.yml"
+  }
 }
 
 git_repos = {
@@ -145,3 +163,5 @@ vmss_vnet_name               = "vnet-demo-azure-devops-vmss"
 vmss_vnet_address_space      = ["192.168.0.0/16"]
 vmss_subnet_name             = "snet-demo-azure-devops-vmss"
 vmss_subnet_address_prefixes = ["192.168.0.0/24"]
+aks_subnet_name              = "snet-demo-azure-devops-aks"
+aks_subnet_address_prefixes  = ["192.168.1.0/24"]

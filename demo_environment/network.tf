@@ -13,6 +13,13 @@ resource "azurerm_subnet" "demo-vmss" {
   virtual_network_name = azurerm_virtual_network.demo-vmss.name
 }
 
+resource "azurerm_subnet" "demo-aks" {
+  name                 = var.aks_subnet_name
+  resource_group_name  = azurerm_resource_group.demo-vmss.name
+  address_prefixes     = var.aks_subnet_address_prefixes
+  virtual_network_name = azurerm_virtual_network.demo-vmss.name
+}
+
 resource "azurerm_network_security_group" "demo-vmss" {
   name                = var.nsg_name
   location            = azurerm_resource_group.demo-vmss.location

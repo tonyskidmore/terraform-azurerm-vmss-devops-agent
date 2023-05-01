@@ -41,6 +41,7 @@ jobs:
         displayName: Metadata
 
       - script: |
+          set -e
           az login --identity
           az account show
           tenant_id=$(az account show --query 'tenantId' -o tsv)

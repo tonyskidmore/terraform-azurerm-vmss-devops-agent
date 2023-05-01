@@ -123,6 +123,16 @@ variable "vmss_subnet_address_prefixes" {
   description = "Subnet address prefixes"
 }
 
+variable "aks_subnet_name" {
+  type        = string
+  description = "Name of subnet where the aks will be connected"
+}
+
+variable "aks_subnet_address_prefixes" {
+  type        = list(string)
+  description = "Subnet address prefixes"
+}
+
 variable "vmss_vnet_name" {
   type        = string
   description = "Name of the Vnet that the target subnet is a member of"
