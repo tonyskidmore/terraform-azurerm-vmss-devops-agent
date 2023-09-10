@@ -31,7 +31,7 @@ If using the `demo_environment`, to keep costs down ensure that after running an
 
 | Name | Version |
 |------|---------|
-| azurerm | 3.54.0 |
+| azurerm | 3.72.0 |
 ## Modules
 
 | Name | Source | Version |
