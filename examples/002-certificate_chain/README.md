@@ -18,7 +18,7 @@ It demonstrates how to add a custom certificate chain to VMSS instances.  This m
 
 | Name | Version |
 |------|---------|
-| azurerm | 3.54.0 |
+| azurerm | 3.72.0 |
 | tls | 4.0.4 |
 ## Modules
 

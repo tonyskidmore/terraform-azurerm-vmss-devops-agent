@@ -45,7 +45,7 @@ terraform plan -var ado_project_visibility=public -out tfplan
 
 | Name | Version |
 |------|---------|
-| azurerm | 3.54.0 |
+| azurerm | 3.72.0 |
 | tls | 4.0.4 |
 ## Modules
 

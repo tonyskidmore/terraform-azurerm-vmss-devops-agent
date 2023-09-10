@@ -14,23 +14,28 @@ skip-check:
   # Use the Azure CLI to enable end-to-end encryption using encryption at host
   # https://docs.microsoft.com/en-us/azure/virtual-machines/linux/disks-enable-host-based-encryption-cli
   - CKV_AZURE_97
-
   # exclude rules triggered on examples
-  - CKV_AZURE_182  # "Ensure that VNET has at least 2 connected DNS Endpoints"
-  - CKV_AZURE_183  # "Ensure that VNET has at least 2 connected DNS Endpoints"
   - CKV_AZURE_77  # "Ensure that UDP Services are restricted from the Internet "
   - CKV_AZURE_160  # "Ensure that HTTP (port 80) access is restricted from the internet"
   - CKV_AZURE_9  # "Ensure that RDP access is restricted from the internet"
   - CKV_AZURE_10  # "Ensure that SSH access is restricted from the internet"
   - CKV_AZURE_178  # "Ensure Windows VM enables SSH with keys for secure communication"
   - CKV_AZURE_179  # "Ensure VM agent is installed"
+  - CKV_AZURE_182  # "Ensure that VNET has at least 2 connected DNS Endpoints"
+  - CKV_AZURE_183  # "Ensure that VNET has at least 2 connected DNS Endpoints"
   - CKV_AZURE_44  # "Ensure Storage Account is using the latest version of TLS encryption"
+  - CKV_AZURE_206 # Ensure that Storage Accounts use replication
   - CKV_AZURE_33  # "Ensure Storage logging is enabled for Queue service for read, write and delete requests"
   - CKV_AZURE_59  # "Ensure that Storage accounts disallow public access"
   - CKV_AZURE_190  # "Ensure that Storage blobs restrict public access"
   - CKV_AZURE_197  # "Ensure that Storage Accounts use replication"
-  - CKV2_AZURE_18  # "Ensure that Storage Accounts use customer-managed key for encryption"
   - CKV2_AZURE_1  # "Ensure storage for critical data are encrypted with Customer Managed Key"
+  - CKV2_AZURE_18  # "Ensure that Storage Accounts use customer-managed key for encryption"
   - CKV2_AZURE_21  # "Ensure Storage logging is enabled for Blob service for read requests"
+  - CKV2_AZURE_31 # Ensure VNET subnet is configured with a Network Security Group (NSG)
+  - CKV2_AZURE_33 # Ensure storage account is configured with private endpoint
+  - CKV2_AZURE_38 # Ensure soft-delete is enabled on Azure storage account
   - CKV_GHA_*
   - CKV2_GHA_*
+  - CKV_TF_1 # Ensure Terraform module sources use a commit hash
+  - CKV2_ADO_1 # Ensure at least two approving reviews for PRs

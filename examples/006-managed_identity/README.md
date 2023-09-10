@@ -50,7 +50,7 @@ To keep costs down ensure that after running and testing that you run `006-manag
 
 | Name | Version |
 |------|---------|
-| azurerm | 3.54.0 |
+| azurerm | 3.72.0 |
 ## Modules
 
 | Name | Source | Version |
