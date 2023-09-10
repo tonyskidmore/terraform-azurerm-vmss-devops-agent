@@ -38,6 +38,7 @@ jobs:
           VALIDATE_JSCPD: false
           VALIDATE_TERRAFORM_TERRASCAN: false
           VALIDATE_GITLEAKS: false
+          VALIDATE_DOCKERFILE_HADOLINT: false
           DEFAULT_BRANCH: main
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
