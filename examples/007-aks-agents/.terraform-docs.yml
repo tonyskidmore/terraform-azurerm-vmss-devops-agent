@@ -26,7 +26,7 @@ content: |-
   Example
 
   ```hcl
-  {{ include "aks/main.tf" }}
+  {{ include "aks-agents/main.tf" }}
   ```
 output:
   file: "README.md"
