@@ -55,3 +55,6 @@ docker/application
 docker/idrsa
 
 .terraform.lock.hcl
+
+# ignore any .crt file in the certs folder
+/.devcontainer/certs/*.crt
