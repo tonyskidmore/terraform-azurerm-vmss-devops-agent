@@ -262,7 +262,7 @@ variable "vmss_source_image_publisher" {
 variable "vmss_source_image_sku" {
   description = "Azure Virtual Machine Scale Set Source Image SKU"
   type        = string
-  default     = "20_04-lts"
+  default     = "24_04-lts"
 }
 
 variable "vmss_source_image_version" {
