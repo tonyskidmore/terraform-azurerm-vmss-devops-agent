@@ -122,8 +122,22 @@ if [[ "$YES" -ne 1 ]]; then
   esac
 fi
 
-# Build filter args.
-filter_args=()
+# Persistent provider plugin cache outside .terraform/. This sidesteps a
+# Terraform 1.12–1.14 bug in `terraform test` where running multiple
+# .tftest.hcl files in one invocation can prematurely garbage-collect
+# provider binaries between teardowns, causing destroys to fail with
+# "could not read package directory: open .terraform/providers/...".
+# With a plugin cache dir set, Terraform symlinks providers from the
+# cache into each .terraform/providers/ on demand instead of relying on
+# the .terraform-local copies surviving across runs.
+if [[ -z "${TF_PLUGIN_CACHE_DIR:-}" ]]; then
+  TF_PLUGIN_CACHE_DIR="${REPO_ROOT}/.terraform-plugin-cache"
+  export TF_PLUGIN_CACHE_DIR
+fi
+mkdir -p "$TF_PLUGIN_CACHE_DIR"
+
+# Resolve the test files we'll run.
+test_files=()
 if [[ -n "$FILTER" ]]; then
   file="$TEST_DIR/${FILTER}.tftest.hcl"
   if [[ ! -f "$file" ]]; then
@@ -135,7 +149,16 @@ if [[ -n "$FILTER" ]]; then
     done
     exit 2
   fi
-  filter_args+=("-filter=$file")
+  test_files+=("$file")
+else
+  for f in "$TEST_DIR"/*.tftest.hcl; do
+    [[ -e "$f" ]] || continue
+    test_files+=("$f")
+  done
+  if (( ${#test_files[@]} == 0 )); then
+    echo "No .tftest.hcl files found under $TEST_DIR." >&2
+    exit 0
+  fi
 fi
 
 # Fresh init that also resolves the example modules referenced by the test
@@ -149,6 +172,23 @@ if [[ "$VERBOSE" -eq 1 ]]; then
   verbose_args+=("-verbose")
 fi
 
+# Run each test file as its own `terraform test` invocation so a teardown
+# failure in one file cannot taint state for the others. This also avoids
+# the cross-file provider-cache races mentioned above.
+overall_rc=0
+failed=()
+for tf in "${test_files[@]}"; do
+  name="$(basename "$tf" .tftest.hcl)"
+  echo
+  echo "==> terraform test -test-directory=$TEST_DIR -filter=$tf ${verbose_args[*]}"
+  if ! terraform test -test-directory="$TEST_DIR" -filter="$tf" "${verbose_args[@]}"; then
+    overall_rc=1
+    failed+=("$name")
+  fi
+done
+
 echo
-echo "==> terraform test -test-directory=$TEST_DIR ${filter_args[*]} ${verbose_args[*]}"
-terraform test -test-directory="$TEST_DIR" "${filter_args[@]}" "${verbose_args[@]}"
+if (( overall_rc != 0 )); then
+  echo "FAILED tests: ${failed[*]}" >&2
+fi
+exit "$overall_rc"

@@ -67,6 +67,16 @@ run "apply_multi_zone_example" {
   }
 
   assert {
+    condition     = length(output.vmss_zones) == 2
+    error_message = "Expected the VMSS to be spread across exactly 2 availability zones."
+  }
+
+  assert {
+    condition     = sort(output.vmss_zones) == ["1", "2"]
+    error_message = "Expected the VMSS zones output to be [\"1\", \"2\"]."
+  }
+
+  assert {
     condition     = output.elastic_pool.time_to_live_minutes == 15
     error_message = "Expected elastic_pool time_to_live_minutes to equal the input value (15)."
   }

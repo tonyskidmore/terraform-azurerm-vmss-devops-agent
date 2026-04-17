@@ -18,6 +18,10 @@ params.json
 # Local .terraform directories
 **/.terraform/*
 
+# Provider plugin cache used by scripts/test-integration.sh to avoid the
+# Terraform 1.12–1.14 multi-tftest provider GC bug.
+.terraform-plugin-cache/
+
 # .tfstate files
 *.tfstate
 *.tfstate.*

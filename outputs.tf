@@ -47,6 +47,11 @@ output "vmss_instances" {
   description = "Number of instances configured on the VMSS"
 }
 
+output "vmss_zones" {
+  value       = module.vmss.vmss_zones
+  description = "Availability zones the VMSS instances are spread across"
+}
+
 output "vmss_unique_id" {
   value       = module.vmss.vmss_unique_id
   description = "The generated unique identifier of the Virtual Machine Scale Set"
