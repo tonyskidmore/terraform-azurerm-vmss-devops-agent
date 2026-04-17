@@ -250,7 +250,7 @@ variable "vmss_source_image_id" {
 variable "vmss_source_image_offer" {
   description = "Azure Virtual Machine Scale Set Source Image Offer"
   type        = string
-  default     = "0001-com-ubuntu-server-focal"
+  default     = "ubuntu-24_04-lts"
 }
 
 variable "vmss_source_image_publisher" {
@@ -262,7 +262,7 @@ variable "vmss_source_image_publisher" {
 variable "vmss_source_image_sku" {
   description = "Azure Virtual Machine Scale Set Source Image SKU"
   type        = string
-  default     = "24_04-lts"
+  default     = "server"
 }
 
 variable "vmss_source_image_version" {

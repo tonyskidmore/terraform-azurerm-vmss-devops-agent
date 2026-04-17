@@ -9,7 +9,7 @@ bootcmd:
 apt:
   sources:
     packages.microsoft.com.azurecli.list:
-      source: "deb [arch=amd64] https://packages.microsoft.com/repos/azure-cli/ focal main"
+      source: "deb [arch=amd64] https://packages.microsoft.com/repos/azure-cli/ noble main"
       keyid: BC528686B50D79E339D3721CEB3E94ADBE1229CF
 
 package_update: true

@@ -14,15 +14,15 @@ apt:
   # preserve_sources_list: true
   sources:
     docker.list:
-      source: "deb [arch=amd64] https://download.docker.com/linux/ubuntu focal stable"
+      source: "deb [arch=amd64] https://download.docker.com/linux/ubuntu noble stable"
       keyid: 9DC858229FC7DD38854AE2D88D81803C0EBFCD88
 
     apt.releases.hashicorp.com.list:
-      source: "deb [arch=amd64] https://apt.releases.hashicorp.com focal main"
+      source: "deb [arch=amd64] https://apt.releases.hashicorp.com noble main"
       keyid: 798AEC654E5C15428C8E42EEAA16FCBCA621E701
 
     packages.microsoft.com.azurecli.list:
-      source: "deb [arch=amd64] https://packages.microsoft.com/repos/azure-cli/ focal main"
+      source: "deb [arch=amd64] https://packages.microsoft.com/repos/azure-cli/ noble main"
       keyid: BC528686B50D79E339D3721CEB3E94ADBE1229CF
 
 
