@@ -47,13 +47,18 @@ scripts/test-integration.sh --verbose
 
 ## What's covered
 
-| Test file                    | Exercises                                                        |
-|------------------------------|------------------------------------------------------------------|
-| admin_password.tftest.hcl    | Baseline: RG + vnet + ADO project + SE + VMSS + elastic pool     |
+| Test file                     | Exercises                                                                                  |
+|-------------------------------|--------------------------------------------------------------------------------------------|
+| admin_password.tftest.hcl     | Baseline: RG + vnet + ADO project + SE + VMSS + elastic pool, name / location / SKU asserts |
+| docker_data_disk.tftest.hcl   | `examples/004-docker_data_disk` with a 10 GB data disk — validates number `disk_size_gb`    |
+| managed_identity.tftest.hcl   | `examples/006-managed_identity` with SystemAssigned identity — asserts `principal_id`       |
+| multi_zone.tftest.hcl         | `examples/003-multi_zone` with zones `["1","2"]` and a customised `time_to_live_minutes`    |
 
-More examples (multi_zone, docker_data_disk, additional_packages,
-managed_identity) can follow the same `harness` + `run { source = ... }`
-pattern.
+The `additional_packages` and `certificate_chain` examples (005 / 002)
+aren't integration-tested yet — they only differ from
+`admin_password` by cloud-init content, so the marginal value of running
+them through a live apply/destroy cycle is low. Add them the same way if
+you want coverage.
 
 ## Harness
 

@@ -1,6 +1,7 @@
 module "vmss" {
-  source  = "tonyskidmore/vmss/azurerm"
-  version = "1.0.0"
+  # TEMP: local path while sibling v1.0.0 is not yet on the Registry.
+  # Revert to `source = "tonyskidmore/vmss/azurerm"` + `version = "1.0.0"` before tagging v1.0.0.
+  source = "../terraform-azurerm-vmss"
   # required variables
   vmss_resource_group_name = var.vmss_resource_group_name
   vmss_subnet_id           = var.vmss_subnet_id

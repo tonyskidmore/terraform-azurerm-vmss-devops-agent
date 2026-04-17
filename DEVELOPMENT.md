@@ -74,15 +74,16 @@ scripts/test-integration.sh --verbose
 
 What each integration test currently asserts:
 
-| Test             | Assertions beyond apply/destroy succeeding                                                                                |
-|------------------|---------------------------------------------------------------------------------------------------------------------------|
-| admin_password   | `vmss_id` ends with the expected VMSS name; `vmss_name`, `vmss_location`, `vmss_sku` match inputs; `elastic_pool.name` OK |
+| Test               | Assertions beyond apply/destroy succeeding                                                                                    |
+|--------------------|-------------------------------------------------------------------------------------------------------------------------------|
+| admin_password     | `vmss_id` ends with the expected VMSS name; `vmss_name`, `vmss_location`, `vmss_sku` match inputs; `elastic_pool.name` OK     |
+| docker_data_disk   | Exactly one data disk on the VMSS, `disk_size_gb == 10`, `lun == 1` (validates string → number breaking change)               |
+| managed_identity   | `vmss_identity.principal_id != null` (SystemAssigned wired up); `user_assigned_identity_ids` empty                            |
+| multi_zone         | `vmss_location == "uksouth"`; `elastic_pool.time_to_live_minutes == 15` (confirms non-default pool setting propagated)        |
 
-Further examples (`multi_zone`, `docker_data_disk`, `additional_packages`,
-`managed_identity`) can follow the same `harness` + `run { source = ... }`
-pattern — `managed_identity` in particular should assert on
-`output.vmss_identity.principal_id != null` to confirm the SystemAssigned
-identity was wired up.
+The `additional_packages` and `certificate_chain` examples (005 / 002)
+aren't integration-tested — they differ from `admin_password` only by
+cloud-init content, so the marginal value of a live apply/destroy is low.
 
 ### Required environment
 

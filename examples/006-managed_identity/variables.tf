@@ -44,9 +44,20 @@ variable "vmss_admin_password" {
 }
 
 variable "rbac" {
-  type        = string
+  type        = bool
   description = "Whether to create the Reader role assignment for the system-assigned identity."
-  default     = "false"
+  default     = false
+}
+
+variable "rbac_scope_resource_group_name" {
+  type        = string
+  description = "Name of the resource group to scope the Reader role assignment to. Required when rbac is true."
+  default     = null
+
+  validation {
+    condition     = !var.rbac || var.rbac_scope_resource_group_name != null
+    error_message = "rbac_scope_resource_group_name must be set when rbac is true."
+  }
 }
 
 variable "tags" {

@@ -8,9 +8,14 @@ output "vmss_name" {
   description = "Virtual Machine Scale Set name"
 }
 
-output "vmss_identity" {
-  value       = module.terraform-azurerm-vmss-devops-agent.vmss_identity
-  description = "Flattened managed identity details (principal_id, tenant_id, user_assigned_identity_ids)"
+output "vmss_location" {
+  value       = module.terraform-azurerm-vmss-devops-agent.vmss_location
+  description = "Azure region"
+}
+
+output "vmss_sku" {
+  value       = module.terraform-azurerm-vmss-devops-agent.vmss_sku
+  description = "VM SKU"
 }
 
 output "elastic_pool" {
