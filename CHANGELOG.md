@@ -50,6 +50,15 @@ Major release bringing the module up to 2026 standards and aligning with
   across the module and all examples instead.
 * `scripts/test.sh` and `scripts/test-examples.sh` for local verification
   (fmt / validate / validate every example).
+* Integration test suite under `tests/integration/` using native
+  `terraform test` with `command = apply`. A `tests/integration/harness/`
+  submodule provisions the full prerequisite graph (resource group,
+  virtual network, subnet, Azure DevOps project, AzureRM service
+  connection) so each test composes the harness with an example under
+  test and is destroyed on teardown. `scripts/test-integration.sh`
+  validates credentials, prompts before applying, and runs `terraform
+  test -test-directory=tests/integration`. Documented prerequisites in
+  `tests/integration/README.md`.
 * Variable validation for `vmss_os`, `vmss_instances`, `vmss_disk_size_gb`,
   `vmss_sku`, `elastic_pool_desired_idle`, `elastic_pool_max_capacity`,
   `elastic_pool_time_to_live_minutes`, `vmss_identity`, and more.

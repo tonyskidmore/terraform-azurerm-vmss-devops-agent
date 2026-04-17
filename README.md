@@ -193,11 +193,18 @@ passed `""` to opt out should pass `null` (or simply omit the input).
 
 ## Development
 
-- `scripts/test.sh` — runs `terraform fmt -check`, module-root `validate`,
-  native `terraform test` with mocked providers, and iterates
-  `scripts/test-examples.sh` across every example. Requires no Azure
-  credentials.
+See [`DEVELOPMENT.md`](DEVELOPMENT.md) for the full contributor workflow
+(required tooling, local verification, integration-test env vars, CI
+layout, migration snippets).
+
+Quick reference:
+
+- `scripts/test.sh` — `terraform fmt -check -recursive`, module-root
+  `validate`, native `terraform test` (scaffolded, see DEVELOPMENT.md for
+  the 1.14 limitation), and iterates `scripts/test-examples.sh` across
+  every example. Requires no Azure credentials.
 - `scripts/test-examples.sh [--with-plan]` — `init -backend=false` +
-  `validate` on each example. `--with-plan` additionally runs `terraform
-  plan`; any example that reads Azure data sources will need real
-  credentials for `plan`.
+  `validate` on each example.
+- `scripts/test-integration.sh [<test>] [--yes]` — applies real Azure +
+  Azure DevOps resources, asserts on outputs, destroys on teardown. See
+  [`tests/integration/README.md`](tests/integration/README.md).
