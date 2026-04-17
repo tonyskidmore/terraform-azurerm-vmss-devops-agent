@@ -40,6 +40,9 @@ scripts/test-integration.sh admin_password
 
 # Skip the confirmation prompt (for CI)
 scripts/test-integration.sh --yes
+
+# Show the full plan + state per run
+scripts/test-integration.sh --verbose
 ```
 
 ## What's covered

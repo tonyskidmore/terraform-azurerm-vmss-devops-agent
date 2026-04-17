@@ -67,7 +67,22 @@ scripts/test-integration.sh admin_password
 
 # Skip the confirmation prompt (e.g. for CI)
 scripts/test-integration.sh --yes
+
+# Show the full plan + state per run (what Azure + ADO actually created)
+scripts/test-integration.sh --verbose
 ```
+
+What each integration test currently asserts:
+
+| Test             | Assertions beyond apply/destroy succeeding                                                                                |
+|------------------|---------------------------------------------------------------------------------------------------------------------------|
+| admin_password   | `vmss_id` ends with the expected VMSS name; `vmss_name`, `vmss_location`, `vmss_sku` match inputs; `elastic_pool.name` OK |
+
+Further examples (`multi_zone`, `docker_data_disk`, `additional_packages`,
+`managed_identity`) can follow the same `harness` + `run { source = ... }`
+pattern — `managed_identity` in particular should assert on
+`output.vmss_identity.principal_id != null` to confirm the SystemAssigned
+identity was wired up.
 
 ### Required environment
 
@@ -175,6 +190,20 @@ terraform {
 }
 ```
 
+### Output shape
+
+The 1.0.0 surface exposes granular outputs rather than a single leaked
+resource object:
+
+- `elastic_pool_id`, `elastic_pool` (full attribute object for the pool)
+- `vmss_id`, `vmss_name`, `vmss_location`, `vmss_sku`, `vmss_instances`,
+  `vmss_unique_id`, `vmss_data_disks`
+- `vmss_identity` — flat object: `principal_id`, `tenant_id`,
+  `user_assigned_identity_ids`. The sibling normalizes AzureRM's `""`
+  sentinels to `null`, so consumers can do
+  `output.vmss_identity.principal_id != null` as a predicate for
+  "SystemAssigned is enabled".
+
 ## Devcontainer
 
 When [Developing inside a Container](https://code.visualstudio.com/docs/devcontainers/containers)
@@ -208,5 +237,8 @@ docker run \
   -v "$PWD":/tmp/lint \
   ghcr.io/super-linter/super-linter:latest
 ```
+
+See the [super-linter local instructions][gha-super-linter-local] for
+more detail.
 
 [gha-super-linter-local]: https://github.com/super-linter/super-linter/blob/main/docs/run-linter-locally.md

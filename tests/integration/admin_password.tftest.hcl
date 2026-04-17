@@ -60,7 +60,27 @@ run "apply_admin_password_example" {
   }
 
   assert {
-    condition     = can(regex("/virtualMachineScaleSets/", output.vmss_id))
-    error_message = "Expected vmss_id to be an Azure VMSS resource ID."
+    condition     = can(regex("/virtualMachineScaleSets/vmss-devops-tftest-adminpw-01$", output.vmss_id))
+    error_message = "Expected vmss_id to end with the VMSS name we passed in."
+  }
+
+  assert {
+    condition     = output.vmss_name == var.vmss_name
+    error_message = "Expected vmss_name output to equal the name we passed in."
+  }
+
+  assert {
+    condition     = output.vmss_location == "uksouth"
+    error_message = "Expected VMSS to be deployed in uksouth (matching the input)."
+  }
+
+  assert {
+    condition     = output.vmss_sku == "Standard_B2s"
+    error_message = "Expected VMSS SKU to match the module default (Standard_B2s)."
+  }
+
+  assert {
+    condition     = output.elastic_pool.name == var.elastic_pool_name
+    error_message = "Expected elastic_pool output name to equal the pool name we passed in."
   }
 }

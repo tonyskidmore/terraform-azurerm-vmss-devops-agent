@@ -32,9 +32,29 @@ output "vmss_name" {
   description = "Virtual Machine Scale Set name"
 }
 
+output "vmss_location" {
+  value       = module.vmss.vmss_location
+  description = "Azure region the VMSS was deployed to"
+}
+
+output "vmss_sku" {
+  value       = module.vmss.vmss_sku
+  description = "VM SKU in use by the VMSS"
+}
+
+output "vmss_instances" {
+  value       = module.vmss.vmss_instances
+  description = "Number of instances configured on the VMSS"
+}
+
 output "vmss_unique_id" {
   value       = module.vmss.vmss_unique_id
   description = "The generated unique identifier of the Virtual Machine Scale Set"
+}
+
+output "vmss_data_disks" {
+  value       = module.vmss.vmss_data_disks
+  description = "Data disks configured on the Virtual Machine Scale Set, as accepted by Azure post-apply"
 }
 
 output "vmss_identity" {
