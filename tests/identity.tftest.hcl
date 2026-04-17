@@ -1,16 +1,5 @@
-provider "azuredevops" {
-  org_service_url       = "https://dev.azure.com/fake"
-  personal_access_token = "fake"
-}
-
+mock_provider "azuredevops" {}
 mock_provider "azurerm" {}
-
-override_resource {
-  target = azuredevops_elastic_pool.this
-  values = {
-    id = "00000000-0000-0000-0000-000000000003"
-  }
-}
 
 variables {
   vmss_resource_group_name            = "rg-test"

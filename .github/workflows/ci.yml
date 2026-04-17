@@ -58,7 +58,7 @@ jobs:
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
         with:
-          terraform_version: '1.10.5'
+          terraform_version: '1.13.3'
           terraform_wrapper: false
 
       - name: Install Python packages
@@ -93,7 +93,7 @@ jobs:
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
         with:
-          terraform_version: '1.10.5'
+          terraform_version: '1.13.3'
           terraform_wrapper: false
 
       - name: terraform fmt -check -recursive
@@ -103,6 +103,9 @@ jobs:
         run: |
           terraform init -backend=false -input=false
           terraform validate
+
+      - name: terraform test (tests/*.tftest.hcl)
+        run: terraform test
 
       - name: terraform init + validate (examples)
         run: scripts/test-examples.sh

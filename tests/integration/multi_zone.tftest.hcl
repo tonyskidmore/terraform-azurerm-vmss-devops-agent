@@ -12,13 +12,13 @@
 
 variables {
   location                          = "uksouth"
-  resource_group_name               = "rg-devops-tftest-mz-01"
-  vnet_name                         = "vnet-devops-tftest-mz-01"
-  subnet_name                       = "snet-devops-tftest-01"
-  azuredevops_project_name          = "devops-tftest-mz-01"
-  azuredevops_service_endpoint_name = "devops-tftest-mz-01"
-  elastic_pool_name                 = "devops-tftest-mz-01"
-  vmss_name                         = "vmss-devops-tftest-mz-01"
+  resource_group_name               = "rg-devops-tftest-mz-02"
+  vnet_name                         = "vnet-devops-tftest-mz-02"
+  subnet_name                       = "snet-devops-tftest-02"
+  azuredevops_project_name          = "devops-tftest-mz-02"
+  azuredevops_service_endpoint_name = "devops-tftest-mz-02"
+  elastic_pool_name                 = "devops-tftest-mz-02"
+  vmss_name                         = "vmss-devops-tftest-mz-02"
 }
 
 run "setup_prereqs" {

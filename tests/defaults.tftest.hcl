@@ -1,20 +1,5 @@
-provider "azuredevops" {
-  org_service_url       = "https://dev.azure.com/fake"
-  personal_access_token = "fake"
-}
-
+mock_provider "azuredevops" {}
 mock_provider "azurerm" {}
-
-# Terraform 1.14's `mock_provider` cannot currently disambiguate third-party
-# providers (e.g. microsoft/azuredevops vs the implicit hashicorp/azuredevops).
-# Instead of mocking, we override azuredevops_elastic_pool so plan-time
-# evaluation does not require a live Azure DevOps endpoint.
-override_resource {
-  target = azuredevops_elastic_pool.this
-  values = {
-    id = "00000000-0000-0000-0000-000000000003"
-  }
-}
 
 variables {
   vmss_resource_group_name            = "rg-test"

@@ -4,7 +4,7 @@
 
 | Tool       | Minimum version | Notes                                                                                     |
 |------------|-----------------|-------------------------------------------------------------------------------------------|
-| Terraform  | 1.10            | Needed for `terraform test`, `optional()` object attributes, and `-test-directory`        |
+| Terraform  | 1.12            | 1.10 is the module's `required_version`; 1.12+ is needed for the `terraform test` suite   |
 | Python     | 3.12            | For the pre-commit toolchain                                                              |
 | pre-commit | 4.5             | Pinned in `requirements.txt`                                                              |
 | tflint     | latest          | The `azurerm` ruleset is pinned in `.tflint.hcl`                                          |
@@ -33,16 +33,10 @@ scripts/test.sh
 
 `terraform test` — about the unit tests under `tests/*.tftest.hcl`
 
-The variable-validation tests (`tests/validation.tftest.hcl`) are the most
-useful offline check today. The plan-assertion tests
-(`defaults`, `elastic_pool`, `identity`) are scaffolded but limited by a
-**Terraform 1.14 test-framework limitation**: `mock_provider` cannot
-disambiguate `microsoft/azuredevops` from the default `hashicorp/*`
-namespace, so the azuredevops provider cannot be mocked cleanly and its
-`Configure()` reaches out to verify credentials. These tests are expected
-to become fully runnable as the framework evolves — until then they stand
-as documentation of intent. CI runs `terraform validate` across the
-module and every example instead of `terraform test`.
+All four files (`defaults`, `elastic_pool`, `identity`, `validation`) run
+offline via `mock_provider "azuredevops" {}` and `mock_provider "azurerm"
+{}`. No real Azure or Azure DevOps credentials are touched. `scripts/
+test.sh` and the `terraform-validate` CI job both run `terraform test`.
 
 ## Integration tests (real Azure + Azure DevOps apply/destroy)
 

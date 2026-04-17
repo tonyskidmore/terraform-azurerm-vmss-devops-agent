@@ -1,5 +1,7 @@
-# Variable-validation tests. Validation failures are surfaced before any
-# provider configuration, so no provider or mock blocks are required.
+# Variable-validation tests. Mock providers so `command = plan` can reach
+# variable validation without requiring real credentials.
+mock_provider "azuredevops" {}
+mock_provider "azurerm" {}
 
 variables {
   vmss_resource_group_name            = "rg-test"

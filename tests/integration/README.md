@@ -78,16 +78,35 @@ the ADO project and service connection.
 ## If a test fails mid-apply
 
 `terraform test` attempts to destroy on failure. If destroy also fails
-(Azure throttling, ADO project stuck in delete, etc.), clean up manually:
+(Azure throttling, ADO project stuck in delete, Terraform 1.12–1.14
+provider-cache bug, etc.), clean up manually **in this order** — the ADO
+elastic pool has to go first, because it holds a reference to the VMSS
+ID; otherwise the next run will fail with "an elastic pool already
+exists with the identifier `…/virtualMachineScaleSets/vmss-*`":
 
 ```bash
-# Azure side
-az group delete --name rg-devops-tftest-adminpw-01 --yes --no-wait
+# 1. Azure DevOps elastic pool (Org Settings → Agent pools → "devops-tftest-<suffix>-01" → Delete)
+#    or via API:
+curl -s -u ":$AZDO_PERSONAL_ACCESS_TOKEN" \
+  "$AZDO_ORG_SERVICE_URL/_apis/distributedtask/elasticpools?api-version=7.1" \
+  | jq -r '.value[] | select(.azureId | contains("vmss-devops-tftest-")) | .poolId'
+# then delete each returned poolId:
+curl -X DELETE -u ":$AZDO_PERSONAL_ACCESS_TOKEN" \
+  "$AZDO_ORG_SERVICE_URL/_apis/distributedtask/pools/<poolId>?api-version=7.1"
 
-# Azure DevOps side
-# Delete via the Azure DevOps UI or:
-#   az devops project delete --id <project-id> --yes
+# 2. Azure DevOps project (via UI or):
+az devops project delete --id <project-id> --yes
+
+# 3. Azure resource group
+az group delete --name rg-devops-tftest-<suffix>-01 --yes --no-wait
 ```
 
-Resource group and ADO project names follow
-`*-devops-tftest-<suffix>-01` for easy cleanup.
+Resource group, ADO project, and elastic pool names all follow the
+`*-devops-tftest-<suffix>-01` convention:
+
+| Test              | Suffix    |
+|-------------------|-----------|
+| admin_password    | adminpw   |
+| docker_data_disk  | datadisk  |
+| managed_identity  | mi        |
+| multi_zone        | mz        |

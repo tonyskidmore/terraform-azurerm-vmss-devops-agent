@@ -64,7 +64,12 @@ run "apply_managed_identity_example" {
   }
 
   assert {
-    condition     = length(output.vmss_identity.user_assigned_identity_ids) == 0
+    # When only SystemAssigned is configured, the azurerm VMSS resource
+    # renders identity[0].identity_ids as null rather than an empty list,
+    # so the sibling's `try(..., [])` returns null (try only catches errors,
+    # not null values). Treat null and [] as equivalent "no user-assigned
+    # identities" here.
+    condition     = length(coalesce(output.vmss_identity.user_assigned_identity_ids, [])) == 0
     error_message = "Expected no user-assigned identities when only SystemAssigned is configured."
   }
 }
