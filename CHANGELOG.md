@@ -2,24 +2,30 @@
 
 [keepachangelog](https://keepachangelog.com/en/1.0.0/)
 
+## [0.3.0]
+
+- Replaced the shell-based Azure DevOps elastic pool module with the provider-native module
+- Updated the module interface to use provider-native elastic pool IDs and settings
+- Aligned provider baselines on modern `azurerm` and `azuredevops` releases
+
 ## [0.2.5]
-* Adding `007-aks-agents` example
+- Adding `007-aks-agents` example
 
 ## [0.2.4]
-* Adding `user_data` argument
+- Adding `user_data` argument
 
 ## [0.2.3]
-* Adding `006-managed_identity` example
+- Adding `006-managed_identity` example
 
 ## [0.2.2]
-* Adding `005-additional_packages` example
+- Adding `005-additional_packages` example
 
 ## [0.2.1]
-* Minor documentation updates
+- Minor documentation updates
 
 ## [0.2.0]
-* Adding support for VMSS data disks
-* Added `004-docker_data_disk`, which uses a data disk to store Docker data e.g. container images
+- Adding support for VMSS data disks
+- Added `004-docker_data_disk`, which uses a data disk to store Docker data e.g. container images
 
 ## [0.1.0]
 Initial version

@@ -1,18 +1,18 @@
 terraform {
   required_providers {
-    shell = {
-      source  = "scottwinkler/shell"
-      version = "~>1.7.10"
+    azuredevops = {
+      source  = "microsoft/azuredevops"
+      version = ">= 1.15.0, < 2.0.0"
     }
     azurerm = {
       source  = "hashicorp/azurerm"
-      version = ">=3.1.0"
+      version = ">= 4.69.0, < 5.0.0"
     }
     tls = {
       source  = "hashicorp/tls"
-      version = "~>4.0"
+      version = "~> 4.0"
     }
   }
-  required_version = ">= 1.0.0"
+  required_version = ">= 1.5.0"
   backend "azurerm" {}
 }

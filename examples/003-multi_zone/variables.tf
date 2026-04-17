@@ -1,41 +1,31 @@
-variable "ado_ext_pat" {
+variable "azuredevops_project_name" {
   type        = string
-  description = "Azure DevOps Personal Access Token"
+  description = "Azure DevOps project name that owns the agent pool queue and AzureRM service connection."
 }
 
-variable "ado_org" {
+variable "azuredevops_service_endpoint_name" {
   type        = string
-  description = "Azure DevOps organization"
+  description = "Azure DevOps AzureRM service connection name."
 }
 
-variable "ado_project" {
+variable "elastic_pool_name" {
   type        = string
-  description = "Azure DevOps organization"
+  description = "Azure DevOps VM scale set agent pool name."
 }
 
-variable "ado_service_connection" {
-  type        = string
-  description = "Azure DevOps organiservice connection name"
-}
-
-variable "ado_pool_name" {
-  type        = string
-  description = "Azure DevOps agent pool name"
-}
-
-variable "ado_pool_desired_idle" {
+variable "elastic_pool_desired_idle" {
   type        = number
-  description = "Number of machines to have ready waiting for jobs"
+  description = "Number of machines to have ready waiting for jobs."
 }
 
-variable "ado_pool_max_capacity" {
+variable "elastic_pool_max_capacity" {
   type        = number
-  description = "Maximum number of machines that will exist in the elastic pool"
+  description = "Maximum number of machines that will exist in the elastic pool."
 }
 
-variable "ado_pool_ttl_mins" {
+variable "elastic_pool_time_to_live_minutes" {
   type        = number
-  description = "The minimum time in minutes to keep idle agents alive"
+  description = "The minimum time in minutes to keep idle agents alive."
 }
 
 variable "vmss_name" {

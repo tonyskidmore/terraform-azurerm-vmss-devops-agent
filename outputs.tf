@@ -1,6 +1,11 @@
-output "ado_vmss_pool_output" {
-  value       = module.azure-devops-elasticpool.ado_vmss_pool_output
-  description = "Azure DevOps VMSS Agent Pool output"
+output "elastic_pool_id" {
+  value       = module.azure-devops-elasticpool.id
+  description = "Azure DevOps VM scale set agent pool ID"
+}
+
+output "elastic_pool" {
+  value       = module.azure-devops-elasticpool.elastic_pool
+  description = "Azure DevOps VM scale set agent pool attributes"
 }
 
 output "vmss_id" {

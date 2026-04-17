@@ -6,16 +6,21 @@ provider "azurerm" {
   features {}
 }
 
-provider "shell" {
-  sensitive_environment = {
-    AZURE_DEVOPS_EXT_PAT = var.ado_ext_pat
-  }
-}
+provider "azuredevops" {}
 
 data "azurerm_subnet" "agents" {
   name                 = var.vmss_subnet_name
   resource_group_name  = var.vmss_resource_group_name
   virtual_network_name = var.vmss_vnet_name
+}
+
+data "azuredevops_project" "pool" {
+  name = var.azuredevops_project_name
+}
+
+data "azuredevops_serviceendpoint_azurerm" "pool" {
+  project_id            = data.azuredevops_project.pool.id
+  service_endpoint_name = var.azuredevops_service_endpoint_name
 }
 
 resource "tls_private_key" "vmss_ssh" {
@@ -24,19 +29,18 @@ resource "tls_private_key" "vmss_ssh" {
 }
 
 module "terraform-azurerm-vmss-devops-agent" {
-  source                     = "tonyskidmore/vmss-devops-agent/azurerm"
-  version                    = "0.2.6"
-  ado_org                    = var.ado_org
-  ado_pool_name              = var.ado_pool_name
-  ado_project                = var.ado_project
-  ado_pool_recycle_after_use = true
-  ado_service_connection     = var.ado_service_connection
-  vmss_ssh_public_key        = tls_private_key.vmss_ssh.public_key_openssh
-  vmss_name                  = var.vmss_name
-  vmss_resource_group_name   = var.vmss_resource_group_name
-  vmss_subnet_id             = data.azurerm_subnet.agents.id
-  tags                       = var.tags
-  vmss_custom_data_data      = local.vmss_custom_data_data
-  vmss_source_image_offer    = var.vmss_source_image_offer
-  vmss_source_image_sku      = var.vmss_source_image_sku
+  source                              = "../../"
+  elastic_pool_name                   = var.elastic_pool_name
+  elastic_pool_project_id             = data.azuredevops_project.pool.id
+  elastic_pool_recycle_after_each_use = true
+  elastic_pool_service_endpoint_id    = data.azuredevops_serviceendpoint_azurerm.pool.id
+  elastic_pool_service_endpoint_scope = data.azuredevops_project.pool.id
+  vmss_ssh_public_key                 = tls_private_key.vmss_ssh.public_key_openssh
+  vmss_name                           = var.vmss_name
+  vmss_resource_group_name            = var.vmss_resource_group_name
+  vmss_subnet_id                      = data.azurerm_subnet.agents.id
+  tags                                = var.tags
+  vmss_custom_data_data               = local.vmss_custom_data_data
+  vmss_source_image_offer             = var.vmss_source_image_offer
+  vmss_source_image_sku               = var.vmss_source_image_sku
 }

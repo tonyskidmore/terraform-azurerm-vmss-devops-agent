@@ -1,18 +1,13 @@
 # required variables
 
-variable "ado_org" {
+variable "elastic_pool_service_endpoint_id" {
   type        = string
-  description = "Azure DevOps Organization name"
+  description = "Azure DevOps AzureRM service connection ID used by the VM scale set agent pool."
 }
 
-variable "ado_project" {
+variable "elastic_pool_service_endpoint_scope" {
   type        = string
-  description = "Azure DevOps project name where service connection exists and optionally where pool will only be created"
-}
-
-variable "ado_service_connection" {
-  type        = string
-  description = "Azure DevOps azure service connection name"
+  description = "Project ID that owns the AzureRM service connection used by the VM scale set agent pool."
 }
 
 variable "vmss_resource_group_name" {
@@ -27,102 +22,73 @@ variable "vmss_subnet_id" {
 
 # variables with predefined defaults
 
-variable "ado_dirty" {
-  type        = bool
-  description = "Azure DevOps pool settings are dirty"
-  default     = false
-}
-
-variable "ado_pool_auth_all_pipelines" {
+variable "elastic_pool_name" {
   type        = string
-  description = "Setting to determine if all pipelines are authorized to use this TaskAgentPool by default (at create only)"
-  default     = "True"
-
-  validation {
-    condition     = contains(["True", "False"], var.ado_pool_auth_all_pipelines)
-    error_message = "The ado_pool_auth_all_pipelines variable must be True or False."
-  }
-}
-
-variable "ado_pool_desired_idle" {
-  type        = number
-  description = "Number of machines to have ready waiting for jobs"
-  default     = 0
-}
-
-variable "ado_pool_desired_size" {
-  type        = number
-  description = "The desired size of the pool"
-  default     = 0
-}
-
-variable "ado_pool_max_capacity" {
-  type        = number
-  description = "Maximum number of machines that will exist in the elastic pool"
-  default     = 2
-}
-
-variable "ado_pool_max_saved_node_count" {
-  type        = number
-  description = "Keep machines in the pool on failure for investigation"
-  default     = 0
-}
-
-variable "ado_pool_name" {
-  type        = string
-  description = "Azure DevOps agent pool name"
+  description = "Azure DevOps VM scale set agent pool name."
   default     = "azdo-vmss-pool-001"
 }
 
-variable "ado_pool_os_type" {
+variable "elastic_pool_project_id" {
   type        = string
-  description = "Operating system type of the nodes in the pool"
-  default     = "linux"
+  description = "Optional Azure DevOps project ID used to create a project-scoped queue for the pool."
+  default     = null
+}
+
+variable "elastic_pool_desired_idle" {
+  type        = number
+  description = "Number of machines to have ready waiting for jobs"
+  default     = 0
 
   validation {
-    condition     = contains(["linux", "windows"], var.ado_pool_os_type)
-    error_message = "The ado_pool_os_type variable must be linux or windows."
+    condition     = var.elastic_pool_desired_idle >= 0
+    error_message = "The elastic_pool_desired_idle value must be greater than or equal to 0."
   }
 }
 
-variable "ado_pool_recycle_after_use" {
+variable "elastic_pool_max_capacity" {
+  type        = number
+  description = "Maximum number of machines that will exist in the elastic pool"
+  default     = 2
+
+  validation {
+    condition     = var.elastic_pool_max_capacity >= 0
+    error_message = "The elastic_pool_max_capacity value must be greater than or equal to 0."
+  }
+}
+
+variable "elastic_pool_recycle_after_each_use" {
   type        = bool
   description = "Discard machines after each job completes"
   default     = false
 }
 
-variable "ado_pool_sizing_attempts" {
-  type        = number
-  description = "The number of sizing attempts executed while trying to achieve a desired size"
-  default     = 0
-}
-
-variable "ado_pool_ttl_mins" {
+variable "elastic_pool_time_to_live_minutes" {
   type        = number
   description = "The minimum time in minutes to keep idle agents alive"
-  default     = 15
-}
-
-variable "ado_pool_auto_provision_projects" {
-  type        = string
-  description = "Setting to automatically provision TaskAgentQueues in every project for the new pool (at create only)"
-  default     = "True"
+  default     = 30
 
   validation {
-    condition     = contains(["True", "False"], var.ado_pool_auto_provision_projects)
-    error_message = "The ado_pool_auto_provision_projects variable must be True or False."
+    condition     = var.elastic_pool_time_to_live_minutes >= 0
+    error_message = "The elastic_pool_time_to_live_minutes value must be greater than or equal to 0."
   }
 }
 
-variable "ado_project_only" {
-  type        = string
-  description = "Only create the agent pool in the Azure DevOps pool specified? (at create only)"
-  default     = "False"
+variable "elastic_pool_agent_interactive_ui" {
+  type        = bool
+  description = "Configure Windows agents to run with interactive UI."
+  default     = false
+}
 
-  validation {
-    condition     = contains(["True", "False"], var.ado_project_only)
-    error_message = "The ado_project_only variable must be True or False."
-  }
+variable "elastic_pool_auto_provision" {
+  type        = bool
+  description = "Automatically provision queues for projects."
+  default     = false
+}
+
+variable "elastic_pool_auto_update" {
+  type        = bool
+  description = "Automatically update agents in the pool."
+  default     = true
 }
 
 variable "tags" {

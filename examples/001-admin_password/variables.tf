@@ -1,26 +1,16 @@
-variable "ado_ext_pat" {
+variable "azuredevops_project_name" {
   type        = string
-  description = "Azure DevOps Personal Access Token"
+  description = "Azure DevOps project name that owns the agent pool queue and AzureRM service connection."
 }
 
-variable "ado_org" {
+variable "azuredevops_service_endpoint_name" {
   type        = string
-  description = "Azure DevOps organization"
+  description = "Azure DevOps AzureRM service connection name."
 }
 
-variable "ado_project" {
+variable "elastic_pool_name" {
   type        = string
-  description = "Azure DevOps organization"
-}
-
-variable "ado_service_connection" {
-  type        = string
-  description = "Azure DevOps organiservice connection name"
-}
-
-variable "ado_pool_name" {
-  type        = string
-  description = "Azure DevOps agent pool name"
+  description = "Azure DevOps VM scale set agent pool name."
 }
 
 variable "vmss_name" {

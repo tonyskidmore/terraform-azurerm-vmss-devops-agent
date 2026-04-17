@@ -1,31 +1,21 @@
-variable "ado_ext_pat" {
+variable "azuredevops_project_name" {
   type        = string
-  description = "Azure DevOps Personal Access Token"
+  description = "Azure DevOps project name that owns the agent pool queue and AzureRM service connection."
 }
 
-variable "ado_org" {
+variable "azuredevops_service_endpoint_name" {
   type        = string
-  description = "Azure DevOps organization"
+  description = "Azure DevOps AzureRM service connection name."
 }
 
-variable "ado_project" {
+variable "elastic_pool_name" {
   type        = string
-  description = "Azure DevOps organization"
+  description = "Azure DevOps VM scale set agent pool name."
 }
 
-variable "ado_service_connection" {
-  type        = string
-  description = "Azure DevOps organiservice connection name"
-}
-
-variable "ado_pool_name" {
-  type        = string
-  description = "Azure DevOps agent pool name"
-}
-
-variable "ado_pool_desired_idle" {
+variable "elastic_pool_desired_idle" {
   type        = number
-  description = "Number of machines to have ready waiting for jobs"
+  description = "Number of machines to have ready waiting for jobs."
 }
 
 variable "vmss_name" {
@@ -54,6 +44,7 @@ variable "vmss_admin_password" {
 }
 
 variable "vmss_data_disks" {
+  description = "Additional data disks"
   type = list(object({
     caching              = string
     create_option        = string
@@ -61,8 +52,6 @@ variable "vmss_data_disks" {
     lun                  = number
     storage_account_type = string
   }))
-  description = "Additional data disks"
-  default     = []
 }
 
 variable "tags" {
