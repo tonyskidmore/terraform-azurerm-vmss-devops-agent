@@ -24,21 +24,18 @@ jobs:
 
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           # Full git history is needed to get a proper list
           # of changed files within `super-linter`
           fetch-depth: 0
 
-      # https://github.com/marketplace/actions/super-linter
+      - run: cat .github/super-linter.env >> "$GITHUB_ENV"
+
+        # https://github.com/marketplace/actions/super-linter
       - name: Lint Code Base
-        uses: github/super-linter@v4
+        uses: github/super-linter@v7
         env:
-          VALIDATE_ALL_CODEBASE: true
-          VALIDATE_JSCPD: false
-          VALIDATE_TERRAFORM_TERRASCAN: false
-          VALIDATE_GITLEAKS: false
-          VALIDATE_DOCKERFILE_HADOLINT: false
           DEFAULT_BRANCH: main
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -48,31 +45,34 @@ jobs:
 
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
-          # Full git history is needed to get a proper list
-          # of changed files within `super-linter`
           fetch-depth: 0
 
       - name: Setup Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
-          python-version: '3.9'
-          cache: 'pip'  # caching pip dependencies
+          python-version: '3.12'
+          cache: 'pip'
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: '1.10.5'
+          terraform_wrapper: false
 
       - name: Install Python packages
         run: pip install -r requirements.txt
+
       - name: Setup TFLint
-        uses: terraform-linters/setup-tflint@v2
+        uses: terraform-linters/setup-tflint@v4
         with:
           tflint_version: latest
 
-      - name: Patch .pre-commit-config.yaml
-        run: |
-          sed -i '/terraform-docs/,+4d' \
-            "$GITHUB_WORKSPACE/.pre-commit-config.yaml"
-          sed -i '/- id: end-of-file-fixer/d' \
-            "$GITHUB_WORKSPACE/.pre-commit-config.yaml"
+      - name: Install Trivy
+        uses: aquasecurity/setup-trivy@v0.2.0
+        with:
+          version: latest
 
       - name: Pre-commit check all files
         run: |
@@ -81,3 +81,28 @@ jobs:
           tflint --init
           tflint --version
           pre-commit run --all-files
+
+  terraform-validate:
+    name: terraform validate
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: '1.10.5'
+          terraform_wrapper: false
+
+      - name: terraform fmt -check -recursive
+        run: terraform fmt -check -recursive
+
+      - name: terraform init + validate (module root)
+        run: |
+          terraform init -backend=false -input=false
+          terraform validate
+
+      - name: terraform init + validate (examples)
+        run: scripts/test-examples.sh

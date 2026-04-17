@@ -1,6 +1,6 @@
 module "vmss" {
   source  = "tonyskidmore/vmss/azurerm"
-  version = "0.3.2"
+  version = "1.0.0"
   # required variables
   vmss_resource_group_name = var.vmss_resource_group_name
   vmss_subnet_id           = var.vmss_subnet_id
@@ -12,8 +12,7 @@ module "vmss" {
   vmss_data_disks                             = var.vmss_data_disks
   vmss_disk_size_gb                           = var.vmss_disk_size_gb
   vmss_encryption_at_host_enabled             = var.vmss_encryption_at_host_enabled
-  vmss_identity_ids                           = var.vmss_identity_ids
-  vmss_identity_type                          = var.vmss_identity_type
+  vmss_identity                               = var.vmss_identity
   vmss_instances                              = var.vmss_instances
   vmss_load_balancer_backend_address_pool_ids = var.vmss_load_balancer_backend_address_pool_ids
   vmss_location                               = var.vmss_location
@@ -35,12 +34,9 @@ module "vmss" {
   vmss_storage_account_uri                    = var.vmss_storage_account_uri
   vmss_user_data                              = var.vmss_user_data
   vmss_zones                                  = var.vmss_zones
-
 }
 
-module "azure-devops-elasticpool" {
-  source = "../terraform-azuredevops-azure-devops-elasticpool"
-
+resource "azuredevops_elastic_pool" "this" {
   name                   = var.elastic_pool_name
   azure_resource_id      = module.vmss.vmss_id
   service_endpoint_id    = var.elastic_pool_service_endpoint_id
@@ -53,4 +49,11 @@ module "azure-devops-elasticpool" {
   agent_interactive_ui   = var.elastic_pool_agent_interactive_ui
   auto_provision         = var.elastic_pool_auto_provision
   auto_update            = var.elastic_pool_auto_update
+
+  lifecycle {
+    precondition {
+      condition     = var.elastic_pool_desired_idle <= var.elastic_pool_max_capacity
+      error_message = "The elastic_pool_desired_idle value must be less than or equal to elastic_pool_max_capacity."
+    }
+  }
 }

@@ -1,9 +1,3 @@
-provider "azurerm" {
-  features {}
-}
-
-provider "azuredevops" {}
-
 data "azurerm_subnet" "agents" {
   name                 = var.vmss_subnet_name
   resource_group_name  = var.vmss_resource_group_name

@@ -2,12 +2,6 @@ locals {
   vmss_custom_data_data = base64encode(templatefile("${path.module}/cloud-init.tpl", {}))
 }
 
-provider "azurerm" {
-  features {}
-}
-
-provider "azuredevops" {}
-
 data "azurerm_subnet" "agents" {
   name                 = var.vmss_subnet_name
   resource_group_name  = var.vmss_resource_group_name

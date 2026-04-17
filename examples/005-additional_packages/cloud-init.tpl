@@ -2,12 +2,6 @@
 
 ---
 
-bootcmd:
-  - mkdir -p /etc/systemd/system/walinuxagent.service.d
-  - echo "[Unit]\nAfter=cloud-final.service" > /etc/systemd/system/walinuxagent.service.d/override.conf
-  - sed "s/After=multi-user.target//g" /lib/systemd/system/cloud-final.service > /etc/systemd/system/cloud-final.service
-  - systemctl daemon-reload
-
 package_update: true
 
 apt:

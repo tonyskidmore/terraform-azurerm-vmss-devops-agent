@@ -2,12 +2,6 @@ locals {
   vmss_custom_data_data = base64encode(templatefile("${path.module}/cloud-init.tpl", {}))
 }
 
-provider "azurerm" {
-  features {}
-}
-
-provider "azuredevops" {}
-
 data "azurerm_subnet" "agents" {
   name                 = var.vmss_subnet_name
   resource_group_name  = var.vmss_resource_group_name
@@ -35,8 +29,10 @@ module "terraform-azurerm-vmss-devops-agent" {
   vmss_resource_group_name            = var.vmss_resource_group_name
   vmss_subnet_id                      = data.azurerm_subnet.agents.id
   vmss_custom_data_data               = local.vmss_custom_data_data
-  vmss_identity_type                  = "SystemAssigned"
-  tags                                = var.tags
+  vmss_identity = {
+    type = "SystemAssigned"
+  }
+  tags = var.tags
 }
 
 data "azurerm_resource_group" "demo" {
@@ -47,5 +43,5 @@ resource "azurerm_role_assignment" "demo" {
   count                = tobool(lower(var.rbac)) ? 1 : 0
   scope                = data.azurerm_resource_group.demo.id
   role_definition_name = "Reader"
-  principal_id         = module.terraform-azurerm-vmss-devops-agent.vmss_system_assigned_identity_id
+  principal_id         = module.terraform-azurerm-vmss-devops-agent.vmss_identity.principal_id
 }

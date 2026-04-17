@@ -48,7 +48,7 @@ variable "vmss_data_disks" {
   type = list(object({
     caching              = string
     create_option        = string
-    disk_size_gb         = string
+    disk_size_gb         = number
     lun                  = number
     storage_account_type = string
   }))

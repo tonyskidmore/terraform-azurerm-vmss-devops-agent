@@ -100,6 +100,7 @@ variable "tags" {
 variable "vmss_admin_password" {
   type        = string
   description = "Azure Virtual Machine Scale Set instance administrator password"
+  sensitive   = true
   default     = null
 }
 
@@ -125,7 +126,7 @@ variable "vmss_data_disks" {
   type = list(object({
     caching              = string
     create_option        = string
-    disk_size_gb         = string
+    disk_size_gb         = number
     lun                  = number
     storage_account_type = string
   }))
@@ -137,31 +138,50 @@ variable "vmss_disk_size_gb" {
   type        = number
   description = "The Size of the Internal OS Disk in GB, if you wish to vary from the size used in the image this Virtual Machine Scale Set is sourced from"
   default     = null
+
+  validation {
+    condition     = var.vmss_disk_size_gb == null || (try(var.vmss_disk_size_gb, 0) >= 1 && try(var.vmss_disk_size_gb, 0) <= 32767)
+    error_message = "The vmss_disk_size_gb must be null or between 1 and 32767 GB."
+  }
 }
 
 # needs to be enabled on the subscription, see:
 # Use the Azure CLI to enable end-to-end encryption using encryption at host
-# https://docs.microsoft.com/en-us/azure/virtual-machines/linux/disks-enable-host-based-encryption-cli
+# https://learn.microsoft.com/en-us/azure/virtual-machines/linux/disks-enable-host-based-encryption-cli
 variable "vmss_encryption_at_host_enabled" {
   type        = bool
   description = "Should all of the disks (including the temp disk) attached to this Virtual Machine be encrypted by enabling Encryption at Host?"
   default     = false
 }
 
-variable "vmss_identity_ids" {
-  type        = list(string)
-  description = "Specifies a list of User Assigned Managed Identity IDs to be assigned to this Linux Virtual Machine Scale Set"
-  default     = null
-}
+variable "vmss_identity" {
+  type = object({
+    type         = optional(string)
+    identity_ids = optional(list(string), [])
+  })
+  description = <<-EOT
+    Managed Service Identity configuration for the Virtual Machine Scale Set.
 
-variable "vmss_identity_type" {
-  type        = string
-  description = "Specifies the type of Managed Service Identity that should be configured on this Linux Virtual Machine Scale Set`"
-  default     = null
+    - `type`: one of `SystemAssigned`, `UserAssigned`, or `SystemAssigned, UserAssigned`. When `null` (default), no identity block is created.
+    - `identity_ids`: list of User Assigned Managed Identity IDs, required when `type` includes `UserAssigned`.
+  EOT
+  default     = {}
 
   validation {
-    condition     = var.vmss_identity_type != null ? alltrue([for v in split(",", var.vmss_identity_type) : contains(["SystemAssigned", "UserAssigned"], trimspace(v))]) : true
-    error_message = "The vmss_identity_type must be a valid type."
+    condition = (
+      var.vmss_identity.type == null ||
+      contains(["SystemAssigned", "UserAssigned", "SystemAssigned, UserAssigned"], var.vmss_identity.type)
+    )
+    error_message = "vmss_identity.type must be one of: SystemAssigned, UserAssigned, or \"SystemAssigned, UserAssigned\"."
+  }
+
+  validation {
+    condition = (
+      var.vmss_identity.type == null ||
+      var.vmss_identity.type == "SystemAssigned" ||
+      length(var.vmss_identity.identity_ids) > 0
+    )
+    error_message = "vmss_identity.identity_ids must contain at least one ID when vmss_identity.type includes UserAssigned."
   }
 }
 
@@ -169,6 +189,11 @@ variable "vmss_instances" {
   type        = number
   description = "Azure Virtual Machine Scale Set number of instances"
   default     = 0
+
+  validation {
+    condition     = var.vmss_instances >= 0 && var.vmss_instances <= 1000
+    error_message = "The vmss_instances value must be between 0 and 1000."
+  }
 }
 
 variable "vmss_load_balancer_backend_address_pool_ids" {
@@ -191,8 +216,13 @@ variable "vmss_name" {
 
 variable "vmss_os" {
   type        = string
-  description = "Whether to process the Linux Virtual Machine Scale Set resource"
+  description = "Which operating system family the Virtual Machine Scale Set runs (linux or windows)"
   default     = "linux"
+
+  validation {
+    condition     = contains(["linux", "windows"], var.vmss_os)
+    error_message = "The vmss_os must be \"linux\" or \"windows\"."
+  }
 }
 
 variable "vmss_os_disk_caching" {
@@ -275,12 +305,17 @@ variable "vmss_sku" {
   type        = string
   description = "Azure Virtual Machine Scale Set SKU"
   default     = "Standard_B2s"
+
+  validation {
+    condition     = can(regex("^[A-Za-z0-9_]+$", var.vmss_sku)) && length(var.vmss_sku) > 0
+    error_message = "The vmss_sku must be a non-empty Azure VM SKU name (e.g., Standard_B2s)."
+  }
 }
 
 variable "vmss_ssh_public_key" {
   description = "Public key to use for SSH access to VMs"
   type        = string
-  default     = ""
+  default     = null
 }
 
 variable "vmss_storage_account_uri" {

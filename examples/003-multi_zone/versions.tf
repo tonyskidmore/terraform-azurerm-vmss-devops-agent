@@ -8,18 +8,13 @@ terraform {
       source  = "microsoft/azuredevops"
       version = "~> 1.15"
     }
-    random = {
-      source  = "hashicorp/random"
-      version = "~> 3.6"
-    }
-    null = {
-      source  = "hashicorp/null"
-      version = "~> 3.2"
+    tls = {
+      source  = "hashicorp/tls"
+      version = "~> 4.0"
     }
   }
-  required_version = ">= 1.10.0"
-}
 
-provider "azurerm" {
-  features {}
+  required_version = ">= 1.10.0"
+
+  backend "azurerm" {}
 }

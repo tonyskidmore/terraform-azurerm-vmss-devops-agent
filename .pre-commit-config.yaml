@@ -2,7 +2,7 @@
 
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.4.0
+    rev: v5.0.0
     hooks:
       - id: check-json
         exclude: devcontainer.json
@@ -13,7 +13,7 @@ repos:
       - id: detect-private-key
 
   - repo: https://github.com/bridgecrewio/checkov.git
-    rev: '2.4.30'
+    rev: '3.2.382'
     hooks:
       - id: checkov
         verbose: false
@@ -22,15 +22,17 @@ repos:
   - repo: https://github.com/antonbabenko/pre-commit-terraform
     # Get the latest from:
     # https://github.com/antonbabenko/pre-commit-terraform/releases
-    rev: v1.83.2
+    rev: v1.96.2
     hooks:
       - id: terraform_fmt
       - id: terraform_validate
-      # - id: terraform_tfsec
       - id: terraform_tflint
+      - id: terraform_trivy
+        args:
+          - --args=--severity=HIGH,CRITICAL
 
   - repo: https://github.com/terraform-docs/terraform-docs
-    rev: "v0.16.0"
+    rev: "v0.19.0"
     hooks:
       - id: terraform-docs-go
         args: ["markdown", "table", "--output-file", "README.md", "./"]
